@@ -1,0 +1,9 @@
+version: '3.6'
+
+services:
+  redis:
+    container_name: "${DDEV_SITENAME}-redis"
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
