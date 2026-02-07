@@ -17,3 +17,7 @@ ddev artisan migrade --seed
 ```bash
 bash prepare-deploy.sh
 ```
+
+## informations
+
+more informations are comming soon.

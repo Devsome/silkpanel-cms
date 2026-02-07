@@ -31,40 +31,8 @@ return [
 
     'connections' => [
 
-        'sqlite' => [
-            'driver' => 'sqlite',
-            'url' => env('DB_URL'),
-            'database' => env('DB_DATABASE', database_path('database.sqlite')),
-            'prefix' => '',
-            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
-            'busy_timeout' => null,
-            'journal_mode' => null,
-            'synchronous' => null,
-            'transaction_mode' => 'DEFERRED',
-        ],
-
         'mysql' => [
             'driver' => 'mysql',
-            'url' => env('DB_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
-            'charset' => env('DB_CHARSET', 'utf8mb4'),
-            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'strict' => true,
-            'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                (PHP_VERSION_ID >= 80500 ? \Pdo\Mysql::ATTR_SSL_CA : \PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
-        ],
-
-        'mariadb' => [
-            'driver' => 'mariadb',
             'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
@@ -109,10 +77,80 @@ return [
             'charset' => env('DB_CHARSET', 'utf8'),
             'prefix' => '',
             'prefix_indexes' => true,
-            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
-            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
 
+        /* 
+        |--------------------------------------------------------------------------
+        | SilkPanel Custom database connection
+        |--------------------------------------------------------------------------
+        | Here you may specify the connection for your SQLite database.
+        |
+        */
+        'sro_shard' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_SQL_HOST', 'localhost'),
+            'port' => env('DB_SQL_PORT', '1433'),
+            'database' => env('DB_SQL_DATABASE_SHARD', 'SRO_VT_SHARD'),
+            'username' => env('DB_SQL_USERNAME', 'sa'),
+            'password' => env('DB_SQL_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+        'sro_account' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_SQL_HOST', 'localhost'),
+            'port' => env('DB_SQL_PORT', '1433'),
+            'database' => env('DB_SQL_DATABASE_ACCOUNT', 'SRO_VT_ACCOUNT'),
+            'username' => env('DB_SQL_USERNAME', 'sa'),
+            'password' => env('DB_SQL_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+        'sro_log' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_SQL_HOST', 'localhost'),
+            'port' => env('DB_SQL_PORT', '1433'),
+            'database' => env('DB_SQL_DATABASE_LOG', 'SRO_VT_LOG'),
+            'username' => env('DB_SQL_USERNAME', 'sa'),
+            'password' => env('DB_SQL_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+        'sro_web' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_SQL_HOST', 'localhost'),
+            'port' => env('DB_SQL_PORT', '1433'),
+            'database' => env('DB_SQL_DATABASE_CUSTOM', 'SRO_VT_CUSTOM'),
+            'username' => env('DB_SQL_USERNAME', 'sa'),
+            'password' => env('DB_SQL_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+        'sro_portal' => [
+            'driver' => 'sqlsrv',
+            'host' => env('DB_SQL_HOST', 'localhost'),
+            'port' => env('DB_SQL_PORT', '1433'),
+            'database' => env('DB_SQL_DATABASE_PORTAL', 'GB_JoymaxPortal'),
+            'username' => env('DB_SQL_USERNAME', 'sa'),
+            'password' => env('DB_SQL_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'encrypt' => env('DB_ENCRYPT', 'yes'),
+            'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
     ],
 
     /*
@@ -148,7 +186,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
-            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
+            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')) . '-database-'),
             'persistent' => env('REDIS_PERSISTENT', false),
         ],
 
