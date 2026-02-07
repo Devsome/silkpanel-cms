@@ -13,6 +13,15 @@
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1"
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "packages/*",
+            "options": {
+                "symlink": true
+            }
+        }
+    ],
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",
         "fakerphp/faker": "^1.23",
