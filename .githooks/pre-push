@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Pre-push hook to ensure composer.prod.json is used for GitHub deployment
+# This prevents accidentally pushing local package configurations
+
+# Get the current branch
+BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+# Only run on main/master branches
+if [[ "$BRANCH" == "main" || "$BRANCH" == "master" ]]; then
+    echo "🔍 Pre-push hook: Checking deployment readiness..."
+    
+    # Check if we're in the cms directory
+    if [ -f "composer.json" ] && [ -f "composer.prod.json" ]; then
+        # Check if composer.json contains "packages/*" repositories (local development config)
+        if grep -q '"packages/\*"' composer.json; then
+            echo "⚠️  WARNING: composer.json contains local package repositories!"
+            echo "💡 Running deployment preparation..."
+            
+            ./prepare-deploy.sh
+            
+            if [ $? -eq 0 ]; then
+                echo ""
+                echo "✅ Deployment preparation complete!"
+                echo "📋 Please review the changes and stage them:"
+                echo "   git add composer.json"
+                echo ""
+                exit 0
+            else
+                echo "❌ Deployment preparation failed!"
+                exit 1
+            fi
+        fi
+    fi
+fi
+
+exit 0
