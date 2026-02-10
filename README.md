@@ -15,9 +15,16 @@ ddev artisan migrade --seed
 ## ready for deployment
 
 ```bash
-bash prepare-deploy.sh
+bash prepare-deploy.sh <local | prod>
 ```
 
 ## informations
 
 more informations are comming soon.
+
+
+## setup
+
+```bash
+php artisan silkpanel:setup
+```
