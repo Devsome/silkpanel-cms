@@ -35,7 +35,7 @@
                     id="name" 
                     required
                     value="{{ old('name') }}"
-                    pattern="[a-zA-Z0-9_-]+"
+                    pattern="^[a-zA-Z0-9_-]+$"
                     class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-gray-900 focus:border-gray-900 sm:text-sm @error('name') border-red-300 @enderror"
                     placeholder="my-custom-template"
                 >
