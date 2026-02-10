@@ -24,3 +24,7 @@ Homestead.yaml
 Thumbs.db
 /packages/
 packages/*
+database/database.sqlite
+/public/css/filament/
+/public/js/filament/
+/public/fonts/filament/
