@@ -11,6 +11,24 @@ This project now includes **Filament v5** admin panel with **Spatie Laravel Perm
 - ✅ Admins can access the Filament admin panel
 - ✅ Customers can register and login but cannot access `/admin`
 
+## Asset Handling
+
+This project uses two separate asset pipelines:
+
+### Vite (for Breeze/Standard Assets)
+- **Standard app assets** (CSS, JS) are built using Vite
+- These are defined in `vite.config.js` and compiled to `public/build/`
+- Built assets are excluded from git via `.gitignore`
+- Build command: `npm run build` or `npm run dev`
+
+### Filament Assets
+- **Filament assets** are served directly from the `vendor/` directory
+- Filament v3+ does NOT require publishing assets to `public/`
+- Assets are served via Filament's internal routing
+- No need to run `php artisan filament:assets` or publish Filament assets
+
+**Important**: The directories `public/css/filament/`, `public/js/filament/`, and `public/fonts/filament/` should NOT be committed to git. They are excluded in `.gitignore`.
+
 ## Authentication Routes
 
 ### Standard Authentication (Laravel Breeze)
