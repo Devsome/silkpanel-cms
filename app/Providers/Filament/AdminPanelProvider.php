@@ -28,7 +28,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
-            ->brandName('SilkPanel CMS')
+            ->brandLogo(fn() => view('filament.admin.logo'))
+            ->favicon(secure_asset('favicon.ico'))
             ->login()
             ->colors([
                 'primary' => Color::Gray,
@@ -57,6 +58,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
                 FilamentAdminMiddleware::class,
-            ]);
+            ])
+            ->viteTheme('resources/css/filament/admin/theme.css');
     }
 }

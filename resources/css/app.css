@@ -1,3 +1,5 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source '../../resources/views/**/*.blade.php';
+@source '../../resources/views/**/*.php';
+@source '../../resources/js/**/*.js';

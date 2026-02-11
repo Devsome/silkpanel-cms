@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class FilamentAdminMiddleware
@@ -15,10 +16,11 @@ class FilamentAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || !auth()->user()->hasRole('Admin')) {
-            abort(403, 'Unauthorized. Only admins can access this area.');
+
+        if (!Auth::check() || !Auth::user()->hasRole('Admin')) {
+            abort(403, 'Unauthorized.');
         }
-        
+
         return $next($request);
     }
 }
