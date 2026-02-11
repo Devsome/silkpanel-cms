@@ -6,14 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ config('app.name', 'Silkpanel CMS') }}</title>
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
 </head>
 
 <body
     class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-    <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
+    <header class="w-full lg:max-w-4xl max-w-83.75 text-sm mb-6 not-has-[nav]:hidden">
         @if (Route::has('login'))
             <nav class="flex items-center justify-end gap-4">
                 @auth
@@ -39,18 +37,14 @@
     </header>
     <div
         class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
-        <main class="flex max-w-[335px] w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
-            <div class="h-full">
-                h-full test
-            </div>
-            <div class="flex items-center gap-3">
-                <img src="{{ Vite::asset('resources/images/logo.png') }}" alt="SilkPanel CMS Logo"
-                    class="h-full size-12 object-contain">
-                <span class="text-lg font-semibold text-gray-900 dark:text-white whitespace-nowrap bg-amber-700">
-                    SilkPanel CMS
-                </span>
-            </div>
-
+        <main class="flex max-w-83.75 w-full flex-col-reverse lg:max-w-4xl lg:flex-row">
+            <div class="flex flex-col gap-6 lg:gap-12">
+                <h1 class="text-3xl lg:text-5xl font-bold tracking-tight">
+                    Welcome to SilkPanel CMS
+                </h1>
+                <p class="text-lg leading-normal text-gray-500 dark:text-gray-400">
+                    A powerful and user-friendly content management system built with Laravel and Filament.
+                </p>
         </main>
     </div>
 
