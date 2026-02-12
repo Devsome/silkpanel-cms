@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\DatabaseNameEnums;
 use Illuminate\Support\Str;
 
 return [
@@ -86,7 +87,7 @@ return [
         | Here you may specify the connection for your SQLite database.
         |
         */
-        'sro_shard' => [
+        DatabaseNameEnums::SRO_SHARD->value => [
             'driver' => 'sqlsrv',
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
@@ -99,7 +100,7 @@ return [
             'encrypt' => env('DB_ENCRYPT', 'yes'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-        'sro_account' => [
+        DatabaseNameEnums::SRO_ACCOUNT->value => [
             'driver' => 'sqlsrv',
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
@@ -112,7 +113,7 @@ return [
             'encrypt' => env('DB_ENCRYPT', 'yes'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-        'sro_log' => [
+        DatabaseNameEnums::SRO_LOG->value => [
             'driver' => 'sqlsrv',
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
@@ -125,7 +126,7 @@ return [
             'encrypt' => env('DB_ENCRYPT', 'yes'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-        'sro_web' => [
+        DatabaseNameEnums::SRO_CUSTOM->value => [
             'driver' => 'sqlsrv',
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
@@ -138,7 +139,7 @@ return [
             'encrypt' => env('DB_ENCRYPT', 'yes'),
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
-        'sro_portal' => [
+        DatabaseNameEnums::SRO_PORTAL->value => [
             'driver' => 'sqlsrv',
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
