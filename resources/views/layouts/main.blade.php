@@ -7,7 +7,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'SilkPanel CMS') }}</title>
-    <!-- {{ Illuminate\Foundation\Application::VERSION }} -->
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -15,15 +14,7 @@
 <body class="antialiased">
     @include('layouts.navigation')
 
-    @isset($header)
-        <header class="bg-white shadow dark:bg-gray-900">
-            <div class="max-w-7xl mx-auto pt-6 pb-2 px-4 sm:px-6 lg:px-8 dark:text-white">
-                {{ $header }}
-            </div>
-        </header>
-    @endisset
-
-    <main class="h-auto pt-6 sm:pt-8 md:pt-12 lg:pt-18">
+    <main class="min-h-screen bg-white dark:bg-gray-900">
         {{ $slot }}
     </main>
 </body>

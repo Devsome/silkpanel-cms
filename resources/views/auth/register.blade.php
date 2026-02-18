@@ -1,52 +1,101 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+<x-main-layout>
+    <section class="bg-white dark:bg-gray-900">
+        <div class="lg:grid lg:min-h-screen lg:grid-cols-6">
+            <section class="relative flex h-32 items-end bg-gray-900 lg:col-span-3 lg:h-full">
+                <img alt="Night" src="{{ Vite::asset('resources/images/banner/background-one.png') }}"
+                    class="absolute inset-0 h-full w-full object-cover opacity-80" />
+                <div class="hidden lg:relative lg:block lg:p-12">
+                    <a class="block text-white" href="/">
+                        <span class="sr-only">
+                            {{ __('auth/register.home') }}
+                        </span>
+                    </a>
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                    <h2 class="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">
+                        {{ __('auth/register.title', ['app_name' => config('app.name')]) }}
+                    </h2>
+
+                    <p class="mt-4 leading-relaxed text-white/90">
+                        {{ __('auth/register.description') }}
+                    </p>
+                </div>
+            </section>
+            <main aria-label="Main"
+                class="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-3 lg:py-12 lg:px-16">
+                <div class="w-full">
+                    <form method="POST" class="mt-2 grid grid-cols-6 gap-6" action="{{ route('register') }}">
+                        @csrf
+
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white col-span-6 sm:text-3xl md:text-4xl">
+                            {{ __('auth/register.form.title') }}
+                        </h1>
+
+                        <div class="col-span-6">
+                            <p class="mt-4 leading-relaxed text-black dark:text-gray-300">
+                                {{ __('auth/register.form.description') }}
+                            </p>
+                        </div>
+
+                        <x-auth-session-status class="mb-4 col-span-6" :status="session('status')" />
+
+                        <div class="col-span-6">
+                            <x-validation-errors class="mb-4" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                            <x-label for="username" value="{{ __('auth/register.form.username') }}" />
+                            <x-input id="username" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                type="text" name="username" :value="old('username')" required autofocus />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                            <x-label for="name" value="{{ __('auth/register.form.name') }}" />
+                            <x-input id="name" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                type="text" name="name" :value="old('name')" autocomplete="name" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3">
+                            <x-label for="email" value="{{ __('auth/register.form.email') }}" />
+                            <x-input id="email" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                type="email" name="email" :value="old('email')" required autocomplete="email" />
+                        </div>
+
+                        <div class="col-span-6 sm:col-span-3 sm:col-start-1">
+                            <x-label for="password" value="{{ __('auth/register.form.password') }}" />
+                            <x-input id="password" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                type="password" name="password" required autocomplete="new-password" />
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <x-label for="password_confirmation"
+                                value="{{ __('auth/register.form.confirm_password') }}" />
+                            <x-input id="password_confirmation"
+                                class="block mt-1 w-full dark:bg-gray-800 dark:text-white" type="password"
+                                name="password_confirmation" required autocomplete="new-password" />
+                        </div>
+
+                        {{-- <!-- Referral Code (optional) --> --}}
+                        {{-- <div class="col-span-6 sm:col-span-3">
+                            <x-label for="referral" value="{{ __('Referral (optional)') }}" />
+                            <x-input id="referral" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                type="text" name="referral" :value="old('referral') ?: app('request')->input('r')"
+                                placeholder='6fae77d4-3f04-4479-a799-031acf86781e' />
+                        </div> --}}
+
+
+                        <div class="col-span-6 flex flex-col sm:flex-row sm:items-center sm:gap-4">
+                            <x-button>
+                                {{ __('auth/register.form.register') }}
+                            </x-button>
+
+                            <p class="mt-4 text-sm text-gray-500 sm:mt-0 sm:whitespace-nowrap">
+                                <a href="{{ route('login') }}" class="text-gray-700 dark:text-gray-100 underline">
+                                    {{ __('auth/register.form.already_registered') }}
+                                </a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </main>
         </div>
-
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+    </section>
+</x-main-layout>

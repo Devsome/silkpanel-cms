@@ -2,12 +2,11 @@
 
 namespace App\Filament\Resources\Users;
 
+use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ManageUsers;
+use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Models\User;
 use BackedEnum;
-use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -17,6 +16,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 
 class UserResource extends Resource
 {
@@ -24,28 +24,28 @@ class UserResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUsers;
 
+    protected static string | \UnitEnum | null $navigationGroup = 'Administration';
+
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('filament/users.navigation');
+    }
+
+    public function getTitle(): string | Htmlable
+    {
+        return __('filament/users.title');
+    }
+
+    public function getSubheading(): string|Htmlable|null
+    {
+        return __('filament/users.subheading');
+    }
+
     public static function form(Schema $schema): Schema
     {
-        return $schema
-            ->components([
-                TextInput::make('name')
-                    ->required(),
-                TextInput::make('email')
-                    ->label('Email address')
-                    ->email()
-                    ->required(),
-                TextInput::make('password')
-                    ->password()
-                    ->required(fn (string $operation): bool => $operation === 'create')
-                    ->dehydrated(fn ($state) => filled($state))
-                    ->revealable(),
-                Select::make('roles')
-                    ->relationship('roles', 'name')
-                    ->multiple()
-                    ->preload()
-                    ->required(),
-                DateTimePicker::make('email_verified_at'),
-            ]);
+        return UserForm::configure($schema);
     }
 
     public static function table(Table $table): Table
@@ -53,22 +53,17 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('filament/users.table.name'))
                     ->searchable(),
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label(__('filament/users.table.email'))
                     ->searchable(),
                 TextColumn::make('roles.name')
+                    ->label(__('filament/users.table.roles'))
                     ->badge()
                     ->searchable(),
                 TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('updated_at')
+                    ->label(__('filament/users.table.email_verified_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -78,12 +73,9 @@ class UserResource extends Resource
             ])
             ->recordActions([
                 EditAction::make(),
-                DeleteAction::make(),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+                //
             ]);
     }
 
@@ -91,6 +83,12 @@ class UserResource extends Resource
     {
         return [
             'index' => ManageUsers::route('/'),
+            'edit' => EditUser::route('/{record}/edit'),
         ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email'];
     }
 }
