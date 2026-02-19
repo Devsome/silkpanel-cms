@@ -17,8 +17,20 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+
+            $table->integer('jid')->unique();
+            $table->string('silkroad_id')->unique();
+            $table->uuid('reflink')->unique();
+            $table->unsignedBigInteger('referrer_id')->nullable();
+            $table->ipAddress('register_ip');
+
             $table->rememberToken();
             $table->timestamps();
+
+            $table->foreign('referrer_id')
+                ->references('id')->on('users')
+                ->onUpdate('SET NULL')
+                ->onDelete('SET NULL');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

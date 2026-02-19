@@ -10,7 +10,7 @@ return [
         'name' => 'Name',
         'email' => 'Email *',
         'password' => 'Password *',
-        'username' => 'Username *',
+        'silkroad_id' => 'Username *',
         'confirm_password' => 'Confirm Password *',
         'register' => 'Create Account',
         'already_registered' => 'Already registered?',

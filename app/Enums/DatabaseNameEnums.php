@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum DatabaseNameEnums: string
 {
+    case MYSQL = 'mysql';
     case SRO_SHARD = 'sro_shard';
     case SRO_ACCOUNT = 'sro_account';
     case SRO_LOG = 'sro_log';

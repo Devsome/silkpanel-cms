@@ -43,9 +43,9 @@
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">
-                            <x-label for="username" value="{{ __('auth/register.form.username') }}" />
-                            <x-input id="username" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
-                                type="text" name="username" :value="old('username')" required autofocus />
+                            <x-label for="silkroad_id" value="{{ __('auth/register.form.silkroad_id') }}" />
+                            <x-input id="silkroad_id" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                type="text" name="silkroad_id" :value="old('silkroad_id')" required autofocus />
                         </div>
 
                         <div class="col-span-6 sm:col-span-3">

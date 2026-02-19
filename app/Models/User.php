@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\DatabaseNameEnums;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,6 +50,13 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasFactory, Notifiable, HasRoles;
 
     /**
+     * The Database connection name for the model.
+     *
+     * @var string
+     */
+    protected $connection = DatabaseNameEnums::MYSQL->value;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -57,6 +65,12 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+
+        'jid',
+        'silkroad_id',
+        'reflink',
+        'referrer_id',
+        'register_ip',
     ];
 
     /**
