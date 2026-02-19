@@ -41,6 +41,16 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User role($roles, $guard = null, $without = false)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutPermission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User withoutRole($roles, $guard = null)
+ * @property int $jid
+ * @property string $silkroad_id
+ * @property string $reflink
+ * @property int|null $referrer_id
+ * @property string $register_ip
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereJid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereReferrerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereReflink($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRegisterIp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSilkroadId($value)
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail
