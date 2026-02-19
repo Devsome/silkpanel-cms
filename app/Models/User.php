@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use SilkPanel\SilkroadModels\Models\Account\AbstractTbUser;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -94,5 +95,20 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the TbUser associated with the User.
+     *
+     * @param AbstractTbUser $tbUser
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function getTbUser(AbstractTbUser $tbUser)
+    {
+        if ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser) {
+            return $this->belongsTo(\SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser::class, 'jid', 'JID');
+        } else {
+            return $this->belongsTo(\SilkPanel\SilkroadModels\Models\Account\ISRO\TbUser::class, 'jid', 'PortalJID');
+        }
     }
 }
