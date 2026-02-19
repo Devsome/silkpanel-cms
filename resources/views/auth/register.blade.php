@@ -65,6 +65,7 @@
                             <x-input id="password" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
                                 type="password" name="password" required autocomplete="new-password" />
                         </div>
+
                         <div class="col-span-6 sm:col-span-3">
                             <x-label for="password_confirmation"
                                 value="{{ __('auth/register.form.confirm_password') }}" />
@@ -72,15 +73,6 @@
                                 class="block mt-1 w-full dark:bg-gray-800 dark:text-white" type="password"
                                 name="password_confirmation" required autocomplete="new-password" />
                         </div>
-
-                        {{-- <!-- Referral Code (optional) --> --}}
-                        {{-- <div class="col-span-6 sm:col-span-3">
-                            <x-label for="referral" value="{{ __('Referral (optional)') }}" />
-                            <x-input id="referral" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
-                                type="text" name="referral" :value="old('referral') ?: app('request')->input('r')"
-                                placeholder='6fae77d4-3f04-4479-a799-031acf86781e' />
-                        </div> --}}
-
 
                         <div class="col-span-6 flex flex-col sm:flex-row sm:items-center sm:gap-4">
                             <x-button>
