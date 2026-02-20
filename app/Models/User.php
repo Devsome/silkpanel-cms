@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\DatabaseNameEnums;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use SilkPanel\SilkroadModels\Models\Account\AbstractTbUser;
@@ -108,7 +109,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the TbUser associated with the User.
+     * Get the tbuser associated with the User.
      *
      * @param AbstractTbUser $tbUser
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -120,5 +121,22 @@ class User extends Authenticatable implements MustVerifyEmail
         } else {
             return $this->belongsTo(\SilkPanel\SilkroadModels\Models\Account\ISRO\TbUser::class, 'jid', 'PortalJID');
         }
+    }
+
+    /**
+     * Get the tbuser associated with the User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tbuser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->getTbUser(resolve(AbstractTbUser::class));
+    }
+
+    public function shardUsers(): BelongsToMany
+    {
+        $charModel = $this->tbuser()->getRelated()->getShardUserModelClass();
+
+        return $this->belongsToMany($charModel, '_User', 'UserJID', 'CharID', 'jid', 'CharID');
     }
 }

@@ -37,7 +37,8 @@ class UserForm
                             ->relationship(name: 'roles', titleAttribute: 'name')
                             ->preload()
                             ->searchable(),
-
+                        TextEntry::make('reflink')
+                            ->label(__('filament/users.form.reflink')),
                     ])
                     ->columns(2)
                     ->columnSpan(['lg' => fn(?User $record) => $record === null ? 3 : 2]),
@@ -53,6 +54,21 @@ class UserForm
                     ])
                     ->columnSpan(['lg' => 1])
                     ->hidden(fn(?User $record) => $record === null),
+                Section::make()
+                    ->schema([
+                        TextEntry::make('silkroad_id')
+                            ->label(__('filament/users.form.silkroad_id')),
+                        TextEntry::make('jid')
+                            ->label(__('filament/users.form.jid')),
+                        TextEntry::make('tbuser.AccPlayTime')
+                            ->label(__('filament/users.form.acc_play_time')),
+                        TextEntry::make('tbuser.sec_primary')
+                            ->label(__('filament/users.form.sec_primary')),
+                        TextEntry::make('tbuser.sec_content')
+                            ->label(__('filament/users.form.sec_content')),
+                    ])
+                    ->columns(3)
+                    ->columnSpan(['lg' => 2]),
             ])
             ->columns(3);
     }

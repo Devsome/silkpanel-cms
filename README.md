@@ -30,4 +30,5 @@ more informations are comming soon.
 
 ```bash
 php artisan silkpanel:setup
+php artisan silkpanel:import-accounts {--dry-run : Preview accounts without importing}
 ```

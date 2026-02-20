@@ -65,7 +65,7 @@ class RegisteredUserController extends Controller
         } elseif ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\ISRO\TbUser) {
             $jid = $this->createIsroAccount($request, $tbUser);
         } else {
-            abort(500, 'Invalid TbUser instance provided.');
+            abort(500, 'Invalid AbstractTbUser instance provided.');
         }
 
         $referrerId = User::select('id')
@@ -95,7 +95,7 @@ class RegisteredUserController extends Controller
     #region private functions
 
     /**
-     * Create a new Silkroad account based on the provided TbUser instance and request data
+     * Create a new silkroad account based on the provided tbuser instance and request data
      *
      * @param Request $request
      * @param AbstractTbUser $tbUser
@@ -127,7 +127,7 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Create a new Silkroad account based on the provided TbUser instance and request data
+     * Create a new silkroad account based on the provided tbuser instance and request data
      *
      * @param Request $request
      * @param AbstractTbUser $tbUser
