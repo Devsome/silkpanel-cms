@@ -54,6 +54,9 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereRegisterIp($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|User whereSilkroadId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \SilkPanel\SilkroadModels\Models\Shard\VSRO\Char> $shardUsers
+ * @property-read int|null $shard_users_count
+ * @property-read \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser|null $tbuser
  */
 	class User extends \Eloquent implements \Illuminate\Contracts\Auth\MustVerifyEmail {}
 }

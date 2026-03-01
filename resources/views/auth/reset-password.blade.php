@@ -36,15 +36,15 @@
 
                         <div class="col-span-6 sm:col-span-3">
                             <x-input-label for="email" :value="__('auth/reset-password.form.email')" />
-                            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email"
-                                :value="old('email', $request->email)" required autofocus autocomplete="username" />
+                            <x-text-input id="email" class="block mt-1 w-full disabled" type="email"
+                                name="email" :value="old('email', $request->email)" required autocomplete="username" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
                         <div class="col-span-6 sm:col-span-3 sm:col-start-1">
                             <x-input-label for="password" :value="__('auth/reset-password.form.password')" />
                             <x-text-input id="password" class="block mt-1 w-full" type="password" name="password"
-                                required autocomplete="new-password" />
+                                required autofocus autocomplete="new-password" />
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
 

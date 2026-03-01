@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use SilkPanel\SilkroadModels\Models\Account\AbstractTbUser;
+use SilkPanel\SilkroadModels\Models\Portal\MuUser;
 
 class NewPasswordController extends Controller
 {
@@ -28,7 +30,7 @@ class NewPasswordController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, AbstractTbUser $tbUser, MuUser $muUser): RedirectResponse
     {
         $request->validate([
             'token' => ['required'],
@@ -41,11 +43,22 @@ class NewPasswordController extends Controller
         // database. Otherwise we will parse the error and return the response.
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
-            function (User $user) use ($request) {
+            function (User $user) use ($request, $tbUser, $muUser) {
                 $user->forceFill([
                     'password' => Hash::make($request->password),
                     'remember_token' => Str::random(60),
                 ])->save();
+
+                try {
+                    $user->setGamePassword(
+                        $request->password,
+                        $user->jid,
+                        $tbUser,
+                        $muUser
+                    );
+                } catch (\Exception $e) {
+                    // throw error
+                }
 
                 event(new PasswordReset($user));
             }
@@ -55,8 +68,8 @@ class NewPasswordController extends Controller
         // the application's home authenticated view. If there is an error we can
         // redirect them back to where they came from with their error message.
         return $status == Password::PASSWORD_RESET
-                    ? redirect()->route('login')->with('status', __($status))
-                    : back()->withInput($request->only('email'))
-                        ->withErrors(['email' => __($status)]);
+            ? redirect()->route('login')->with('status', __($status))
+            : back()->withInput($request->only('email'))
+            ->withErrors(['email' => __($status)]);
     }
 }

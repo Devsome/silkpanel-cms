@@ -29,12 +29,12 @@ class PasswordController extends Controller
                 'password' => Hash::make($validated['password']),
             ]);
 
-            if ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser) {
-                $tbUser->where('JID', $user->jid)->update(['password' => md5($validated['password'])]);
-            } elseif ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\ISRO\TbUser) {
-                $muUser->where('JID', $user->jid)->update(['UserPwd' => md5($validated['password'])]);
-                $tbUser->where('PortalJID', $user->jid)->update(['password' => md5($validated['password'])]);
-            }
+            $user->setGamePassword(
+                $validated['password'],
+                $user->jid,
+                $tbUser,
+                $muUser
+            );
         } catch (\Exception $e) {
             return back()->withErrors(['password' => 'Failed to update password. Please try again.']);
         }

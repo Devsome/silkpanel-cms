@@ -31,3 +31,7 @@
 @source '../../resources/views/**/*.php';
 @source '../../resources/js/**/*.js';
 @source '../../packages/**/*.{blade.php,php,js,vue}';
+
+.disabled {
+    @apply border-gray-200 bg-gray-50 text-gray-500 shadow-none dark:border-gray-700 dark:bg-gray-800/20;
+}

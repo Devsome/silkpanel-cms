@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Enums\UsergroupRoleEnums;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,10 @@ class FilamentAdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (!Auth::check() || !Auth::user()->hasRole('Admin')) {
+        if (!Auth::check() || !Auth::user()->hasAnyRole([
+            UsergroupRoleEnums::SUPPORTER,
+            UsergroupRoleEnums::ADMIN
+        ])) {
             abort(403, 'Unauthorized.');
         }
 

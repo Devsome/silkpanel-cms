@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\UsergroupRoleEnums;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Rules\ValidationRules;
@@ -84,6 +85,8 @@ class RegisteredUserController extends Controller
             'silkroad_id' => $request->silkroad_id,
             'register_ip' => $request->ip(),
         ]);
+
+        $user->assignRole(UsergroupRoleEnums::CUSTOMER);
 
         event(new Registered($user));
 

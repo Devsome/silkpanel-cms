@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Helpers;
+
+use Illuminate\Support\Facades\Auth;
+use SilkPanel\SilkroadModels\Models\Account\SkSilk;
+use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
+
+class SilkHelper
+{
+    /**
+     * Create a new class instance.
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Adding silk to a user and log the transaction in the SkSilkBuyList table.
+     *
+     * @param int $jid
+     * @param int $amount
+     * @param string $type
+     * @param string|null $ip
+     * @return void
+     */
+    public static function addSilk(int $jid, int $amount, string $type, ?string $ip = null): void
+    {
+        $now = now();
+        $silkOwn = SkSilk::where('JID', $jid)->pluck($type)->first();
+
+        // todo abfrage für isro einbauen
+
+        SkSilkBuyList::create([
+            'UserJID' => $jid,
+            'Silk_Type' => SkSilkBuyList::SILK_TYPE_WEB,
+            'Silk_Reason' => SkSilkBuyList::SILK_REASON_WEB,
+            'Silk_Offset' => $silkOwn,
+            'Silk_Remain' => $amount >= 0 ? $silkOwn + $amount : $silkOwn - abs($amount),
+            'ID' => $jid,
+            'BuyQuantity' => $amount,
+            'OrderNumber' => 0,
+            'AuthDate' => $now->format('Y-m-d H:i:s'),
+            'SubJID' => Auth::id(),
+            'SlipPaper' => 'Web Admin Adjustment',
+            'IP' => $ip,
+            'RegDate' => $now->format('Y-m-d H:i:s')
+        ]);
+
+        if ($amount >= 0) {
+            SkSilk::where('JID', $jid)
+                ->increment($type, $amount);
+        } else {
+            SkSilk::where('JID', $jid)
+                ->decrement($type, abs($amount));
+        }
+    }
+}

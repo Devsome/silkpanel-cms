@@ -4,6 +4,8 @@ namespace App\Providers\Filament;
 
 use App\Filament\Pages\Dashboard;
 use App\Http\Middleware\FilamentAdminMiddleware;
+use Filament\Enums\GlobalSearchPosition;
+use Filament\Enums\UserMenuPosition;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -53,6 +55,23 @@ class AdminPanelProvider extends PanelProvider
                 Authenticate::class,
                 FilamentAdminMiddleware::class,
             ])
-            ->viteTheme('resources/css/filament/admin/theme.css');
+            ->viteTheme('resources/css/filament/admin/theme.css')
+            ->userMenu(position: UserMenuPosition::Sidebar)
+            ->globalSearch(position: GlobalSearchPosition::Sidebar)
+            ->colors([
+                'primary' => [
+                    50 => '#f5f3ff',
+                    100 => '#ede9fe',
+                    200 => '#ddd6fe',
+                    300 => '#c4b5fd',
+                    400 => '#a78bfa',
+                    500 => '#8b5cf6',
+                    600 => '#7c3aed',
+                    700 => '#6d28d9',
+                    800 => '#5b21b6',
+                    900 => '#4c1d95',
+                    950 => '#3b1078',
+                ]
+            ]);
     }
 }

@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Enums\DatabaseNameEnums;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use SilkPanel\SilkroadModels\Models\Account\AbstractTbUser;
+use SilkPanel\SilkroadModels\Models\Account\SkSilk;
+use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
+use SilkPanel\SilkroadModels\Models\Portal\MuUser;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -108,13 +110,39 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
+    #region functions
+
+    /**
+     * Set the game password for the user. This will update the password in the game database as well.
+     *
+     * @param string $password
+     * @param integer $jid
+     * @param AbstractTbUser $tbUser
+     * @param MuUser $muUser
+     * @return void
+     */
+    public function setGamePassword(string $password, int $jid, AbstractTbUser $tbUser, MuUser $muUser): void
+    {
+        if ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser) {
+            $tbUser->where('JID', $jid)->update(['password' => md5($password)]);
+        } elseif ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\ISRO\TbUser) {
+            $muUser->where('JID', $jid)->update(['UserPwd' => md5($password)]);
+            $tbUser->where('PortalJID', $jid)->update(['password' => md5($password)]);
+        }
+    }
+
+    #endregion functions
+
+
+    #region relation
+
     /**
      * Get the tbuser associated with the User.
      *
      * @param AbstractTbUser $tbUser
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function getTbUser(AbstractTbUser $tbUser)
+    private function getTbUser(AbstractTbUser $tbUser)
     {
         if ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser) {
             return $this->belongsTo(\SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser::class, 'jid', 'JID');
@@ -133,10 +161,37 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->getTbUser(resolve(AbstractTbUser::class));
     }
 
-    public function shardUsers(): BelongsToMany
+    /**
+     * Get the shard associated with the silkroad user
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function shardUsers(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         $charModel = $this->tbuser()->getRelated()->getShardUserModelClass();
 
         return $this->belongsToMany($charModel, '_User', 'UserJID', 'CharID', 'jid', 'CharID');
     }
+
+    /**
+     * Get the SkSilk record associated with the user
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function getSkSilk(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(SkSilk::class, 'jid', 'JID');
+    }
+
+    /**
+     * Get the SkSilkBuyList records associated with the user
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function getSkSilkHistory()
+    {
+        return $this->hasMany(SkSilkBuyList::class, 'UserJID', 'jid');
+    }
+
+    #endregion relation
 }
