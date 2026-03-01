@@ -8,13 +8,11 @@ use App\Filament\Resources\Characters\Pages\ListCharacters;
 use App\Filament\Resources\Characters\Pages\ViewCharacter;
 use App\Filament\Resources\Characters\Schemas\CharacterForm;
 use App\Filament\Resources\Characters\Tables\CharactersTable;
-use App\Models\Character;
 use BackedEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
-use Illuminate\Foundation\Console\ViewCacheCommand;
 use SilkPanel\SilkroadModels\Models\Shard\AbstractChar;
 
 class CharacterResource extends Resource

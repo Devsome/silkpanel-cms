@@ -14,6 +14,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\FontWeight;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 class UserForm
@@ -131,8 +132,11 @@ class UserForm
                                             ->action(function ($record) {
                                                 $block = $record->tbuser->activeBlock;
                                                 if ($block) {
-                                                    $block->timeEnd = now();
+                                                    $block->timeEnd = Carbon::now()->subDay();
                                                     $block->save();
+
+                                                    $block->punishment->BlockEndTime = Carbon::now()->subDay();
+                                                    $block->punishment->save();
                                                     Notification::make()
                                                         ->title(__('filament/users.notifications.unblock_success_title'))
                                                         ->body(__('filament/users.notifications.unblock_success_message'))
