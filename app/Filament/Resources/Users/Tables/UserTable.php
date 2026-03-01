@@ -5,10 +5,13 @@ namespace App\Filament\Resources\Users\Tables;
 use App\Enums\UsergroupRoleEnums;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
-use Filament\Tables\Table;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use SilkPanel\SilkroadModels\Models\Account\BlockedUser;
 
 class UserTable
 {
@@ -69,6 +72,17 @@ class UserTable
                     ->multiple()
                     ->preload()
                     ->searchable(),
+                Filter::make('blocked')
+                    ->label(__('filament/users.table.filter_blocked'))
+                    ->query(function (Builder $query) {
+                        $blockedJids = BlockedUser::query()
+                            ->where('Type', 1)
+                            ->where('timeEnd', '>', now())
+                            ->pluck('UserJID');
+
+                        return $query->whereIn('jid', $blockedJids);
+                    })
+                    ->toggle(),
             ])
             ->recordActions([
                 ActionGroup::make([

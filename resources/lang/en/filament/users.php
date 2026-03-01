@@ -64,6 +64,7 @@ return [
         'email' => 'Email address',
         'roles' => 'Web Account Roles',
         'email_verified_at' => 'Email verified at',
+        'filter_blocked' => 'Blocked Accounts',
     ],
 
     'edit' => [
