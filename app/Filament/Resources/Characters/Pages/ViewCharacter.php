@@ -5,14 +5,19 @@ namespace App\Filament\Resources\Characters\Pages;
 use App\Filament\Resources\Characters\CharacterResource;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\ViewEntry;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconSize;
+use Filament\Support\Icons\Heroicon;
+use SilkPanel\SilkroadModels\Helper\SilkroadLocationsHelper;
 
 class ViewCharacter extends ViewRecord
 {
@@ -85,6 +90,66 @@ class ViewCharacter extends ViewRecord
                                 TextEntry::make('LastLogout')
                                     ->label(__('filament/characters.view.lastlogout')),
                             ]),
+                        Section::make(__('filament/characters.section.position_title'))
+                            ->description(__('filament/characters.section.position_information_description'))
+                            ->schema([
+                                TextEntry::make('PosX')
+                                    ->label(__('filament/characters.view.pos_x')),
+                                TextEntry::make('PosY')
+                                    ->label(__('filament/characters.view.pos_y')),
+                                TextEntry::make('PosZ')
+                                    ->label(__('filament/characters.view.pos_z')),
+                                TextEntry::make('LatestRegion')
+                                    ->label(__('filament/characters.view.latest_region')),
+                            ])->footerActions([
+                                Action::make('unstuck')
+                                    ->label(__('filament/characters.view.unstuck'))
+                                    ->schema([
+                                        Select::make('unstuck_position')
+                                            ->label(__('filament/characters.view.unstuck_position'))
+                                            ->helperText(__('filament/characters.view.unstuck_position_helper'))
+                                            ->options([
+                                                'jangan' => 'Jangan',
+                                                'donwhang' => 'Donwhang',
+                                                'hotan' => 'Hotan',
+                                                'samarkand' => 'Samarkand',
+                                                'constantinople' => 'Constantinople',
+                                            ])
+                                            ->required()
+                                    ])
+                                    ->color('gray')
+                                    ->requiresConfirmation()
+                                    ->modalHeading(__('filament/characters.view.unstuck_modal_heading'))
+                                    ->modalDescription(__('filament/characters.view.unstuck_modal_description'))
+                                    ->visible(fn($record) => !$record->isOnline && !$record->hasJobSuit)
+                                    ->action(function ($record, $data) {
+                                        $position = $data['unstuck_position'] ?? 'default';
+                                        if ($record->IsOnline) {
+                                            Notification::make()
+                                                ->title(__('filament/characters.view.unstuck_error_title'))
+                                                ->body(__('filament/characters.view.unstuck_error_online_message'))
+                                                ->danger()
+                                                ->send();
+                                            return;
+                                        }
+                                        if ($record->HasJobSuit) {
+                                            Notification::make()
+                                                ->title(__('filament/characters.view.unstuck_error_title'))
+                                                ->body(__('filament/characters.view.unstuck_error_job_suit_message'))
+                                                ->danger()
+                                                ->send();
+                                            return;
+                                        }
+                                        $record->unstuckCharacter($position);
+                                        Notification::make()
+                                            ->title(__('filament/characters.view.unstuck_success_title'))
+                                            ->body(__('filament/characters.view.unstuck_success_message'))
+                                            ->success()
+                                            ->send();
+                                    }),
+                            ])
+                            ->columns(2),
+
                         Section::make(__('filament/characters.section.job_title'))
                             ->description(__('filament/characters.section.job_information_description'))
                             ->schema([
