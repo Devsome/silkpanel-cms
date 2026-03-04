@@ -52,7 +52,7 @@ class NewPasswordController extends Controller
                 try {
                     $user->setGamePassword(
                         $request->password,
-                        $user->jid,
+                        config('silkpanel.version') === 'isro' ? $user->pjid : $user->jid,
                         $tbUser,
                         $muUser
                     );

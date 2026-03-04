@@ -8,6 +8,7 @@ return [
         'name' => 'Name',
         'silkroad_id' => 'Silkroad ID',
         'jid' => 'JID',
+        'pjid' => 'PJID',
         'reflink' => 'Referral Link',
         'acc_play_time' => 'Account Play Time',
         'minutes' => 'minutes',
@@ -35,7 +36,22 @@ return [
         'silk_amount' => 'Amount',
         'silk_amount_helper' => 'Amount can be positive or negative. Use negative values to remove silk from the user.',
         'silk_action' => 'Add Silk to User',
+        'jcash_silk' => 'Normal Silk',
+        'jcash_premium_silk' => 'Premium Silk',
+        'jcash_month_usage' => '1 Month Usage',
+        'jcash_three_month_usage' => '3 Month Usage',
+        'jcash_vip_user_type' => 'VIP User Type',
+        'jcash_vip_level' => 'VIP Level',
         'save' => 'Save Changes',
+
+        'secondary_password' => 'Password (md5 hash)',
+        'blocked_start_time' => 'Block Start Time',
+        'delete_secondary' => 'Delete Secondary Password',
+        'delete_secondary_submit' => 'Delete',
+        'modal_delete_secondary_heading' => 'Delete Secondary Password',
+        'modal_delete_secondary_description' => 'Are you sure you want to delete the secondary password for this user? This will set the secondary password to null, allowing the user to set a new one.',
+        'delete_secondary_success_title' => 'Successfully',
+        'delete_secondary_success_message' => 'Secondary password deleted successfully.',
     ],
 
     'notifications' => [
@@ -54,6 +70,8 @@ return [
         'game_description' => 'View details about the user\'s game account, such as their Silkroad ID, JID, account play time, and security settings.',
         'silk' => 'Silk Management',
         'game' => 'Silkroad User Information',
+        'secondary_password' => 'Secondary Password',
+        'secondary_password_description' => 'The secondary password is an additional layer of security for the user\'s game account. It is used to protect sensitive actions such as changing the user\'s email or password, or performing administrative actions on the account.',
     ],
 
     'table' => [

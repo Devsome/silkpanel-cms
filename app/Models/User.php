@@ -7,9 +7,11 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use SilkPanel\SilkroadModels\Models\Account\AbstractTbUser;
 use SilkPanel\SilkroadModels\Models\Account\SkSilk;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
+use SilkPanel\SilkroadModels\Models\Portal\AphChangedSilk;
 use SilkPanel\SilkroadModels\Models\Portal\MuUser;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -81,6 +83,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
 
         'jid',
+        'pjid',
         'silkroad_id',
         'reflink',
         'referrer_id',
@@ -147,7 +150,7 @@ class User extends Authenticatable implements MustVerifyEmail
         if ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser) {
             return $this->belongsTo(\SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser::class, 'jid', 'JID');
         } else {
-            return $this->belongsTo(\SilkPanel\SilkroadModels\Models\Account\ISRO\TbUser::class, 'jid', 'PortalJID');
+            return $this->belongsTo(\SilkPanel\SilkroadModels\Models\Account\ISRO\TbUser::class, 'pjid', 'PortalJID');
         }
     }
 
@@ -159,6 +162,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tbuser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->getTbUser(resolve(AbstractTbUser::class));
+    }
+
+    /**
+     * Get the muUser associated with the User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function muuser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(MuUser::class, 'jid', 'JID');
     }
 
     /**
@@ -186,11 +199,14 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * Get the SkSilkBuyList records associated with the user
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough|\Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function getSkSilkHistory()
+    public function getSkSilkHistory(): \Illuminate\Database\Eloquent\Relations\HasManyThrough|\Illuminate\Database\Eloquent\Relations\HasMany
     {
-        return $this->hasMany(SkSilkBuyList::class, 'UserJID', 'jid');
+        return match (config('silkpanel.version')) {
+            'isro' => $this->hasManyThrough(AphChangedSilk::class, MuUser::class, 'JID', 'JID', 'pjid', 'JID'),
+            default => $this->hasMany(SkSilkBuyList::class, 'UserJID', 'jid'),
+        };
     }
 
     #endregion relation

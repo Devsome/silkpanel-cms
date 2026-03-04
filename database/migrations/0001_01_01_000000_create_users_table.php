@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
 
             $table->integer('jid')->unique();
+            $table->integer('pjid')->nullable()->unique();
             $table->string('silkroad_id')->unique();
             $table->uuid('reflink')->unique();
             $table->unsignedBigInteger('referrer_id')->nullable();

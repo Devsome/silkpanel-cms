@@ -31,7 +31,7 @@ class PasswordController extends Controller
 
             $user->setGamePassword(
                 $validated['password'],
-                $user->jid,
+                config('silkpanel.version') === 'isro' ? $user->pjid : $user->jid,
                 $tbUser,
                 $muUser
             );

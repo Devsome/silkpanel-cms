@@ -13,11 +13,8 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Text;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconSize;
-use Filament\Support\Icons\Heroicon;
-use SilkPanel\SilkroadModels\Helper\SilkroadLocationsHelper;
 
 class ViewCharacter extends ViewRecord
 {

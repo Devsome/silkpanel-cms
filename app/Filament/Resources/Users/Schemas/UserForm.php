@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Schemas;
 
 use App\Enums\SilkTypeEnum;
+use App\Enums\SilkTypeIsroEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -59,6 +60,39 @@ class UserForm
                             ])
                             ->columns(1)
                             ->columnSpan(['lg' => 2]),
+                        Section::make(__('filament/users.section.secondary_password'))
+                            ->description(__('filament/users.section.secondary_password_description'))
+
+                            ->schema([
+                                TextEntry::make('tbuser.secondaryPassword.SecondPassword')
+                                    ->label(__('filament/users.form.secondary_password'))
+                                    ->limit(15, end: '*****'),
+                                TextEntry::make('tbuser.secondaryPassword.BlockedStartTime')
+                                    ->label(__('filament/users.form.blocked_start_time'))
+                                    ->dateTime(),
+                            ])
+                            ->columns(2)
+                            ->columnSpan(['lg' => 2])
+                            ->footer([
+                                Action::make('delete_secondary')
+                                    ->label(__('filament/users.form.delete_secondary'))
+                                    ->color('gray')
+                                    ->requiresConfirmation()
+                                    ->modalHeading(__('filament/users.form.modal_delete_secondary_heading'))
+                                    ->modalDescription(__('filament/users.form.modal_delete_secondary_description'))
+                                    ->modalSubmitActionLabel(__('filament/users.form.delete_secondary_submit'))
+                                    ->action(function ($record) {
+                                        $tbUser = $record->tbuser;
+                                        if ($tbUser->secondaryPassword->delete()) {
+                                            Notification::make()
+                                                ->title(__('filament/users.form.delete_secondary_success_title'))
+                                                ->body(__('filament/users.form.delete_secondary_success_message'))
+                                                ->success()
+                                                ->send();
+                                            $record->refresh();
+                                        }
+                                    })->visible(fn($record) => $record->tbuser->secondaryPassword ? true : false),
+                            ])->visible(fn() => config('silkpanel.version') === 'isro')
                     ])->columnSpan(['lg' => 2]),
                 Group::make()
                     ->schema([
@@ -69,6 +103,11 @@ class UserForm
                                 TextEntry::make('jid')
                                     ->label(__('filament/users.form.jid'))
                                     ->weight(FontWeight::Medium),
+                                TextEntry::make('pjid')
+                                    ->label(__('filament/users.form.pjid'))
+                                    ->weight(FontWeight::Medium)
+                                    ->visible(fn($record) => $record->pjid !== null)
+                                    ->columnOrder(7),
                                 TextEntry::make('tbuser.AccPlayTime')
                                     ->formatStateUsing(fn($state) => round($state / 60) . ' ' . __('filament/users.form.minutes'))
                                     ->label(__('filament/users.form.acc_play_time')),
@@ -88,7 +127,6 @@ class UserForm
                                         __('filament/users.form.is_gamemaster_no') => 'gray',
                                         default => 'gray',
                                     }),
-
                                 Section::make()
                                     ->schema([
                                         IconEntry::make('blocked')
@@ -152,36 +190,25 @@ class UserForm
                             ->columnSpan(['lg' => 2]),
                         Section::make(__('filament/users.section.silk'))
                             ->schema([
-                                Section::make()
-                                    ->schema([
-                                        TextEntry::make('getSkSilk.silk_own')
-                                            ->label(__('filament/users.form.silk_own'))
-                                            ->state(fn($record) => number_format($record->getSkSilk->silk_own, 0, ',', '.'))
-                                            ->weight(FontWeight::Bold),
-                                        TextEntry::make('getSkSilk.silk_gift')
-                                            ->label(__('filament/users.form.silk_gift'))
-                                            ->state(fn($record) => number_format($record->getSkSilk->silk_gift, 0, ',', '.'))
-                                            ->weight(FontWeight::Medium),
-                                        TextEntry::make('getSkSilk.silk_point')
-                                            ->label(__('filament/users.form.silk_point'))
-                                            ->state(fn($record) => number_format($record->getSkSilk->silk_point, 0, ',', '.'))
-                                            ->weight(FontWeight::Medium),
-                                    ])
-                                    ->columns(3)
-                                    ->columnSpan(['lg' => 2])
-                                    ->secondary(),
+                                self::getSilkColumnsByVersion(),
                                 TextInput::make('silk_amount')
                                     ->label(__('filament/users.form.silk_amount'))
                                     ->helperText(__('filament/users.form.silk_amount_helper'))
                                     ->integer(),
                                 Select::make('silk_type')
                                     ->label(__('filament/users.form.silk_type'))
-                                    ->options(SilkTypeEnum::class, 'label', 'value'),
+                                    ->options(
+                                        config('silkpanel.version') === 'isro' ?
+                                            SilkTypeIsroEnum::class :
+                                            SilkTypeEnum::class,
+                                        'label',
+                                        'value'
+                                    ),
                             ])
                             ->footer([
                                 Action::make('custom_action')
                                     ->label(__('filament/users.form.silk_action'))
-                                    ->action(function ($state, $get) {
+                                    ->action(function ($record, $state, $get) {
                                         $silkAmount = $get('silk_amount');
                                         if (empty($silkAmount)) {
                                             Notification::make()
@@ -190,7 +217,7 @@ class UserForm
                                                 ->send();
                                             return;
                                         }
-                                        if (!in_array($get('silk_type')?->value, SilkTypeEnum::values())) {
+                                        if (!in_array($get('silk_type')?->value, config('silkpanel.version') === 'isro' ? SilkTypeIsroEnum::values() : SilkTypeEnum::values())) {
                                             Notification::make()
                                                 ->title(__('filament/users.notifications.silk_type_invalid'))
                                                 ->danger()
@@ -204,6 +231,7 @@ class UserForm
                                                 $get('silk_type')->value,
                                                 request()->ip()
                                             );
+                                            $record->refresh();
                                         } catch (\Exception $e) {
                                             Notification::make()
                                                 ->title(__('filament/users.notifications.silk_added_title'))
@@ -212,7 +240,6 @@ class UserForm
                                                 ->send();
                                             return;
                                         }
-
                                         Notification::make()
                                             ->title(__('filament/users.notifications.silk_added_title'))
                                             ->body(__('filament/users.notifications.silk_added_message', ['amount' => $silkAmount, 'name' => $get('name')]))
@@ -227,5 +254,62 @@ class UserForm
                     ])->columnSpan(['lg' => 2]),
             ])
             ->columns(4);
+    }
+
+    private static function getSilkColumnsByVersion()
+    {
+        return config('silkpanel.version') === 'isro'
+            ? self::getIsroSilkColumns()
+            : self::getVsroSilkColumns();
+    }
+
+    private static function getIsroSilkColumns()
+    {
+        return Section::make()
+            ->schema([
+                TextEntry::make('muuser.JCash.Silk')
+                    ->label(__('filament/users.form.jcash_silk'))
+                    ->weight(FontWeight::Bold),
+                TextEntry::make('muuser.JCash.PremiumSilk')
+                    ->label(__('filament/users.form.jcash_premium_silk'))
+                    ->weight(FontWeight::Bold),
+                TextEntry::make('muuser.JCash.MonthUsage')
+                    ->label(__('filament/users.form.jcash_month_usage'))
+                    ->weight(FontWeight::Bold),
+                TextEntry::make('muuser.JCash.ThreeMonthUsage')
+                    ->label(__('filament/users.form.jcash_three_month_usage'))
+                    ->weight(FontWeight::Bold),
+                TextEntry::make('muuser.muVIPInfo.VIPUserType')
+                    ->label(__('filament/users.form.jcash_vip_user_type'))
+                    ->weight(FontWeight::Bold),
+                TextEntry::make('muuser.muVIPInfo.VIPLv')
+                    ->label(__('filament/users.form.jcash_vip_level'))
+                    ->weight(FontWeight::Bold),
+            ])
+            ->columns(2)
+            ->columnSpan(['lg' => 2])
+            ->secondary();
+    }
+
+    private static function getVsroSilkColumns()
+    {
+        return Section::make()
+            ->schema([
+                TextEntry::make('getSkSilk.silk_own')
+                    ->label(__('filament/users.form.silk_own'))
+                    ->state(fn($record) => number_format($record->getSkSilk?->silk_own, 0, ',', '.'))
+                    ->weight(FontWeight::Bold),
+                TextEntry::make('getSkSilk.silk_gift')
+                    ->label(__('filament/users.form.silk_gift'))
+                    ->state(fn($record) => number_format($record->getSkSilk?->silk_gift, 0, ',', '.'))
+                    ->weight(FontWeight::Medium),
+                TextEntry::make('getSkSilk.silk_point')
+                    ->label(__('filament/users.form.silk_point'))
+                    ->state(fn($record) => number_format($record->getSkSilk?->silk_point, 0, ',', '.'))
+                    ->weight(FontWeight::Medium),
+            ])
+            ->columns(3)
+            ->columnSpan(['lg' => 2])
+            ->secondary();
     }
 }

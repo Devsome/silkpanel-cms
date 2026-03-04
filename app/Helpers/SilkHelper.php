@@ -5,6 +5,7 @@ namespace App\Helpers;
 use Illuminate\Support\Facades\Auth;
 use SilkPanel\SilkroadModels\Models\Account\SkSilk;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
+use SilkPanel\SilkroadModels\Models\Portal\AphChangedSilk;
 
 class SilkHelper
 {
@@ -27,10 +28,21 @@ class SilkHelper
      */
     public static function addSilk(int $jid, int $amount, string $type, ?string $ip = null): void
     {
+        $helper = new self();
+
+        match (config('silkpanel.version')) {
+            'isro' => $helper->addSilkIsro($jid, $amount, $type, $ip),
+            default => $helper->addSilkVsro($jid, $amount, $type, $ip),
+        };
+    }
+
+    /**
+     * Adding silk for VSRO (SkSilkBuyList)
+     */
+    private function addSilkVsro(int $jid, int $amount, string $type, ?string $ip = null): void
+    {
         $now = now();
         $silkOwn = SkSilk::where('JID', $jid)->pluck($type)->first();
-
-        // todo abfrage für isro einbauen
 
         SkSilkBuyList::create([
             'UserJID' => $jid,
@@ -55,5 +67,23 @@ class SilkHelper
             SkSilk::where('JID', $jid)
                 ->decrement($type, abs($amount));
         }
+    }
+
+    /**
+     * Adding silk for ISRO (AphChangedSilk)
+     */
+    private function addSilkIsro(int $jid, int $amount, string $type, ?string $ip = null): void
+    {
+        AphChangedSilk::create([
+            'JID' => $jid,
+            'PTInvoiceID' => null,
+            'RemainedSilk' => abs($amount),
+            'ChangedSilk' => $amount < 0 ? $amount : 0,
+            'SilkType' => $type,
+            'SellingTypeID' => 2,
+            'ChangeDate' => now(),
+            'AvailableDate' => now()->addYears(1),
+            'AvailableStatus' => $amount < 0 ? 'N' : 'Y',
+        ]);
     }
 }

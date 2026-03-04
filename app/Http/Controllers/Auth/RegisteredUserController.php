@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -107,6 +108,7 @@ class RegisteredUserController extends Controller
     private function createVsroAccount(Request $request, AbstractTbUser $tbUser)
     {
         try {
+            DB::beginTransaction();
             $silkroadAccount = $tbUser->createAccount(
                 jid: 0,
                 username: $request->silkroad_id,
@@ -121,7 +123,9 @@ class RegisteredUserController extends Controller
                 'silk_gift' => 0,
                 'silk_point' => 0
             ]);
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             abort(500, 'Failed to create Silkroad account');
             Log::error('Failed to create Silkroad account', ['error' => $e->getMessage()]);
         }
@@ -139,10 +143,14 @@ class RegisteredUserController extends Controller
     private function createIsroAccount(Request $request, AbstractTbUser $tbUser)
     {
         try {
+            DB::beginTransaction();
             $portalUser = MuUser::setPortalAccount(
-                username: $request->username,
+                username: $request->silkroad_id,
                 password: $request->password
             );
+
+            $ip = filter_var($request->ip(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '0.0.0.0';
+            $ipLong = sprintf('%u', ip2long($ip));
 
             MuEmail::setEmail(
                 jid: $portalUser->JID,
@@ -151,21 +159,22 @@ class RegisteredUserController extends Controller
 
             MuhAlteredInfo::setAlteredInfo(
                 jid: $portalUser->JID,
-                username: $request->username,
+                username: $request->silkroad_id,
                 email: $request->email,
-                ip: ip2long($request->ip())
+                ip: $ipLong
             );
 
             AuhAgreedService::setAgreedService(
                 jid: $portalUser->JID,
-                ip: ip2long($request->ip())
+                ip: $ipLong
             );
 
             MuJoiningInfo::setJoiningInfo(
                 jid: $portalUser->JID,
-                ip: ip2long($request->ip())
+                ip: $ipLong
             );
 
+            // todo check if this is necessary, since the default VIP level is 0 which means no VIP benefits, it might be redundant to create a VIPInfo record for every user
             MuVIPInfo::setVIPInfo(
                 jid: $portalUser->JID
             );
@@ -175,9 +184,11 @@ class RegisteredUserController extends Controller
                 username: $request->silkroad_id,
                 password: $request->password,
                 email: $request->email,
-                ip: ip2long($request->ip())
+                ip: $ip
             );
+            DB::commit();
         } catch (\Exception $e) {
+            DB::rollBack();
             abort(500, 'Failed to create Silkroad account');
             Log::error('Failed to create Silkroad account', ['error' => $e->getMessage()]);
         }
