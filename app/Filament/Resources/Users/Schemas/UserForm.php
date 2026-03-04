@@ -103,11 +103,6 @@ class UserForm
                                 TextEntry::make('jid')
                                     ->label(__('filament/users.form.jid'))
                                     ->weight(FontWeight::Medium),
-                                TextEntry::make('pjid')
-                                    ->label(__('filament/users.form.pjid'))
-                                    ->weight(FontWeight::Medium)
-                                    ->visible(fn($record) => $record->pjid !== null)
-                                    ->columnOrder(7),
                                 TextEntry::make('tbuser.AccPlayTime')
                                     ->formatStateUsing(fn($state) => round($state / 60) . ' ' . __('filament/users.form.minutes'))
                                     ->label(__('filament/users.form.acc_play_time')),
@@ -127,6 +122,10 @@ class UserForm
                                         __('filament/users.form.is_gamemaster_no') => 'gray',
                                         default => 'gray',
                                     }),
+                                TextEntry::make('pjid')
+                                    ->label(__('filament/users.form.pjid'))
+                                    ->weight(FontWeight::Medium)
+                                    ->visible(fn($record) => $record->pjid !== null),
                                 Section::make()
                                     ->schema([
                                         IconEntry::make('blocked')
@@ -180,11 +179,11 @@ class UserForm
                                                         ->body(__('filament/users.notifications.unblock_success_message'))
                                                         ->success()
                                                         ->send();
+                                                    $record->refresh();
                                                 }
                                             }),
                                     ])
                                     ->visible(fn($record) => $record->tbuser->activeBlock ? true : false),
-
                             ])
                             ->columns(3)
                             ->columnSpan(['lg' => 2]),
