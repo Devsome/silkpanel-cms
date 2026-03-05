@@ -38,11 +38,10 @@ class UserTable
                     ->label(__('filament/users.table.shard_users_count'))
                     ->state(fn($record) => $record->shardUsers->count())
                     ->badge()
-                    ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 ImageColumn::make('shardUsers.RefObjID')
                     ->state(fn($record) => $record->shardUsers->map(
-                        fn($char) => asset('images/silkroad/chars_avatar/' . $char->RefObjID . '.png')
+                        fn($char) => $char->avatar_url
                     )->toArray())
                     ->extraImgAttributes([
                         'loading' => 'lazy',

@@ -20,7 +20,7 @@ class ShardUsersRelationManager extends RelationManager
             ->columns([
                 ImageColumn::make('avatar')
                     ->circular()
-                    ->state(fn($record) => asset('images/silkroad/chars_avatar/' . $record->RefObjID . '.png'))
+                    ->state(fn($record) => $record->avatar_url)
                     ->extraImgAttributes([
                         'loading' => 'lazy',
                     ])
