@@ -222,6 +222,10 @@ class ManageSettings extends Page
                                         ->label(__('filament/settings.form.features.registration_open'))
                                         ->helperText(__('filament/settings.form.features.registration_open_description')),
 
+                                    Toggle::make('email_verification_required')
+                                        ->label(__('filament/settings.form.features.email_verification_required'))
+                                        ->helperText(__('filament/settings.form.features.email_verification_required_description')),
+
                                     Textarea::make('maintenance_message')
                                         ->label(__('filament/settings.form.features.maintenance_message'))
                                         ->placeholder(__('filament/settings.form.features.maintenance_message_placeholder'))
@@ -325,6 +329,7 @@ class ManageSettings extends Page
             'favicon',
             'background_image',
             'registration_open',
+            'email_verification_required',
             'maintenance_message',
             'contact_email',
             'contact_phone',

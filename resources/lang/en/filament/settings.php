@@ -61,6 +61,8 @@ return [
         'features' => [
             'registration_open' => 'Registration Open',
             'registration_open_description' => 'Can new users register?',
+            'email_verification_required' => 'Email Verification Required',
+            'email_verification_required_description' => 'Require users to verify their email address after registration. Hint: when toggle back on after being disabled, all existing users will be treated as if they have verified their email, so they will not be forced to verify their email until they change their email or password.',
             'maintenance_message' => 'Maintenance Message',
             'maintenance_message_placeholder' => 'Message when website is in maintenance',
         ],

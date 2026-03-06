@@ -161,6 +161,13 @@ class SettingHelper
                 'description' => 'Can new users register?',
             ],
             [
+                'key' => 'email_verification_required',
+                'value' => true,
+                'type' => 'toggle',
+                'label' => 'Email Verification Required',
+                'description' => 'Require users to verify their email address',
+            ],
+            [
                 'key' => 'maintenance_message',
                 'value' => null,
                 'type' => 'textarea',

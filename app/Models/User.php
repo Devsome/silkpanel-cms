@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use App\Enums\DatabaseNameEnums;
+use App\Helpers\SettingHelper;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use SilkPanel\SilkroadModels\Models\Account\AbstractTbUser;
 use SilkPanel\SilkroadModels\Models\Account\SkSilk;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
@@ -111,6 +111,23 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Determine if the user has verified their email address.
+     * Respects the email_verification_required setting.
+     *
+     * @return bool
+     */
+    public function hasVerifiedEmail(): bool
+    {
+        // If email verification is disabled in settings, always return true
+        if (! SettingHelper::get('email_verification_required', true)) {
+            return true;
+        }
+
+        // Otherwise, check the actual verification status
+        return ! is_null($this->email_verified_at);
     }
 
     #region functions

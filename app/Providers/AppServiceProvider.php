@@ -57,5 +57,9 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('settingsRegistrationOpen', function (): bool {
             return (bool) SettingHelper::get('registration_open', true);
         });
+
+        Blade::if('settingsEmailVerificationRequired', function (): bool {
+            return (bool) SettingHelper::get('email_verification_required', true);
+        });
     }
 }
