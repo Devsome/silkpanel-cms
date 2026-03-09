@@ -2,6 +2,15 @@
 
 A Laravel-based CMS with Filament v5 admin panel, role-based access control using Spatie Permissions, and standard authentication via Laravel Breeze.
 
+## License
+
+This project is licensed under the PolyForm Shield License 1.0.0.
+
+You may view and use the source code for personal and educational purposes.
+Redistribution, commercial use, or offering the software as a service is prohibited.
+
+Commercial modules are available via API key licensing.
+
 ## local deployment
 
 ```bash

@@ -28,3 +28,6 @@ database/database.sqlite
 /public/css/filament/
 /public/js/filament/
 /public/fonts/filament/
+storage/framework/installer-result.json
+installer.lock
+querys.sql

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\InstallerGate;
 use Illuminate\Foundation\Application;
 use App\Http\Middleware\VerifySilkPanelApiKey;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -13,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'silkpanel.api' => VerifySilkPanelApiKey::class,
+            'installer.gate' => InstallerGate::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
