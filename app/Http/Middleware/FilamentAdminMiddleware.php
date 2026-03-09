@@ -17,10 +17,9 @@ class FilamentAdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-
         if (!Auth::check() || !Auth::user()->hasAnyRole([
-            UsergroupRoleEnums::SUPPORTER,
-            UsergroupRoleEnums::ADMIN
+            UsergroupRoleEnums::SUPPORTER->value,
+            UsergroupRoleEnums::ADMIN->value
         ])) {
             abort(403, 'Unauthorized.');
         }

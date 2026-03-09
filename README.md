@@ -21,12 +21,6 @@ composer install
 
 after that you can open the webpage on the `/install` route.
 
-## ready for deployment
-
-```bash
-bash prepare-deploy.sh <local | prod>
-```
-
 ## informations
 
 more informations are comming soon.

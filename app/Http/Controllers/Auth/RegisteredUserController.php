@@ -108,7 +108,9 @@ class RegisteredUserController extends Controller
     private function createVsroAccount(Request $request, AbstractTbUser $tbUser)
     {
         try {
-            DB::beginTransaction();
+            // Start transactions on both relevant connections
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_ACCOUNT->value)->beginTransaction();
+
             $silkroadAccount = $tbUser->createAccount(
                 jid: 0,
                 username: $request->silkroad_id,
@@ -123,11 +125,12 @@ class RegisteredUserController extends Controller
                 'silk_gift' => 0,
                 'silk_point' => 0
             ]);
-            DB::commit();
+
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_ACCOUNT->value)->commit();
         } catch (\Exception $e) {
-            DB::rollBack();
-            abort(500, 'Failed to create Silkroad account');
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_ACCOUNT->value)->rollBack();
             Log::error('Failed to create Silkroad account', ['error' => $e->getMessage()]);
+            abort(500, 'Failed to create Silkroad account');
         }
 
         return $silkroadAccount->JID;
@@ -143,7 +146,10 @@ class RegisteredUserController extends Controller
     private function createIsroAccount(Request $request, AbstractTbUser $tbUser)
     {
         try {
-            DB::beginTransaction();
+            // Start transactions on both relevant connections
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_PORTAL->value)->beginTransaction();
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_ACCOUNT->value)->beginTransaction();
+
             $portalUser = MuUser::setPortalAccount(
                 username: $request->silkroad_id,
                 password: $request->password
@@ -186,11 +192,14 @@ class RegisteredUserController extends Controller
                 email: $request->email,
                 ip: $ip
             );
-            DB::commit();
+
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_PORTAL->value)->commit();
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_ACCOUNT->value)->commit();
         } catch (\Exception $e) {
-            DB::rollBack();
-            abort(500, 'Failed to create Silkroad account');
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_PORTAL->value)->rollBack();
+            DB::connection(\App\Enums\DatabaseNameEnums::SRO_ACCOUNT->value)->rollBack();
             Log::error('Failed to create Silkroad account', ['error' => $e->getMessage()]);
+            abort(500, 'Failed to create Silkroad account');
         }
 
         return $portalUser->JID;
