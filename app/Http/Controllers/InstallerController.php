@@ -321,6 +321,9 @@ class InstallerController extends Controller
                 ->set('DB_SQL_DATABASE_SHARD', $request->input('mssql_database_shard'))
                 ->set('DB_SQL_DATABASE_LOG', $request->input('mssql_database_log'))
                 ->set('DB_SQL_DATABASE_CUSTOM', $request->input('mssql_database_custom'))
+
+                ->set('SESSION_DRIVER', 'database') // Switch to database sessions after installation
+                ->set('CACHE_STORE', 'database') // Switch to database cache after installation
                 ->generateAppKey();
 
             // Set DB_SQL_DATABASE_PORTAL if provided (iSRO only)
