@@ -11,6 +11,26 @@ Redistribution, commercial use, or offering the software as a service is prohibi
 
 Commercial modules are available via API key licensing.
 
+## setup
+
+```bash
+git clone git@github.com:Devsome/silkpanel-cms.git
+cd silkpanel-cms
+composer install
+```
+
+after that you can open the webpage on the `/install` route.
+
+## ready for deployment
+
+```bash
+bash prepare-deploy.sh <local | prod>
+```
+
+## informations
+
+more informations are comming soon.
+
 ## local deployment
 
 ```bash
@@ -23,21 +43,4 @@ ddev artisan migrade --seed
 ddev artisan ide-helper:generate
 ddev artisan ide-helper:models --write
 ddev artisan ide-helper:models -N
-```
-
-## ready for deployment
-
-```bash
-bash prepare-deploy.sh <local | prod>
-```
-
-## informations
-
-more informations are comming soon.
-
-## setup
-
-```bash
-php artisan silkpanel:setup
-php artisan silkpanel:import-accounts {--dry-run : Preview accounts without importing}
 ```
