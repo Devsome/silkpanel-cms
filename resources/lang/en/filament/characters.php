@@ -6,7 +6,10 @@ return [
 
     'form' => [],
 
-    'notifications' => [],
+    'notifications' => [
+        'cache_title' => 'Cache Cleared',
+        'cache_message' => 'Character cache cleared successfully.',
+    ],
 
     'section' => [
         'character_title' => 'Character Information',
@@ -38,7 +41,7 @@ return [
         'remainskillpoint' => 'Remaining Skill Points',
         'hp' => 'HP',
         'mp' => 'MP',
-        'guildid' => 'Guild ID',
+        'guild' => 'Guild',
         'deleted' => 'Deleted',
         'lastlogout' => 'Last Logout',
         'online' => 'Character Online',
@@ -63,6 +66,14 @@ return [
         'hunter_exp' => 'Hunter Experience',
         'joblvl_robber' => 'Robber Level',
         'robber_exp' => 'Robber Experience',
+        'action_clear_cache' => 'Clear Cache',
+    ],
+
+    'inventory' => [
+        'title' => 'Inventory',
+        'description' => 'View and manage the character\'s inventory items.',
+        'back' => 'Back',
+        'next' => 'Next',
     ],
 
     'edit' => [],

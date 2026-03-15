@@ -14,11 +14,20 @@ use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\IconPosition;
 use Filament\Support\Enums\IconSize;
+use Filament\Support\Enums\Size;
+use SilkPanel\SilkroadModels\Models\Shard\Inventory;
 
 class ViewCharacter extends ViewRecord
 {
     protected static string $resource = CharacterResource::class;
+
+    private const INVENTORY_MAX_SLOTS = 108;
+
+    private const INVENTORY_MIN_SLOTS = 13;
+
+    private const INVENTORY_NOT_SLOTS = [8];
 
     protected function getHeaderActions(): array
     {
@@ -59,18 +68,65 @@ class ViewCharacter extends ViewRecord
                                     ->label(__('filament/characters.view.remaingold')),
                                 TextEntry::make('RemainSkillPoint')
                                     ->label(__('filament/characters.view.remainskillpoint')),
-                                TextEntry::make('GuildID')
-                                    ->label(__('filament/characters.view.guildid')),
+                                TextEntry::make('guild.Name')
+                                    ->label(__('filament/characters.view.guild'))
+                                    ->icon('heroicon-o-arrow-top-right-on-square')
+                                    ->iconPosition(IconPosition::After)
+                                    ->iconColor('primary')
+                                    ->url(fn($record) => $record->guild
+                                        ? route('filament.admin.resources.guilds.view', $record->guild->ID)
+                                        : null)
+                                    ->openUrlInNewTab(true)
+                                    ->default('-'),
                                 TextEntry::make('HP')
                                     ->label(__('filament/characters.view.hp')),
                                 TextEntry::make('MP')
                                     ->label(__('filament/characters.view.mp')),
                                 IconEntry::make('Deleted')
                                     ->label(__('filament/characters.view.deleted'))
-                                    ->true('heroicon-o-trash', 'success')
+                                    ->true('heroicon-o-trash', 'danger')
                                     ->false('heroicon-o-trash', 'gray')
-                                    ->size(IconSize::Medium),
+                                    ->size(IconSize::Medium)
+                                    ->hidden(fn($record) => !$record->Deleted),
                             ])->columns(3),
+                        Section::make(__('filament/characters.inventory.title'))
+                            ->description(__('filament/characters.inventory.description'))
+                            ->schema([
+                                ViewEntry::make('inventory')
+                                    ->view('filament.characters.partials.inventory')
+                                    ->label(__('filament/characters.view.inventory'))
+                                    ->viewData([
+                                        'inventory' => $this->record->getCharInventorySet(
+                                            self::INVENTORY_MAX_SLOTS,
+                                            self::INVENTORY_MIN_SLOTS,
+                                            self::INVENTORY_NOT_SLOTS,
+                                        ),
+                                    ])
+                                    ->columnSpanFull(),
+                            ])
+                            ->headerActions([
+                                Action::make('clearInventoryCache')
+                                    ->label(__('filament/characters.view.action_clear_cache'))
+                                    ->icon('heroicon-m-arrow-path')
+                                    ->color('gray')
+                                    ->size(Size::Small)
+                                    ->requiresConfirmation()
+                                    ->action(function ($record): void {
+                                        Inventory::forgetInventoryCache(
+                                            $record->CharID,
+                                            self::INVENTORY_MAX_SLOTS,
+                                            self::INVENTORY_MIN_SLOTS,
+                                            self::INVENTORY_NOT_SLOTS,
+                                        );
+
+                                        Notification::make()
+                                            ->title(__('filament/characters.notifications.cache_title'))
+                                            ->body(__('filament/characters.notifications.cache_message'))
+                                            ->success()
+                                            ->send();
+                                    }),
+                            ])
+                            ->columns(2),
                     ])->columnSpan(['lg' => 3]),
                 Group::make()
                     ->schema([

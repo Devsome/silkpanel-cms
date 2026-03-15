@@ -4,3 +4,19 @@
 
 @source '../../../../app/Filament*';
 @source '../../../../resources/views/filament*';
+
+.fi-in-table-repeatable tbody tr:has(.guild-master-row-marker) {
+    background-color: color-mix(in oklab, var(--color-danger-500) 12%, white);
+}
+
+.dark .fi-in-table-repeatable tbody tr:has(.guild-master-row-marker) {
+    background-color: color-mix(in oklab, var(--color-danger-500) 20%, var(--color-gray-900));
+}
+
+.fi-in-table-repeatable tbody tr:has(.guild-hover-row-marker):hover {
+    background-color: color-mix(in oklab, var(--color-gray-500) 12%, white);
+}
+
+.dark .fi-in-table-repeatable tbody tr:has(.guild-hover-row-marker):hover {
+    background-color: color-mix(in oklab, var(--color-gray-500) 20%, var(--color-gray-900));
+}
