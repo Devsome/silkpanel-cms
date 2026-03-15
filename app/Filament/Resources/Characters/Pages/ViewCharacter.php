@@ -77,9 +77,10 @@ class ViewCharacter extends ViewRecord
                                         ? route('filament.admin.resources.guilds.view', $record->guild->ID)
                                         : null)
                                     ->openUrlInNewTab(true)
-                                    ->default('-'),
+                                    ->visible(fn($record) => $record->guild && $record->guild->ID !== 0),
                                 TextEntry::make('HP')
-                                    ->label(__('filament/characters.view.hp')),
+                                    ->label(__('filament/characters.view.hp'))
+                                    ->columnStart(1),
                                 TextEntry::make('MP')
                                     ->label(__('filament/characters.view.mp')),
                                 IconEntry::make('Deleted')

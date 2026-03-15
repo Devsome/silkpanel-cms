@@ -6,19 +6,21 @@
 <div x-data="{ page: 0, maxPages: 3, selectedPage: 0, selectedIndex: null }" class="grid gap-3">
     <div class="flex flex-wrap items-center gap-2">
         <button type="button" @click="page = Math.max(0, page - 1)" :disabled="page === 0"
-            class="rounded-md border border-gray-300 bg-white px-2.5 py-1.5 disabled:cursor-not-allowed disabled:opacity-50">
+            class="rounded-md border border-gray-300 bg-white px-2.5 py-1.5 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 disabled:cursor-not-allowed disabled:opacity-50">
             {{ __('filament/characters.inventory.back') }}
         </button>
 
         <template x-for="p in maxPages" :key="p">
             <button type="button" @click="page = p - 1" class="rounded-md border px-2.5 py-1.5"
-                :class="page === (p - 1) ? 'border-gray-900 bg-gray-900 text-white' : 'border-gray-300 bg-white text-gray-900'">
+                :class="page === (p - 1) ?
+                    'border-gray-900 bg-gray-900 text-white dark:border-gray-200 dark:bg-gray-200 dark:text-gray-900' :
+                    'border-gray-300 bg-white text-gray-900 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200'">
                 <span x-text="p"></span>
             </button>
         </template>
 
         <button type="button" @click="page = Math.min(maxPages - 1, page + 1)" :disabled="page === (maxPages - 1)"
-            class="rounded-md border border-gray-300 bg-white px-2.5 py-1.5 disabled:cursor-not-allowed disabled:opacity-50">
+            class="rounded-md border border-gray-300 bg-white px-2.5 py-1.5 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 disabled:cursor-not-allowed disabled:opacity-50">
             {{ __('filament/characters.inventory.next') }}
         </button>
     </div>
@@ -52,10 +54,11 @@
 
                                         <img src="{{ asset('images/silkroad/' . $item->get('icon')) }}"
                                             alt="{{ $info?->get('ItemName') ?? 'Item' }}"
-                                            class="size-8 rounded border border-gray-300 bg-gray-100 object-contain">
+                                            class="size-8 rounded border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 object-contain">
 
                                         @if ((int) $item->get('amount') > 0)
-                                            <span class="mt-0.5 text-[10px] font-semibold leading-none text-gray-700">
+                                            <span
+                                                class="mt-0.5 text-[10px] font-semibold leading-none text-gray-700 dark:text-gray-200">
                                                 {{ (int) $item->get('amount') }}
                                             </span>
                                         @endif
@@ -63,7 +66,7 @@
                                 </div>
                             @else
                                 <div
-                                    class="size-8 rounded border border-gray-300 bg-gray-100 text-[12px] text-gray-400">
+                                    class="size-8 rounded border border-gray-300 bg-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-200 text-[12px] text-gray-400">
                                 </div>
                             @endif
                         </article>
