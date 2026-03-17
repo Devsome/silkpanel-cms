@@ -50,7 +50,6 @@ class CharactersTable
             ->recordActions([
                 ActionGroup::make([
                     ViewAction::make(),
-                    EditAction::make(),
                 ]),
             ])
             ->toolbarActions([

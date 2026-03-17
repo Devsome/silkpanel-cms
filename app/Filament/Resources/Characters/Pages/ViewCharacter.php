@@ -43,7 +43,6 @@ class ViewCharacter extends ViewRecord
                 ->label(__('filament/characters.view.users'))
                 ->url(fn($record) => route('filament.admin.resources.users.edit', $record->getAccountUser->getWebAccountUser->id))
                 ->color('gray'),
-            EditAction::make(),
         ];
     }
 

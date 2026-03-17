@@ -1,9 +1,12 @@
 @php
-    $allItems = collect($inventory)->values();
-    $pages = $allItems->chunk(32);
+    $slotStart = 13;
+    $slotsPerPage = 32;
+    $maxPages = 3;
+
+    $inventoryBySlot = collect($inventory)->filter()->keyBy(fn($item) => (int) data_get($item, 'info.Slot', -1));
 @endphp
 
-<div x-data="{ page: 0, maxPages: 3, selectedPage: 0, selectedIndex: null }" class="grid gap-3">
+<div x-data="{ page: 0, maxPages: {{ $maxPages }}, selectedPage: 0, selectedIndex: null }" class="grid gap-3">
     <div class="flex flex-wrap items-center gap-2">
         <button type="button" @click="page = Math.max(0, page - 1)" :disabled="page === 0"
             class="rounded-md border border-gray-300 bg-white px-2.5 py-1.5 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-200 disabled:cursor-not-allowed disabled:opacity-50">
@@ -25,21 +28,19 @@
         </button>
     </div>
 
-    @for ($page = 0; $page < 3; $page++)
-        @php
-            $pageItems = ($pages->get($page) ?? collect())->values();
-        @endphp
+    @for ($page = 0; $page < $maxPages; $page++)
 
         <section x-show="page === {{ $page }}" x-cloak class="p-3">
             <div class="flex items-start gap-3.5">
                 <div class="grid grid-cols-4 gap-1">
                     @for ($index = 0; $index < 32; $index++)
                         @php
-                            $item = $pageItems->get($index);
+                            $slot = $slotStart + $page * $slotsPerPage + $index;
+                            $item = $inventoryBySlot->get($slot);
                             $info = $item ? $item->get('info') : null;
                         @endphp
 
-                        <article class="relative overflow-visible">
+                        <article class="relative overflow-visible" title="{{ $slot !== null ? 'Slot ' . $slot : '' }}">
                             @if ($item)
                                 <div class="flex items-center">
                                     <div class="relative inline-flex cursor-pointer flex-col items-center"
@@ -78,7 +79,8 @@
 
                     @for ($index = 0; $index < 32; $index++)
                         @php
-                            $selectedItem = $pageItems->get($index);
+                            $slot = $slotStart + $page * $slotsPerPage + $index;
+                            $selectedItem = $inventoryBySlot->get($slot);
                             $selectedInfo = $selectedItem ? $selectedItem->get('info') : null;
                         @endphp
                         @if ($selectedItem)
