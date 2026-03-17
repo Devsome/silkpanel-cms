@@ -35,6 +35,28 @@ class ViewCharacter extends ViewRecord
     private const EQUIPMENT_MIN_SLOTS = 0;
     private const EQUIPMENT_NOT_SLOTS = [8];
 
+    private function getInventoryViewData(): array
+    {
+        return [
+            'inventory' => $this->record->getCharInventorySet(
+                self::INVENTORY_MAX_SLOTS,
+                self::INVENTORY_MIN_SLOTS,
+                self::INVENTORY_NOT_SLOTS,
+            ),
+        ];
+    }
+
+    private function getEquipmentViewData(): array
+    {
+        return [
+            'equipment' => $this->record->getCharInventorySet(
+                self::EQUIPMENT_MAX_SLOTS,
+                self::EQUIPMENT_MIN_SLOTS,
+                self::EQUIPMENT_NOT_SLOTS,
+            ),
+            'characterImage2d' => $this->getCharacter2dImageUrl(),
+        ];
+    }
 
     protected function getHeaderActions(): array
     {
@@ -103,13 +125,7 @@ class ViewCharacter extends ViewRecord
                                         ViewEntry::make('inventory')
                                             ->view('filament.characters.partials.inventory')
                                             ->label(__('filament/characters.view.inventory'))
-                                            ->viewData([
-                                                'inventory' => $this->record->getCharInventorySet(
-                                                    self::INVENTORY_MAX_SLOTS,
-                                                    self::INVENTORY_MIN_SLOTS,
-                                                    self::INVENTORY_NOT_SLOTS,
-                                                ),
-                                            ])
+                                            ->viewData(fn() => $this->getInventoryViewData())
                                             ->columnSpanFull(),
                                         Action::make('clearInventoryCache')
                                             ->label(__('filament/characters.view.action_clear_cache'))
@@ -128,6 +144,9 @@ class ViewCharacter extends ViewRecord
                                                     self::INVENTORY_NOT_SLOTS,
                                                 );
 
+                                                // Ensure a fresh model instance is used on the next Livewire render.
+                                                $this->record = $record->fresh();
+
                                                 Notification::make()
                                                     ->title(__('filament/characters.notifications.cache_title'))
                                                     ->body(__('filament/characters.notifications.cache_message'))
@@ -140,20 +159,13 @@ class ViewCharacter extends ViewRecord
                                         ViewEntry::make('equipment')
                                             ->view('filament.characters.partials.equipment')
                                             ->label(__('filament/characters.view.equipment'))
-                                            ->viewData([
-                                                'equipment' => $this->record->getCharInventorySet(
-                                                    self::EQUIPMENT_MAX_SLOTS,
-                                                    self::EQUIPMENT_MIN_SLOTS,
-                                                    self::EQUIPMENT_NOT_SLOTS,
-                                                ),
-                                                'characterImage2d' => $this->getCharacter2dImageUrl(),
-                                            ])
+                                            ->viewData(fn() => $this->getEquipmentViewData())
                                             ->columnSpanFull(),
                                     ]),
-                                Tab::make(__('filament/characters.storage.title'))
-                                    ->schema([
-                                        // ...
-                                    ]),
+                                // Tab::make(__('filament/characters.storage.title'))
+                                //     ->schema([
+                                //         // ...
+                                //     ]),
                             ])
                             ->columnSpanFull(),
 
