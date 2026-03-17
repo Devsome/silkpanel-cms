@@ -188,7 +188,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function muuser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(MuUser::class, 'jid', 'JID');
+        return $this->belongsTo(MuUser::class, 'pjid', 'JID');
     }
 
     /**

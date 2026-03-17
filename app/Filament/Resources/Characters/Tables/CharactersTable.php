@@ -40,7 +40,7 @@ class CharactersTable
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('LastLogout')
                     ->label(__('filament/characters.table.last_logout'))
-                    ->formatStateUsing(fn($state) => $state ? \Carbon\Carbon::parse($state)->diffForHumans() : '-')
+                    ->formatStateUsing(fn($state) => $state ? (\Carbon\Carbon::parse($state)->isFuture() ? __('filament/characters.table.last_never') : \Carbon\Carbon::parse($state)->diffForHumans()) : '-')
                     ->sortable(),
 
             ])

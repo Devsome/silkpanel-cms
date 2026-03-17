@@ -20,6 +20,7 @@ use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconPosition;
 use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
+use Illuminate\Support\Carbon;
 use SilkPanel\SilkroadModels\Models\Shard\Inventory;
 
 class ViewCharacter extends ViewRecord
@@ -171,7 +172,8 @@ class ViewCharacter extends ViewRecord
                                     ])
                                     ->size(IconSize::Medium),
                                 TextEntry::make('LastLogout')
-                                    ->label(__('filament/characters.view.lastlogout')),
+                                    ->label(__('filament/characters.view.lastlogout'))
+                                    ->state(fn($record) => Carbon::parse($record->LastLogout)?->isFuture() ? __('filament/characters.view.last_never') : Carbon::parse($record->LastLogout)?->diffForHumans()),
                             ]),
                         Section::make(__('filament/characters.section.position_title'))
                             ->description(__('filament/characters.section.position_information_description'))

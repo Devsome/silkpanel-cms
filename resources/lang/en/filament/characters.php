@@ -26,6 +26,7 @@ return [
         'cur_level' => 'Current Level',
         'nick_name' => 'Job Nickname',
         'last_logout' => 'Last Login',
+        'last_never' => 'Never',
     ],
 
     'view' => [
@@ -44,6 +45,7 @@ return [
         'guild' => 'Guild',
         'deleted' => 'Deleted',
         'lastlogout' => 'Last Login',
+        'last_never' => 'Never',
         'online' => 'Character Online',
         'pos_x' => 'Position X',
         'pos_y' => 'Position Y',

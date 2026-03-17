@@ -88,6 +88,6 @@ class UserTable
                     EditAction::make(),
                 ]),
             ])
-            ->defaultSort('jid', 'desc');
+            ->defaultSort('created_at', 'desc');
     }
 }

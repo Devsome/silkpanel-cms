@@ -71,7 +71,7 @@ class EditUser extends EditRecord
                 ->requiresConfirmation()
                 ->modalHeading(__('filament/users.edit.block_modal_heading'))
                 ->modalDescription(__('filament/users.edit.block_modal_description'))
-                ->visible(fn($record) => !$record->tbuser->activeBlock)
+                ->visible(fn($record) => !$record->tbuser?->activeBlock)
                 ->action(function ($record, $data) {
                     $reason = $data['reason'];
                     $description = $data['description'];

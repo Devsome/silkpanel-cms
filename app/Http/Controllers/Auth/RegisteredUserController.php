@@ -62,10 +62,12 @@ class RegisteredUserController extends Controller
 
         $request->validate($rules);
 
+        $jid = null;
+        $pjid = null;
         if ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser) {
             $jid = $this->createVsroAccount($request, $tbUser);
         } elseif ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\ISRO\TbUser) {
-            $jid = $this->createIsroAccount($request, $tbUser);
+            [$pjid, $jid] = $this->createIsroAccount($request, $tbUser);
         } else {
             abort(500, 'Invalid AbstractTbUser instance provided.');
         }
@@ -83,6 +85,7 @@ class RegisteredUserController extends Controller
             'referrer_id' => $referrerId->id ?? null,
 
             'jid' => $jid,
+            'pjid' => $pjid,
             'silkroad_id' => $request->silkroad_id,
             'register_ip' => $request->ip(),
         ]);
@@ -185,7 +188,7 @@ class RegisteredUserController extends Controller
                 jid: $portalUser->JID
             );
 
-            $tbUser->createAccount(
+            $tbUser = $tbUser->createAccount(
                 jid: $portalUser->JID,
                 username: $request->silkroad_id,
                 password: $request->password,
@@ -202,7 +205,7 @@ class RegisteredUserController extends Controller
             abort(500, 'Failed to create Silkroad account');
         }
 
-        return $portalUser->JID;
+        return [$tbUser->PortalJID, $tbUser->JID];
     }
 
     #endregion private functions

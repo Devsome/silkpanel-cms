@@ -91,7 +91,7 @@ class UserForm
                                                 ->send();
                                             $record->refresh();
                                         }
-                                    })->visible(fn($record) => $record->tbuser->secondaryPassword ? true : false),
+                                    })->visible(fn($record) => $record?->tbuser?->secondaryPassword ? true : false),
                             ])->visible(fn() => config('silkpanel.version') === 'isro')
                     ])->columnSpan(['lg' => 2]),
                 Group::make()
@@ -114,7 +114,7 @@ class UserForm
                                     ->label(__('filament/users.form.is_gamemaster'))
                                     ->badge()
                                     ->state(function ($record) {
-                                        return $record->tbuser->isGamemaster() ?
+                                        return $record->tbuser?->isGamemaster() ?
                                             __('filament/users.form.is_gamemaster_yes') : __('filament/users.form.is_gamemaster_no');
                                     })
                                     ->color(fn(string $state): string => match ($state) {
@@ -130,7 +130,7 @@ class UserForm
                                     ->schema([
                                         IconEntry::make('blocked')
                                             ->label(__('filament/users.form.blocked'))
-                                            ->state(fn($record) => $record->tbuser->activeBlock ? true : false)
+                                            ->state(fn($record) => $record->tbuser?->activeBlock ? true : false)
                                             ->trueIcon('heroicon-o-check-circle')
                                             ->falseIcon('heroicon-o-x-circle')
                                             ->trueColor('success')
@@ -138,22 +138,22 @@ class UserForm
                                             ->columnSpanFull(),
                                         TextEntry::make('block_reason')
                                             ->state(function ($record) {
-                                                return $record->tbuser->activeBlock ? $record->tbuser->activeBlock->punishment->Guide : '-';
+                                                return $record->tbuser?->activeBlock ? $record->tbuser->activeBlock->punishment->Guide : '-';
                                             })
                                             ->label(__('filament/users.form.blocked_reason')),
                                         TextEntry::make('block_description')
                                             ->state(function ($record) {
-                                                return $record->tbuser->activeBlock ? $record->tbuser->activeBlock->punishment->Description : '-';
+                                                return $record->tbuser?->activeBlock ? $record->tbuser->activeBlock->punishment->Description : '-';
                                             })
                                             ->label(__('filament/users.form.blocked_description')),
                                         TextEntry::make('block_start')
                                             ->state(function ($record) {
-                                                return \Carbon\Carbon::parse($record->tbuser->activeBlock?->punishment->BlockStartTime)->format('d.m.Y H:i');
+                                                return \Carbon\Carbon::parse($record->tbuser?->activeBlock?->punishment->BlockStartTime)->format('d.m.Y H:i');
                                             })
                                             ->label(__('filament/users.form.blocked_start')),
                                         TextEntry::make('block_end')
                                             ->state(function ($record) {
-                                                return \Carbon\Carbon::parse($record->tbuser->activeBlock?->punishment->BlockEndTime)->format('d.m.Y H:i');
+                                                return \Carbon\Carbon::parse($record->tbuser?->activeBlock?->punishment->BlockEndTime)->format('d.m.Y H:i');
                                             })
                                             ->label(__('filament/users.form.blocked_end')),
                                     ])
@@ -165,9 +165,9 @@ class UserForm
                                             ->label(__('filament/users.form.unblock'))
                                             ->icon('heroicon-o-lock-open')
                                             ->color('gray')
-                                            ->visible(fn($record) => $record->tbuser->activeBlock ? true : false)
+                                            ->visible(fn($record) => $record->tbuser?->activeBlock ? true : false)
                                             ->action(function ($record) {
-                                                $block = $record->tbuser->activeBlock;
+                                                $block = $record->tbuser?->activeBlock;
                                                 if ($block) {
                                                     $block->timeEnd = Carbon::now()->subDay();
                                                     $block->save();
@@ -183,7 +183,7 @@ class UserForm
                                                 }
                                             }),
                                     ])
-                                    ->visible(fn($record) => $record->tbuser->activeBlock ? true : false),
+                                    ->visible(fn($record) => $record->tbuser?->activeBlock ? true : false),
                             ])
                             ->columns(3)
                             ->columnSpan(['lg' => 2]),
