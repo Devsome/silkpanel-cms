@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Characters\Pages;
 
+use App\Enums\CharacterAvatarMapEnum;
 use App\Filament\Resources\Characters\CharacterResource;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
@@ -13,6 +14,8 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\ViewRecord;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconPosition;
 use Filament\Support\Enums\IconSize;
@@ -24,10 +27,13 @@ class ViewCharacter extends ViewRecord
     protected static string $resource = CharacterResource::class;
 
     private const INVENTORY_MAX_SLOTS = 108;
-
     private const INVENTORY_MIN_SLOTS = 13;
-
     private const INVENTORY_NOT_SLOTS = [8];
+
+    private const EQUIPMENT_MAX_SLOTS = 12;
+    private const EQUIPMENT_MIN_SLOTS = 0;
+    private const EQUIPMENT_NOT_SLOTS = [8];
+
 
     protected function getHeaderActions(): array
     {
@@ -90,44 +96,67 @@ class ViewCharacter extends ViewRecord
                                     ->size(IconSize::Medium)
                                     ->hidden(fn($record) => !$record->Deleted),
                             ])->columns(3),
-                        Section::make(__('filament/characters.inventory.title'))
-                            ->description(__('filament/characters.inventory.description'))
-                            ->schema([
-                                ViewEntry::make('inventory')
-                                    ->view('filament.characters.partials.inventory')
-                                    ->label(__('filament/characters.view.inventory'))
-                                    ->viewData([
-                                        'inventory' => $this->record->getCharInventorySet(
-                                            self::INVENTORY_MAX_SLOTS,
-                                            self::INVENTORY_MIN_SLOTS,
-                                            self::INVENTORY_NOT_SLOTS,
-                                        ),
-                                    ])
-                                    ->columnSpanFull(),
-                            ])
-                            ->headerActions([
-                                Action::make('clearInventoryCache')
-                                    ->label(__('filament/characters.view.action_clear_cache'))
-                                    ->icon('heroicon-m-arrow-path')
-                                    ->color('gray')
-                                    ->size(Size::Small)
-                                    ->requiresConfirmation()
-                                    ->action(function ($record): void {
-                                        Inventory::forgetInventoryCache(
-                                            $record->CharID,
-                                            self::INVENTORY_MAX_SLOTS,
-                                            self::INVENTORY_MIN_SLOTS,
-                                            self::INVENTORY_NOT_SLOTS,
-                                        );
+                        Tabs::make('Tabs')
+                            ->tabs([
+                                Tab::make(__('filament/characters.inventory.title'))
+                                    ->schema([
+                                        ViewEntry::make('inventory')
+                                            ->view('filament.characters.partials.inventory')
+                                            ->label(__('filament/characters.view.inventory'))
+                                            ->viewData([
+                                                'inventory' => $this->record->getCharInventorySet(
+                                                    self::INVENTORY_MAX_SLOTS,
+                                                    self::INVENTORY_MIN_SLOTS,
+                                                    self::INVENTORY_NOT_SLOTS,
+                                                ),
+                                            ])
+                                            ->columnSpanFull(),
+                                        Action::make('clearInventoryCache')
+                                            ->label(__('filament/characters.view.action_clear_cache'))
+                                            ->icon('heroicon-m-arrow-path')
+                                            ->color('gray')
+                                            ->size(Size::Small)
+                                            ->requiresConfirmation()
+                                            ->extraAttributes([
+                                                'class' => 'float-right',
+                                            ])
+                                            ->action(function ($record): void {
+                                                Inventory::forgetInventoryCache(
+                                                    $record->CharID,
+                                                    self::INVENTORY_MAX_SLOTS,
+                                                    self::INVENTORY_MIN_SLOTS,
+                                                    self::INVENTORY_NOT_SLOTS,
+                                                );
 
-                                        Notification::make()
-                                            ->title(__('filament/characters.notifications.cache_title'))
-                                            ->body(__('filament/characters.notifications.cache_message'))
-                                            ->success()
-                                            ->send();
-                                    }),
+                                                Notification::make()
+                                                    ->title(__('filament/characters.notifications.cache_title'))
+                                                    ->body(__('filament/characters.notifications.cache_message'))
+                                                    ->success()
+                                                    ->send();
+                                            }),
+                                    ]),
+                                Tab::make(__('filament/characters.equipment.title'))
+                                    ->schema([
+                                        ViewEntry::make('equipment')
+                                            ->view('filament.characters.partials.equipment')
+                                            ->label(__('filament/characters.view.equipment'))
+                                            ->viewData([
+                                                'equipment' => $this->record->getCharInventorySet(
+                                                    self::EQUIPMENT_MAX_SLOTS,
+                                                    self::EQUIPMENT_MIN_SLOTS,
+                                                    self::EQUIPMENT_NOT_SLOTS,
+                                                ),
+                                                'characterImage2d' => $this->getCharacter2dImageUrl(),
+                                            ])
+                                            ->columnSpanFull(),
+                                    ]),
+                                Tab::make(__('filament/characters.storage.title'))
+                                    ->schema([
+                                        // ...
+                                    ]),
                             ])
-                            ->columns(2),
+                            ->columnSpanFull(),
+
                     ])->columnSpan(['lg' => 3]),
                 Group::make()
                     ->schema([
@@ -218,5 +247,28 @@ class ViewCharacter extends ViewRecord
                             ->columns(2),
                     ])->columnSpan(['lg' => 2]),
             ])->columns(5);
+    }
+
+    private function getCharacter2dImageUrl(): string
+    {
+        $characterId = (int) ($this->record->RefObjID ?? 0);
+        $isIsro = str_contains($this->record::class, 'ISRO');
+        $mappedCharacterId = $isIsro
+            ? CharacterAvatarMapEnum::mapIsroToVsro($characterId)
+            : $characterId;
+
+        $mappedPath = 'images/silkroad/chars_2d/' . $mappedCharacterId . '.png';
+
+        if (file_exists(public_path($mappedPath))) {
+            return asset($mappedPath);
+        }
+
+        $fallbackPath = 'images/silkroad/chars_2d/' . $characterId . '.png';
+
+        if (file_exists(public_path($fallbackPath))) {
+            return asset($fallbackPath);
+        }
+
+        return asset('images/silkroad/icon_default.png');
     }
 }

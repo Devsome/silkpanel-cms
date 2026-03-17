@@ -46,12 +46,22 @@
             {{ __('Sort of item:') }} {{ $item->get('Type') }}<br>
         @endif
 
-        @if ($item->has('Detail') && $item->get('Detail'))
-            {{ __('Mounting part:') }} {{ $item->get('Detail') }}<br>
-        @endif
+        @if ($typeID2 === 1 && !in_array((int) $typeID3, [13, 14], true))
 
-        @if ($item->get('Degree'))
-            {{ __('Degree: :degree degrees', ['degree' => $item->get('Degree')]) }}<br>
+            @if ($item->has('Detail') && $item->get('Detail'))
+                {{ __('Mounting part:') }} {{ $item->get('Detail') }}<br>
+            @endif
+
+            @if ($typeID2 === 4)
+                @if ($item->get('Degree'))
+                    {{ __('Level:') }} {{ $item->get('JobDegree') }}<br />
+                @endif
+            @elseif($typeID2 !== 3)
+                @if ($item->get('Degree'))
+                    {{ __('Degree: :degree degrees', ['degree' => $item->get('Degree')]) }}<br />
+                @endif
+            @endif
+
         @endif
     </div>
 
@@ -71,13 +81,43 @@
         </div>
     @endif
 
-    @if ($item->get('Country'))
-        <div class="text-xs">{{ $item->get('Country') }}</div>
+    @if (in_array((int) $typeID2, [1], true) && !in_array((int) $typeID3, [4, 6], true))
+        @if ($item->get('Gender'))
+            <div class="text-xs">{{ $item->get('Gender') }}</div>
+        @endif
     @endif
 
-    @if ($item->get('Gender'))
-        <div class="text-xs">{{ $item->get('Gender') }}</div>
+    @if (!in_array((int) $typeID2, [3, 4], true) && !in_array((int) $typeID3, [13, 14], true))
+        @if ($item->get('Country'))
+            <div class="text-xs">{{ $item->get('Country') }}</div>
+        @endif
     @endif
+
+    @if (!in_array((int) $typeID2, [4], true) && in_array((int) $typeID3, [13], true) && in_array((int) $typeID4, [2], true))
+        <div class="mt-6 text-xs text-[#efdaa4]">{{ __('Attachment:') }}
+            {{ $item->get('ChildItemCount') == 1 ? 'Able to equip' : 'Unable to equip' }}</div>
+    @else
+        <br />
+    @endif
+
+    @if (in_array((int) $typeID2, [4], true) || in_array((int) $typeID3, [13], true))
+        <div class="text-xs text-[#efdaa4]">
+            {{ __('Max. no. of magic options: :unit Unit', ['unit' => $item->get('MaxMagicOptCount')]) }}</div><br />
+    @endif
+
+    @if (config('silkpanel.version') === 'vsro' && !in_array((int) $typeID3, [13, 14], true))
+        <div class="text-xs text-[#efdaa4]">
+            {{ __('Max. no. of magic options: :unit Unit', ['unit' => $item->get('MaxMagicOptCount')]) }}</div><br />
+    @endif
+
+    {{-- @if ($typeID3 === 14)
+        <div class="text-xs mt-2">
+            <span class="text-[#efdaa4]">{{ __('Basic Option') }}</span><br />
+            {{ __('MaximumHP :max% Increase', ['max' => $item->get('DevilMaxHP')]) }}<br />
+            {{ __('MaximumMP :max% Increase', ['max' => $item->get('DevilMaxHP')]) }}<br />
+        </div>
+        <br />
+    @endif --}}
 
     @if ($blueInfo->isNotEmpty())
         <div class="mt-2.5 text-xs leading-[1.4]">
@@ -96,6 +136,16 @@
                     @endif
                 </div>
             @endforeach
+        </div>
+    @endif
+
+    @if (!in_array((int) $typeID2, [3, 4], true) && !in_array((int) $typeID3, [13, 14], true))
+        <div class="mt-2 text-xs text-[#d2cec4] font-bold">
+            @if (!$nOptValue)
+                {{ __('Able to use Advanced elixir.') }}
+            @else
+                {{ __('Advanced elixir is in effect') }} [+{{ $nOptValue }}]
+            @endif
         </div>
     @endif
 

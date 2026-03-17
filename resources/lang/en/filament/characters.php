@@ -25,7 +25,7 @@ return [
         'char_name' => 'Character Name',
         'cur_level' => 'Current Level',
         'nick_name' => 'Job Nickname',
-        'last_logout' => 'Last Logout',
+        'last_logout' => 'Last Login',
     ],
 
     'view' => [
@@ -43,7 +43,7 @@ return [
         'mp' => 'MP',
         'guild' => 'Guild',
         'deleted' => 'Deleted',
-        'lastlogout' => 'Last Logout',
+        'lastlogout' => 'Last Login',
         'online' => 'Character Online',
         'pos_x' => 'Position X',
         'pos_y' => 'Position Y',
@@ -72,6 +72,20 @@ return [
     'inventory' => [
         'title' => 'Inventory',
         'description' => 'View and manage the character\'s inventory items.',
+        'back' => 'Back',
+        'next' => 'Next',
+    ],
+
+    'storage' => [
+        'title' => 'Storage',
+        'description' => 'View and manage the character\'s storage items.',
+        'back' => 'Back',
+        'next' => 'Next',
+    ],
+
+    'equipment' => [
+        'title' => 'Equipment',
+        'description' => 'View and manage the character\'s equipped items.',
         'back' => 'Back',
         'next' => 'Next',
     ],
