@@ -14,5 +14,8 @@ return [
         'confirm_password' => 'Confirm Password *',
         'register' => 'Create Account',
         'already_registered' => 'Already registered?',
+        'terms_accept' => 'I have read and accept the',
+        'terms_link' => 'Terms of Service',
+        'terms_required' => 'You must accept the Terms of Service to register.',
     ]
 ];

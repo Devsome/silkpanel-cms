@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Enums\UsergroupRoleEnums;
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use App\Models\User;
 use App\Rules\ValidationRules;
 use Illuminate\Auth\Events\Registered;
@@ -34,7 +35,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $tosEnabled = (bool) Setting::get('tos_enabled', false);
+
+        return view('auth.register', compact('tosEnabled'));
     }
 
     /**
@@ -51,6 +54,10 @@ class RegisteredUserController extends Controller
             'silkroad_id' => $this->usernameRules(),
             'referral' => $this->referralRules(),
         ];
+
+        if ((bool) Setting::get('tos_enabled', false)) {
+            $rules['terms'] = ['required', 'accepted'];
+        }
 
         if ($tbUser instanceof \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser) {
             $rules['silkroad_id'][] = 'unique:' . \SilkPanel\SilkroadModels\Models\Account\VSRO\TbUser::class . ',StrUserID';

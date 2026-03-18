@@ -8,10 +8,12 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions as ActionsComponent;
 use Filament\Schemas\Components\Form;
@@ -230,6 +232,23 @@ class ManageSettings extends Page
                                         ->label(__('filament/settings.form.features.maintenance_message'))
                                         ->placeholder(__('filament/settings.form.features.maintenance_message_placeholder'))
                                         ->rows(4),
+
+                                    Toggle::make('tos_enabled')
+                                        ->label(__('filament/settings.form.features.tos_enabled'))
+                                        ->helperText(__('filament/settings.form.features.tos_enabled_description'))
+                                        ->live(),
+
+                                    RichEditor::make('tos_text')
+                                        ->label(__('filament/settings.form.features.tos_text'))
+                                        ->toolbarButtons([
+                                            ['bold', 'italic', 'underline', 'strike', 'link'],
+                                            ['h2', 'h3'],
+                                            ['bulletList', 'orderedList'],
+                                            ['undo', 'redo'],
+                                        ])
+                                        ->columnSpanFull()
+                                        ->dehydrated()
+                                        ->visible(fn(Get $get) => (bool) $get('tos_enabled')),
                                 ]),
 
                             Tab::make(__('filament/settings.form.tabs.partners'))
@@ -339,12 +358,17 @@ class ManageSettings extends Page
             'social_instagram',
             'social_discord',
             'partners',
+            'tos_enabled',
         ];
 
         foreach ($settingKeys as $key) {
             if (isset($data[$key]) && $data[$key] !== null) {
                 Setting::set($key, $data[$key], null, null, null);
             }
+        }
+
+        if (array_key_exists('tos_text', $data)) {
+            Setting::set('tos_text', $data['tos_text'] ?? '', null, null, null);
         }
 
         Notification::make()

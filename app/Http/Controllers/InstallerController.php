@@ -15,9 +15,14 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
+use Symfony\Component\Process\Process;
 
 class InstallerController extends Controller
 {
+    private const SILKPANEL_WIDGETS_PACKAGE = 'silkpanel/widgets-dashboard';
+
+    private const SILKPANEL_WIDGETS_VERSION = '^1.0';
+
     private EnvironmentChecker $environmentChecker;
 
     private EnvWriter $envWriter;
@@ -467,67 +472,166 @@ class InstallerController extends Controller
      */
     private function installSilkPanelPackages(string $apiKey): void
     {
-        try {
-            Log::info('[Installer] Installing SilkPanel packages...');
+        Log::info('[Installer] Ensuring SilkPanel packages are installed...');
 
-            $composerPath = base_path('composer.json');
-            if (File::exists($composerPath)) {
-                $composerContent = File::get($composerPath);
-                $composerData = json_decode($composerContent, true);
+        $this->configureComposerRepository($apiKey);
 
-                if (! isset($composerData['repositories']) || ! is_array($composerData['repositories'])) {
-                    $composerData['repositories'] = [];
-                }
+        if ($this->isComposerPackageInstalled(self::SILKPANEL_WIDGETS_PACKAGE)) {
+            Log::info('[Installer] SilkPanel package already installed', [
+                'package' => self::SILKPANEL_WIDGETS_PACKAGE,
+            ]);
 
-                $repositoryIndex = null;
+            return;
+        }
 
-                foreach ($composerData['repositories'] as $index => $repository) {
-                    if (
-                        isset($repository['type'], $repository['url']) &&
-                        $repository['type'] === 'composer' &&
-                        $repository['url'] === 'https://composer.devso.me'
-                    ) {
-                        $repositoryIndex = $index;
-                        break;
-                    }
-                }
+        $command = $this->isComposerPackageLocked(self::SILKPANEL_WIDGETS_PACKAGE)
+            ? [...$this->resolveComposerCommand(), 'install', '--no-interaction', '--prefer-dist', '--optimize-autoloader']
+            : [...$this->resolveComposerCommand(), 'require', self::SILKPANEL_WIDGETS_PACKAGE . ':' . self::SILKPANEL_WIDGETS_VERSION, '--no-interaction', '--prefer-dist', '--no-progress'];
 
-                $privateRepository = [
-                    'type' => 'composer',
-                    'url' => 'https://composer.devso.me',
-                    'options' => [
-                        'http' => [
-                            'header' => [
-                                "API-TOKEN: {$apiKey}",
-                            ],
-                        ],
+        $this->runComposerCommand($command);
+
+        if (! $this->isComposerPackageInstalled(self::SILKPANEL_WIDGETS_PACKAGE)) {
+            throw new \RuntimeException('Composer finished, but silkpanel/widgets-dashboard is still missing from vendor.');
+        }
+
+        Log::info('[Installer] SilkPanel package installed successfully', [
+            'package' => self::SILKPANEL_WIDGETS_PACKAGE,
+        ]);
+    }
+
+    private function configureComposerRepository(string $apiKey): void
+    {
+        $composerPath = base_path('composer.json');
+
+        if (! File::exists($composerPath)) {
+            throw new \RuntimeException('composer.json was not found.');
+        }
+
+        $composerData = json_decode(File::get($composerPath), true);
+
+        if (! is_array($composerData)) {
+            throw new \RuntimeException('composer.json could not be parsed.');
+        }
+
+        if (! isset($composerData['repositories']) || ! is_array($composerData['repositories'])) {
+            $composerData['repositories'] = [];
+        }
+
+        $repositoryIndex = null;
+
+        foreach ($composerData['repositories'] as $index => $repository) {
+            if (
+                isset($repository['type'], $repository['url']) &&
+                $repository['type'] === 'composer' &&
+                $repository['url'] === 'https://composer.devso.me'
+            ) {
+                $repositoryIndex = $index;
+                break;
+            }
+        }
+
+        $privateRepository = [
+            'type' => 'composer',
+            'url' => 'https://composer.devso.me',
+            'options' => [
+                'http' => [
+                    'header' => [
+                        "API-TOKEN: {$apiKey}",
                     ],
-                ];
+                ],
+            ],
+        ];
 
-                if ($repositoryIndex === null) {
-                    $composerData['repositories'][] = $privateRepository;
-                } else {
-                    $composerData['repositories'][$repositoryIndex] = $privateRepository;
+        if ($repositoryIndex === null) {
+            $composerData['repositories'][] = $privateRepository;
+        } else {
+            $composerData['repositories'][$repositoryIndex] = $privateRepository;
+        }
+
+        $writeResult = File::put(
+            $composerPath,
+            json_encode($composerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . PHP_EOL
+        );
+
+        if ($writeResult === false) {
+            throw new \RuntimeException('composer.json could not be updated with the private repository configuration.');
+        }
+    }
+
+    private function isComposerPackageLocked(string $packageName): bool
+    {
+        $lockPath = base_path('composer.lock');
+
+        if (! File::exists($lockPath)) {
+            return false;
+        }
+
+        $lockData = json_decode(File::get($lockPath), true);
+
+        if (! is_array($lockData)) {
+            return false;
+        }
+
+        foreach (['packages', 'packages-dev'] as $section) {
+            foreach ($lockData[$section] ?? [] as $package) {
+                if (($package['name'] ?? null) === $packageName) {
+                    return true;
                 }
-
-                File::put($composerPath, json_encode($composerData, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
             }
+        }
 
-            $output = [];
-            $returnCode = 0;
+        return false;
+    }
 
-            exec('cd ' . base_path() . ' && composer require silkpanel/widgets-dashboard --no-interaction 2>&1', $output, $returnCode);
+    private function isComposerPackageInstalled(string $packageName): bool
+    {
+        return File::isDirectory(base_path('vendor/' . $packageName));
+    }
 
-            if ($returnCode !== 0) {
-                Log::warning('[Installer] Composer require failed', [
-                    'return_code' => $returnCode,
-                    'output' => implode("\n", $output),
-                ]);
-            } else {
-                Log::info('[Installer] SilkPanel packages installed successfully');
+    private function resolveComposerCommand(): array
+    {
+        $composerPharPath = base_path('composer.phar');
+
+        if (File::exists($composerPharPath)) {
+            return [PHP_BINARY, $composerPharPath];
+        }
+
+        foreach (
+            [
+                '/opt/homebrew/bin/composer',
+                '/usr/local/bin/composer',
+                '/usr/bin/composer',
+            ] as $composerBinary
+        ) {
+            if (is_executable($composerBinary)) {
+                return [$composerBinary];
             }
-        } catch (\Exception $e) {
-            Log::error('[Installer] Failed to install SilkPanel packages: ' . $e->getMessage());
+        }
+
+        return ['composer'];
+    }
+
+    private function runComposerCommand(array $command): void
+    {
+        $process = new Process($command, base_path(), [
+            'COMPOSER_ALLOW_SUPERUSER' => '1',
+        ]);
+
+        $process->setTimeout(900);
+        $process->run();
+
+        $output = trim($process->getOutput() . "\n" . $process->getErrorOutput());
+
+        Log::info('[Installer] Composer command finished', [
+            'command' => implode(' ', $command),
+            'exit_code' => $process->getExitCode(),
+            'output' => $output,
+        ]);
+
+        if (! $process->isSuccessful()) {
+            throw new \RuntimeException(
+                'Composer command failed: ' . ($output !== '' ? $output : 'No output returned.')
+            );
         }
     }
 

@@ -74,6 +74,26 @@
                                 name="password_confirmation" required autocomplete="new-password" />
                         </div>
 
+                        @if ($tosEnabled)
+                            <div class="col-span-6">
+                                <label class="flex items-start gap-3 cursor-pointer">
+                                    <input type="checkbox" name="terms" id="terms" value="1"
+                                        {{ old('terms') ? 'checked' : '' }}
+                                        class="mt-1 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 dark:border-gray-600 dark:bg-gray-800">
+                                    <span class="text-sm text-gray-600 dark:text-gray-400">
+                                        {{ __('auth/register.form.terms_accept') }}
+                                        <a href="{{ route('terms') }}" target="_blank"
+                                            class="text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-800 dark:hover:text-indigo-300">
+                                            {{ __('auth/register.form.terms_link') }}
+                                        </a>
+                                    </span>
+                                </label>
+                                @error('terms')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        @endif
+
                         <div class="col-span-6 flex flex-col sm:flex-row sm:items-center sm:gap-4">
                             <x-button>
                                 {{ __('auth/register.form.register') }}

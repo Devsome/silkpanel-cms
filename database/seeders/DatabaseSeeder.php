@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Call roles seeder first
+        // Call roles seeder first, also called in the installer
         $this->call([
             RolesAndPermissionsSeeder::class,
             SettingsSeeder::class,

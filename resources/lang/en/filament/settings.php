@@ -65,6 +65,10 @@ return [
             'email_verification_required_description' => 'Require users to verify their email address after registration. Hint: when toggle back on after being disabled, all existing users will be treated as if they have verified their email, so they will not be forced to verify their email until they change their email or password.',
             'maintenance_message' => 'Maintenance Message',
             'maintenance_message_placeholder' => 'Message when website is in maintenance',
+            'tos_enabled' => 'Enable Terms of Service',
+            'tos_enabled_description' => 'Require users to accept the Terms of Service during registration.',
+            'tos_text' => 'Terms of Service Text',
+            'tos_text_placeholder' => 'Enter your Terms of Service here...',
         ],
 
         'partners' => [

@@ -174,6 +174,20 @@ class SettingHelper
                 'label' => 'Maintenance Message',
                 'description' => 'Message during maintenance',
             ],
+            [
+                'key' => 'tos_enabled',
+                'value' => false,
+                'type' => 'toggle',
+                'label' => 'Enable Terms of Service',
+                'description' => 'Require users to accept the Terms of Service during registration.',
+            ],
+            [
+                'key' => 'tos_text',
+                'value' => null,
+                'type' => 'textarea',
+                'label' => 'Terms of Service Text',
+                'description' => 'Enter your Terms of Service here...',
+            ],
             // Contact
             [
                 'key' => 'contact_email',
