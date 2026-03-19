@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\SettingHelper;
 use App\Models\Setting;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -19,6 +20,14 @@ Route::get('/terms', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/language/{locale}', function (string $locale) {
+    abort_unless(in_array($locale, SettingHelper::frontendLanguages(), true), 404);
+
+    session(['frontend_locale' => $locale]);
+
+    return redirect()->back();
+})->name('language.switch');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

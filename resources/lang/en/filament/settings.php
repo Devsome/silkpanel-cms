@@ -29,6 +29,8 @@ return [
             'site_description_placeholder' => 'Meta description for search engines',
             'site_keywords' => 'SEO Keywords',
             'site_keywords_placeholder' => 'Separated by comma',
+            'frontend_languages' => 'Frontend Languages',
+            'frontend_languages_description' => 'Select the languages available in the frontend language switch.',
         ],
 
         'silkroad_online' => [

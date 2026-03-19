@@ -1,5 +1,12 @@
 <nav x-data="{ open: false }"
     class="bg-white px-4 py-2.5 pb-3 border-b border-gray-200 dark:bg-gray-900 dark:border-gray-400 fixed left-0 right-0 top-0 z-10">
+    @php
+        $frontendLanguages = $frontendLanguages ?? \App\Helpers\SettingHelper::frontendLanguagesWithLabels();
+        $currentFrontendLocale = $currentFrontendLocale ?? app()->getLocale();
+        $currentLanguageLabel = $frontendLanguages[$currentFrontendLocale] ?? strtoupper($currentFrontendLocale);
+        $showLanguageSwitch = count($frontendLanguages) > 1;
+    @endphp
+
     <div class="flex justify-between items-center h-12">
         <div class="flex">
             <div class="shrink-0 flex items-center">
@@ -17,6 +24,31 @@
 
         <div class="flex items-center">
             <div class="hidden sm:flex sm:items-center">
+                @if ($showLanguageSwitch)
+                    <x-dropdown align="right" width="40">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-primary-500 dark:text-white hover:text-primary-700 focus:outline-none transition ease-in-out duration-150">
+                                {{ __('navigation.language') }}: {{ $currentLanguageLabel }}
+                                <svg viewBox="0 0 20 20" fill="currentColor" data-slot="icon" aria-hidden="true"
+                                    class="-mr-1 size-5 text-gray-400">
+                                    <path
+                                        d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                        clip-rule="evenodd" fill-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </x-slot>
+
+                        <x-slot name="content">
+                            @foreach ($frontendLanguages as $locale => $label)
+                                <x-dropdown-link :href="route('language.switch', ['locale' => $locale])">
+                                    {{ $label }}
+                                </x-dropdown-link>
+                            @endforeach
+                        </x-slot>
+                    </x-dropdown>
+                @endif
+
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
@@ -111,6 +143,17 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                @if ($showLanguageSwitch)
+                    <div class="px-4 py-2 text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                        {{ __('navigation.language') }}
+                    </div>
+                    @foreach ($frontendLanguages as $locale => $label)
+                        <x-responsive-nav-link :href="route('language.switch', ['locale' => $locale])">
+                            {{ $label }}
+                        </x-responsive-nav-link>
+                    @endforeach
+                @endif
+
                 @guest
                     <x-responsive-nav-link :href="route('login')">
                         {{ __('navigation.login') }}

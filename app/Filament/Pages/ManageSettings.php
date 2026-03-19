@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Enums\Languages;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -9,6 +10,7 @@ use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -81,6 +83,18 @@ class ManageSettings extends Page
                                         ->label(__('filament/settings.form.page_info.site_keywords'))
                                         ->placeholder(__('filament/settings.form.page_info.site_keywords_placeholder'))
                                         ->maxLength(255),
+
+                                    Select::make('frontend_languages')
+                                        ->label(__('filament/settings.form.page_info.frontend_languages'))
+                                        ->helperText(__('filament/settings.form.page_info.frontend_languages_description'))
+                                        ->multiple()
+                                        ->options(
+                                            Languages::class
+                                        )
+                                        ->searchable()
+                                        ->preload()
+                                        ->default(['en'])
+                                        ->required(),
                                 ]),
 
                             Tab::make(__('filament/settings.form.tabs.silkroad_online'))
@@ -333,6 +347,7 @@ class ManageSettings extends Page
             'site_title',
             'site_description',
             'site_keywords',
+            'frontend_languages',
             'sro_max_player',
             'sro_cap',
             'sro_exp_sp',

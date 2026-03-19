@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Enums\Languages;
 use App\Models\Setting;
 
 class SettingHelper
@@ -47,6 +48,48 @@ class SettingHelper
     }
 
     /**
+     * Get enabled frontend languages.
+     *
+     * @return array<int, string>
+     */
+    public static function frontendLanguages(): array
+    {
+        $fallback = strtolower(str_replace('-', '_', (string) config('app.locale', 'en')));
+        $languages = Setting::get('frontend_languages', [$fallback]);
+
+        if (! is_array($languages)) {
+            return [$fallback];
+        }
+
+        $sanitized = collect($languages)
+            ->filter(fn(mixed $locale): bool => is_string($locale) && $locale !== '')
+            ->map(fn(string $locale): string => strtolower(str_replace('-', '_', $locale)))
+            ->unique()
+            ->values()
+            ->all();
+
+        return $sanitized !== [] ? $sanitized : [$fallback];
+    }
+
+    /**
+     * Get enabled frontend languages mapped to labels.
+     *
+     * @return array<string, string>
+     */
+    public static function frontendLanguagesWithLabels(): array
+    {
+        $languagesEnums = Languages::cases();
+        $languages = self::frontendLanguages();
+        $labels = [];
+
+        foreach ($languages as $language) {
+            $labels[$language] = $languagesEnums[array_search($language, array_column($languagesEnums, 'value'))]->getLabel() ?? strtoupper($language);
+        }
+
+        return $labels;
+    }
+
+    /**
      * Seed default settings
      */
     public static function seedDefaults(): void
@@ -73,6 +116,13 @@ class SettingHelper
                 'type' => 'text',
                 'label' => 'SEO Keywords',
                 'description' => 'Keywords for SEO',
+            ],
+            [
+                'key' => 'frontend_languages',
+                'value' => ['en'],
+                'type' => 'json',
+                'label' => 'Frontend Languages',
+                'description' => 'Enabled frontend languages for language switch',
             ],
             // Silkroad Online
             [
