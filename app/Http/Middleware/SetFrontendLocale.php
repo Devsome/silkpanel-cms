@@ -6,6 +6,7 @@ use App\Helpers\SettingHelper;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class SetFrontendLocale
 {
@@ -14,7 +15,17 @@ class SetFrontendLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $enabledLanguages = SettingHelper::frontendLanguages();
+        $fallbackLocale = (string) config('app.locale', 'en');
+        $fallbackLocale = strtolower(str_replace('-', '_', $fallbackLocale));
+
+        try {
+            $enabledLanguages = SettingHelper::frontendLanguages();
+            $frontendLanguages = SettingHelper::frontendLanguagesWithLabels();
+        } catch (Throwable) {
+            $enabledLanguages = [$fallbackLocale];
+            $frontendLanguages = [$fallbackLocale => strtoupper($fallbackLocale)];
+        }
+
         $defaultLocale = in_array(config('app.locale', 'en'), $enabledLanguages, true)
             ? (string) config('app.locale', 'en')
             : $enabledLanguages[0];
@@ -27,7 +38,7 @@ class SetFrontendLocale
         }
 
         app()->setLocale($locale);
-        view()->share('frontendLanguages', SettingHelper::frontendLanguagesWithLabels());
+        view()->share('frontendLanguages', $frontendLanguages);
         view()->share('currentFrontendLocale', $locale);
 
         return $next($request);
