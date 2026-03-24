@@ -92,6 +92,11 @@ return [
         'next' => 'Next',
     ],
 
+    'avatar' => [
+        'title' => 'Avatar',
+        'description' => 'View and manage the character\'s avatar.',
+    ],
+
     'edit' => [],
 
 ];

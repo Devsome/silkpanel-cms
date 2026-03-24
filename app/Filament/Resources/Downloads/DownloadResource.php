@@ -18,7 +18,7 @@ class DownloadResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowDownTray;
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Silkroad';
+    protected static string | \UnitEnum | null $navigationGroup = 'Administration';
 
     protected static ?string $recordTitleAttribute = 'name';
 

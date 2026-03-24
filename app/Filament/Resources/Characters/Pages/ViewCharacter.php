@@ -58,6 +58,14 @@ class ViewCharacter extends ViewRecord
         ];
     }
 
+    private function getAvatarViewData(): array
+    {
+        return [
+            'avatar' => $this->record->getCharAvatarSet(),
+            'characterImage2d' => $this->getCharacter2dImageUrl(),
+        ];
+    }
+
     protected function getHeaderActions(): array
     {
         return [
@@ -162,10 +170,13 @@ class ViewCharacter extends ViewRecord
                                             ->viewData(fn() => $this->getEquipmentViewData())
                                             ->columnSpanFull(),
                                     ]),
-                                // Tab::make(__('filament/characters.storage.title'))
-                                //     ->schema([
-                                //         // ...
-                                //     ]),
+                                Tab::make(__('filament/characters.avatar.title'))
+                                    ->schema([
+                                        ViewEntry::make('avatar')
+                                            ->view('filament.characters.partials.avatar')
+                                            ->label(__('filament/characters.view.avatar'))
+                                            ->viewData(fn() => $this->getAvatarViewData())
+                                    ]),
                             ])
                             ->columnSpanFull(),
 
