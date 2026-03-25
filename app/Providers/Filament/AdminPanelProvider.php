@@ -6,7 +6,6 @@ use App\Filament\Pages\Dashboard;
 use App\Http\Middleware\FilamentAdminMiddleware;
 use Filament\Enums\GlobalSearchPosition;
 use Filament\Enums\UserMenuPosition;
-use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -56,6 +55,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->userMenu(position: UserMenuPosition::Sidebar)
+            ->collapsibleNavigationGroups(true)
+            ->sidebarCollapsibleOnDesktop()
             ->globalSearch(position: GlobalSearchPosition::Sidebar)
             ->colors([
                 'primary' => [

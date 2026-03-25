@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->appendToGroup('web', SetFrontendLocale::class);
 
+        $middleware->validateCsrfTokens(except: [
+            'webhook/*',
+        ]);
+
         $middleware->alias([
             'silkpanel.api' => VerifySilkPanelApiKey::class,
             'installer.gate' => InstallerGate::class,

@@ -20,3 +20,7 @@
 .dark .fi-in-table-repeatable tbody tr:has(.guild-hover-row-marker):hover {
     background-color: color-mix(in oklab, var(--color-gray-500) 20%, var(--color-gray-900));
 }
+
+.fi-sidebar-nav-groups {
+    row-gap: calc(var(--spacing) * 1);
+}

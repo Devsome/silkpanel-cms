@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Characters;
 
-use App\Filament\Resources\Characters\Pages\CreateCharacter;
-use App\Filament\Resources\Characters\Pages\EditCharacter;
 use App\Filament\Resources\Characters\Pages\ListCharacters;
 use App\Filament\Resources\Characters\Pages\ViewCharacter;
 use App\Filament\Resources\Characters\Schemas\CharacterForm;

@@ -13,7 +13,8 @@
         "filament/filament": "^5.0",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "spatie/laravel-permission": "^6.0"
+        "spatie/laravel-permission": "^6.0",
+        "stripe/stripe-php": "^19.4"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.6",

@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Enums\SilkTypeIsroEnum;
 use Illuminate\Support\Facades\Auth;
 use SilkPanel\SilkroadModels\Models\Account\SkSilk;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
@@ -74,12 +75,18 @@ class SilkHelper
      */
     private function addSilkIsro(int $jid, int $amount, string $type, ?string $ip = null): void
     {
+        $isroSilkType = match ($type) {
+            'silk_own' => SilkTypeIsroEnum::SILK_TYPE_NORMAL->value,
+            'silk_gift', 'silk_point' => SilkTypeIsroEnum::SILK_TYPE_PREMIUM->value,
+            default => SilkTypeIsroEnum::SILK_TYPE_NORMAL->value,
+        };
+
         AphChangedSilk::create([
             'JID' => $jid,
             'PTInvoiceID' => null,
             'RemainedSilk' => abs($amount),
             'ChangedSilk' => $amount < 0 ? $amount : 0,
-            'SilkType' => $type,
+            'SilkType' => $isroSilkType,
             'SellingTypeID' => 2,
             'ChangeDate' => now(),
             'AvailableDate' => now()->addYears(1),
