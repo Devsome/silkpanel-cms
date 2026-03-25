@@ -76,8 +76,13 @@ class WebhookController extends Controller
 
         $user = $donation->user;
         if ($user && $user->jid) {
+            $jidPjid = null;
+            match (config('silkpanel.version')) {
+                'isro' => $jidPjid = $user->pjid,
+                default => $jidPjid = $user->jid,
+            };
             SilkHelper::addSilk(
-                jid: $user->jid,
+                jid: $jidPjid,
                 amount: $donation->silk_amount,
                 type: $donation->silk_type,
                 ip: $donation->ip_address,

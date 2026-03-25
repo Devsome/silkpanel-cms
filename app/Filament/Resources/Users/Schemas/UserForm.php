@@ -224,8 +224,13 @@ class UserForm
                                             return;
                                         }
                                         try {
+                                            $jidPjid = null;
+                                            match (config('silkpanel.version')) {
+                                                'isro' => $jidPjid = data_get($state, 'pjid'),
+                                                default => $jidPjid = data_get($state, 'jid'),
+                                            };
                                             \App\Helpers\SilkHelper::addSilk(
-                                                data_get($state, 'jid') ?? data_get($state, 'PortalJID'),
+                                                $jidPjid,
                                                 $silkAmount,
                                                 $get('silk_type')->value,
                                                 request()->ip()

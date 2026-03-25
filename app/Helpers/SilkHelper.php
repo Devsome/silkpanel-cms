@@ -76,8 +76,8 @@ class SilkHelper
     private function addSilkIsro(int $jid, int $amount, string $type, ?string $ip = null): void
     {
         $isroSilkType = match ($type) {
-            'silk_own' => SilkTypeIsroEnum::SILK_TYPE_NORMAL->value,
-            'silk_gift', 'silk_point' => SilkTypeIsroEnum::SILK_TYPE_PREMIUM->value,
+            '1' => SilkTypeIsroEnum::SILK_TYPE_NORMAL->value,
+            '3' => SilkTypeIsroEnum::SILK_TYPE_PREMIUM->value,
             default => SilkTypeIsroEnum::SILK_TYPE_NORMAL->value,
         };
 
