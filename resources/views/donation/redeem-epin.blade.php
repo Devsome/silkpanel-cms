@@ -36,7 +36,7 @@
                         <div>
                             <label for="epin_code"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                {{ __('donation.epin_code') }}
+                                {{ $provider->name }} {{ __('donation.epin_code') }}
                             </label>
                             <input type="text" name="epin_code" id="epin_code" value="{{ old('epin_code') }}"
                                 required
@@ -50,7 +50,7 @@
                         <div>
                             <label for="epin_secret"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                {{ __('donation.epin_secret') }}
+                                {{ $provider->name }} {{ __('donation.epin_secret') }}
                             </label>
                             <input type="text" name="epin_secret" id="epin_secret" value="{{ old('epin_secret') }}"
                                 required

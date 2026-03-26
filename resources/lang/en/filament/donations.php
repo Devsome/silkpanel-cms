@@ -26,7 +26,7 @@ return [
 
     // HipoCard Denomination Mapping
     'hipocard_denomination_section' => 'Denomination → Silk Mapping',
-    'hipocard_denomination_section_description' => 'Map HipoCard face values to custom silk amounts. If no entry matches the redeemed card value, the global silk-per-unit rate is used as fallback.',
+    'hipocard_denomination_section_description' => 'Map ePin card face values to custom silk amounts. If no entry matches the redeemed card value, the global silk-per-unit rate is used as fallback.',
 
     // Payment Provider Table
     'provider_table_provider' => 'Provider',

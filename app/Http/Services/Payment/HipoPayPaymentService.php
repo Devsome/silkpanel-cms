@@ -81,6 +81,11 @@ class HipoPayPaymentService implements PaymentServiceInterface
         return $redirectUrl;
     }
 
+    public function redeemEpin(string $epinCode, string $epinSecret, string $playerName, string $ipAddress): array
+    {
+        throw new \RuntimeException('HipoPay does not support ePin redemption.');
+    }
+
     public function handleWebhook(array $payload, array $headers): ?string
     {
         $status = $payload['status'] ?? '';

@@ -6,7 +6,6 @@ use App\Enums\DonationStatusEnum;
 use App\Helpers\SilkHelper;
 use App\Http\Services\Payment\PaymentServiceFactory;
 use App\Http\Services\Payment\PayPalPaymentService;
-use App\Http\Services\Payment\HipoCardPaymentService;
 use App\Models\Donation;
 use App\Models\DonationPackage;
 use App\Models\PaymentProvider;
@@ -29,8 +28,8 @@ class DonationController extends Controller
     {
         abort_unless($provider->is_active, 404);
 
-        // HipoCard has no packages — redirect directly to ePin form
-        if ($provider->slug->value === 'hipocard') {
+        // ePin providers have no packages — redirect directly to ePin form
+        if (in_array($provider->slug->value, ['hipocard', 'maxicard'])) {
             return redirect()->route('donate.redeem-epin.show', $provider);
         }
 
@@ -96,7 +95,7 @@ class DonationController extends Controller
     public function showRedeemEpin(PaymentProvider $provider)
     {
         abort_unless($provider->is_active, 404);
-        abort_unless($provider->slug->value === 'hipocard', 404);
+        abort_unless(in_array($provider->slug->value, ['hipocard', 'maxicard']), 404);
 
         return view('donation.redeem-epin', compact('provider'));
     }
@@ -104,7 +103,7 @@ class DonationController extends Controller
     public function redeemEpin(Request $request, PaymentProvider $provider)
     {
         abort_unless($provider->is_active, 404);
-        abort_unless($provider->slug->value === 'hipocard', 404);
+        abort_unless(in_array($provider->slug->value, ['hipocard', 'maxicard']), 404);
 
         $validated = $request->validate([
             'epin_code' => ['required', 'string', 'max:255'],
@@ -112,7 +111,8 @@ class DonationController extends Controller
         ]);
 
         $user = Auth::user();
-        $silkPerUnit = (int) config('donation.providers.hipocard.silk_per_unit', 100);
+        $providerSlug = $provider->slug->value;
+        $silkPerUnit = (int) config("donation.providers.{$providerSlug}.silk_per_unit", 100);
         $defaultSilkType = match (config('silkpanel.version')) {
             'isro' => 'silk_own',
             default => 'silk',
@@ -121,7 +121,7 @@ class DonationController extends Controller
         $donation = Donation::create([
             'user_id' => $user->id,
             'donation_package_id' => null,
-            'payment_provider_slug' => 'hipocard',
+            'payment_provider_slug' => $providerSlug,
             'amount' => 0,
             'currency' => config('donation.currency', 'USD'),
             'silk_amount' => 0,
@@ -131,7 +131,7 @@ class DonationController extends Controller
         ]);
 
         try {
-            $service = new HipoCardPaymentService();
+            $service = PaymentServiceFactory::make($providerSlug);
             $result = $service->redeemEpin(
                 epinCode: $validated['epin_code'],
                 epinSecret: $validated['epin_secret'],
@@ -174,7 +174,7 @@ class DonationController extends Controller
                 }
 
                 return redirect()->route('donate.success', [
-                    'provider' => 'hipocard',
+                    'provider' => $providerSlug,
                     'donation' => $donation->id,
                 ]);
             }
@@ -188,7 +188,8 @@ class DonationController extends Controller
 
             return back()->with('error', $errorMessage)->withInput();
         } catch (\Throwable $e) {
-            Log::error('Donation: HipoCard ePin redemption failed', [
+            Log::error('Donation: ePin redemption failed', [
+                'provider' => $providerSlug,
                 'donation_id' => $donation->id,
                 'error' => $e->getMessage(),
             ]);

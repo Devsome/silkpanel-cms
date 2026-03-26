@@ -58,6 +58,11 @@ class StripePaymentService implements PaymentServiceInterface
         return $session->url;
     }
 
+    public function redeemEpin(string $epinCode, string $epinSecret, string $playerName, string $ipAddress): array
+    {
+        throw new \RuntimeException('Stripe does not support ePin redemption.');
+    }
+
     public function handleWebhook(array $payload, array $headers): ?string
     {
         $type = $payload['type'] ?? '';

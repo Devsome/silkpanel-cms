@@ -38,6 +38,13 @@ class PaymentProviderSeeder extends Seeder
                 'is_active' => false,
                 'sort_order' => 4,
             ],
+            [
+                'slug' => 'maxicard',
+                'name' => 'MaxiCard',
+                'description' => 'Pay with MaxiCard ePin.',
+                'is_active' => false,
+                'sort_order' => 5,
+            ],
         ];
 
         foreach ($providers as $provider) {

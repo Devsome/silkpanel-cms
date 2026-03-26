@@ -24,6 +24,12 @@ interface PaymentServiceInterface
     public function verifyWebhook(string $rawBody, array $headers): bool;
 
     /**
+     * Redeem an ePin code and return a normalized result array.
+     * ['success' => bool, 'data' => ['total_sales' => float, 'currency' => string, ...], 'message' => string]
+     */
+    public function redeemEpin(string $epinCode, string $epinSecret, string $playerName, string $ipAddress): array;
+
+    /**
      * Get the provider slug.
      */
     public function getSlug(): string;

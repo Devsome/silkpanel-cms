@@ -40,6 +40,9 @@
                                             alt="{{ $provider->name }}" class="h-10 mx-auto dark:hidden">
                                         <img src="{{ asset('images/payment/hipopotamya-logo-white.png') }}"
                                             alt="{{ $provider->name }}" class="h-10 mx-auto hidden dark:block">
+                                    @elseif($provider->slug->value === 'maxicard')
+                                        <img src="{{ asset('images/payment/maxigame-logo.png') }}"
+                                            alt="{{ $provider->name }}" class="h-10 mx-auto">
                                     @else
                                         <span class="inline-block text-4xl text-gray-500"></span>
                                     @endif

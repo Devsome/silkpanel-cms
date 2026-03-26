@@ -96,6 +96,11 @@ class PayPalPaymentService implements PaymentServiceInterface
         return $response->json();
     }
 
+    public function redeemEpin(string $epinCode, string $epinSecret, string $playerName, string $ipAddress): array
+    {
+        throw new \RuntimeException('PayPal does not support ePin redemption.');
+    }
+
     public function handleWebhook(array $payload, array $headers): ?string
     {
         $eventType = $payload['event_type'] ?? '';

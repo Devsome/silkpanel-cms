@@ -15,6 +15,7 @@ class PaymentServiceFactory
             'stripe' => new StripePaymentService(),
             'hipopay' => new HipoPayPaymentService(),
             'hipocard' => new HipoCardPaymentService(),
+            'maxicard' => new MaxicardPaymentService(),
             default => throw new \InvalidArgumentException("Unsupported payment provider: {$slug}"),
         };
     }

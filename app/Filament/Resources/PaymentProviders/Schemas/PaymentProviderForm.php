@@ -55,7 +55,7 @@ class PaymentProviderForm
                             ->multiple()
                             ->preload(),
                     ])
-                    ->visible(fn($record) => $record?->slug !== PaymentProviderEnum::HIPOCARD),
+                    ->visible(fn($record) => !in_array($record?->slug, [PaymentProviderEnum::HIPOCARD, PaymentProviderEnum::MAXICARD])),
 
                 Section::make(__('filament/donations.hipocard_denomination_section'))
                     ->description(__('filament/donations.hipocard_denomination_section_description'))
@@ -71,6 +71,21 @@ class PaymentProviderForm
                     ->columns(3)
                     ->collapsed()
                     ->visible(fn($record) => $record?->slug === PaymentProviderEnum::HIPOCARD),
+
+                Section::make(__('filament/donations.hipocard_denomination_section'))
+                    ->description(__('filament/donations.hipocard_denomination_section_description'))
+                    ->schema(array_map(
+                        fn(int $denom) => TextInput::make("denomination_silks.{$denom}")
+                            ->label("Card Amount {$denom}")
+                            ->numeric()
+                            ->minValue(0)
+                            ->nullable()
+                            ->placeholder(fn() => $denom),
+                        [5, 10, 25, 50, 75, 100, 250, 500, 1000, 2000, 5000, 10000, 25000]
+                    ))
+                    ->columns(3)
+                    ->collapsed()
+                    ->visible(fn($record) => $record?->slug === PaymentProviderEnum::MAXICARD),
 
                 Section::make(__('filament/donations.provider_section_api_config'))
                     ->description(__('filament/donations.provider_section_api_config_description'))
@@ -147,6 +162,26 @@ class PaymentProviderForm
                     ->label('HIPOCARD_SILK_PER_UNIT')
                     ->placeholder(fn() => config('donation.providers.hipocard.silk_per_unit'))
                     ->default(fn() => config('donation.providers.hipocard.silk_per_unit'))
+                    ->readOnly(true)
+                    ->dehydrated(false),
+            ],
+            PaymentProviderEnum::MAXICARD => [
+                TextInput::make('env_maxicard_username')
+                    ->label('MAXICARD_USERNAME')
+                    ->placeholder(fn() => self::maskValue(config('donation.providers.maxicard.username')))
+                    ->default(fn() => self::maskValue(config('donation.providers.maxicard.username')))
+                    ->readOnly(true)
+                    ->dehydrated(false),
+                TextInput::make('env_maxicard_password')
+                    ->label('MAXICARD_PASSWORD')
+                    ->placeholder(fn() => self::maskValue(config('donation.providers.maxicard.password')))
+                    ->default(fn() => self::maskValue(config('donation.providers.maxicard.password')))
+                    ->readOnly(true)
+                    ->dehydrated(false),
+                TextInput::make('env_maxicard_silk_per_unit')
+                    ->label('MAXICARD_SILK_PER_UNIT')
+                    ->placeholder(fn() => config('donation.providers.maxicard.silk_per_unit'))
+                    ->default(fn() => config('donation.providers.maxicard.silk_per_unit'))
                     ->readOnly(true)
                     ->dehydrated(false),
             ],

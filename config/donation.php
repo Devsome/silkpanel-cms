@@ -28,6 +28,12 @@ return [
             'silk_per_unit' => env('HIPOCARD_SILK_PER_UNIT', 100),
         ],
 
+        'maxicard' => [
+            'username' => env('MAXICARD_USERNAME'),
+            'password' => env('MAXICARD_PASSWORD'),
+            'silk_per_unit' => env('MAXICARD_SILK_PER_UNIT', 100),
+        ],
+
         'paymentwall' => [
             'project_key' => env('PAYMENTWALL_PROJECT_KEY'),
             'secret_key' => env('PAYMENTWALL_SECRET_KEY'),
