@@ -24,11 +24,12 @@ return [
     'cancel_heading' => 'Payment Cancelled',
     'cancel_message' => 'Your payment was cancelled. No charges were made.',
 
-    // ePin redemption (HipoCard)
-    'epin_description' => 'Enter your ePin card code and secret to redeem your balance.',
-    'epin_code' => 'ePin Code',
-    'epin_code_placeholder' => 'Enter your ePin code',
-    'epin_secret' => 'ePin Secret',
-    'epin_secret_placeholder' => 'Enter your ePin secret',
-    'redeem_epin' => 'Redeem ePin',
+    // E-Pin redemption (HipoCard)
+    'epin_description' => 'Enter your E-Pin card code and secret to redeem your balance.',
+    'epin_code' => 'E-Pin Code',
+    'epin_code_placeholder' => 'Enter your E-Pin code',
+    'epin_secret' => 'E-Pin Secret',
+    'epin_secret_placeholder' => 'Enter your E-Pin secret',
+    'cancel' => 'Cancel',
+    'redeem_epin' => 'Redeem E-Pin',
 ];
