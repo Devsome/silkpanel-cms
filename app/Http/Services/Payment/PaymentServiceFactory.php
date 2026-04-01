@@ -16,6 +16,7 @@ class PaymentServiceFactory
             'hipopay' => new HipoPayPaymentService(),
             'hipocard' => new HipoCardPaymentService(),
             'maxicard' => new MaxicardPaymentService(),
+            'fawaterk' => new FawaterkPaymentService(),
             default => throw new \InvalidArgumentException("Unsupported payment provider: {$slug}"),
         };
     }

@@ -11,6 +11,7 @@ enum PaymentProviderEnum: string implements HasLabel
     case HIPOPAY = 'hipopay';
     case HIPOCARD = 'hipocard';
     case MAXICARD = 'maxicard';
+    case FAWATERK = 'fawaterk';
     case PAYMENTWALL = 'paymentwall';
     case COINPAYMENTS = 'coinpayments';
 
@@ -22,6 +23,7 @@ enum PaymentProviderEnum: string implements HasLabel
             self::HIPOPAY => 'HipoPay',
             self::HIPOCARD => 'HipoCard',
             self::MAXICARD => 'MaxiCard',
+            self::FAWATERK => 'Fawaterk',
             self::PAYMENTWALL => 'Paymentwall',
             self::COINPAYMENTS => 'CoinPayments',
         };

@@ -26,6 +26,11 @@ class WebhookController extends Controller
         return $this->processWebhook('hipopay', $request);
     }
 
+    public function handleFawaterk(Request $request)
+    {
+        return $this->processWebhook('fawaterk', $request);
+    }
+
     private function processWebhook(string $provider, Request $request)
     {
         $service = PaymentServiceFactory::make($provider);

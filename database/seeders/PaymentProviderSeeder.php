@@ -45,6 +45,13 @@ class PaymentProviderSeeder extends Seeder
                 'is_active' => false,
                 'sort_order' => 5,
             ],
+            [
+                'slug' => 'fawaterk',
+                'name' => 'Fawaterk',
+                'description' => 'Pay with Fawaterk.',
+                'is_active' => false,
+                'sort_order' => 6,
+            ]
         ];
 
         foreach ($providers as $provider) {

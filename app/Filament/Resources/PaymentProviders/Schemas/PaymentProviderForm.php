@@ -185,6 +185,26 @@ class PaymentProviderForm
                     ->readOnly(true)
                     ->dehydrated(false),
             ],
+            PaymentProviderEnum::FAWATERK => [
+                TextInput::make('env_fawaterk_api_key')
+                    ->label('FAWATERK_API_KEY')
+                    ->placeholder(fn() => self::maskValue(config('donation.providers.fawaterk.api_key')))
+                    ->default(fn() => self::maskValue(config('donation.providers.fawaterk.api_key')))
+                    ->readOnly(true)
+                    ->dehydrated(false),
+                TextInput::make('env_fawaterk_vendor_key')
+                    ->label('FAWATERK_VENDOR_KEY')
+                    ->placeholder(fn() => self::maskValue(config('donation.providers.fawaterk.vendor_key')))
+                    ->default(fn() => self::maskValue(config('donation.providers.fawaterk.vendor_key')))
+                    ->readOnly(true)
+                    ->dehydrated(false),
+                TextInput::make('env_fawaterk_endpoint')
+                    ->label('FAWATERK_ENDPOINT')
+                    ->placeholder(fn() => config('donation.providers.fawaterk.endpoint'))
+                    ->default(fn() => config('donation.providers.fawaterk.endpoint'))
+                    ->readOnly(true)
+                    ->dehydrated(false),
+            ],
             default => [
                 TextInput::make('env_notice')
                     ->label('Notice')

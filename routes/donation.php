@@ -20,4 +20,5 @@ Route::prefix('webhook')->group(function () {
     Route::post('/paypal', [WebhookController::class, 'handlePayPal'])->name('webhook.paypal');
     Route::post('/stripe', [WebhookController::class, 'handleStripe'])->name('webhook.stripe');
     Route::post('/hipopay', [WebhookController::class, 'handleHipoPay'])->name('webhook.hipopay');
+    Route::post('/fawaterk', [WebhookController::class, 'handleFawaterk'])->name('webhook.fawaterk');
 });

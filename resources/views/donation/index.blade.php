@@ -43,6 +43,9 @@
                                     @elseif($provider->slug->value === 'maxicard')
                                         <img src="{{ asset('images/payment/maxigame-logo.png') }}"
                                             alt="{{ $provider->name }}" class="h-10 mx-auto">
+                                    @elseif($provider->slug->value === 'fawaterk')
+                                        <img src="{{ asset('images/payment/fawaterak-logo.png') }}"
+                                            alt="{{ $provider->name }}" class="h-10 mx-auto">
                                     @else
                                         <span class="inline-block text-4xl text-gray-500"></span>
                                     @endif

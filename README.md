@@ -44,3 +44,10 @@ ddev artisan ide-helper:generate
 ddev artisan ide-helper:models --write
 ddev artisan ide-helper:models -N
 ```
+
+## Routes for donation webhooks
+
+- PayPal: `/webhook/paypal`
+- Stripe: `/webhook/stripe`
+- HipoPay: `/webhook/hipopay`
+- Fawaterk: `/webhook/fawaterk`

@@ -34,6 +34,12 @@ return [
             'silk_per_unit' => env('MAXICARD_SILK_PER_UNIT', 100),
         ],
 
+        'fawaterk' => [
+            'api_key' => env('FAWATERK_API_KEY'),
+            'vendor_key' => env('FAWATERK_VENDOR_KEY'),
+            'endpoint' => env('FAWATERK_ENDPOINT', 'https://app.fawaterk.com'),
+        ],
+
         'paymentwall' => [
             'project_key' => env('PAYMENTWALL_PROJECT_KEY'),
             'secret_key' => env('PAYMENTWALL_SECRET_KEY'),
