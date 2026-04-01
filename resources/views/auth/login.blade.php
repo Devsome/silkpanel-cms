@@ -33,10 +33,17 @@
                         <x-auth-session-status class="mb-4 col-span-6" :status="session('status')" />
 
                         <div class="col-span-6 sm:col-span-3">
-                            <x-input-label for="email" :value="__('auth/login.form.email')" />
-                            <x-text-input id="email" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
-                                type="email" name="email" :value="old('email')" required autofocus
-                                autocomplete="email" />
+                            @if (\App\Models\Setting::get('login_with_name', false))
+                                <x-input-label for="email" :value="__('auth/login.form.username_or_email')" />
+                                <x-text-input id="email" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                    type="text" name="email" :value="old('email')" required autofocus
+                                    autocomplete="username" />
+                            @else
+                                <x-input-label for="email" :value="__('auth/login.form.email')" />
+                                <x-text-input id="email" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                    type="email" name="email" :value="old('email')" required autofocus
+                                    autocomplete="email" />
+                            @endif
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 

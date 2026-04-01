@@ -9,6 +9,7 @@ return [
         'email' => 'Email *',
         'password' => 'Password *',
         'username' => 'Username *',
+        'username_or_email' => 'Username or Email *',
         'remember_me' => 'Remember me',
         'login' => 'Login',
         'forgot_password' => 'Forgot your password?',

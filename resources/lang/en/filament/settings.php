@@ -71,6 +71,8 @@ return [
             'tos_enabled_description' => 'Require users to accept the Terms of Service during registration.',
             'tos_text' => 'Terms of Service Text',
             'tos_text_placeholder' => 'Enter your Terms of Service here...',
+            'login_with_name' => 'Login with Name',
+            'login_with_name_description' => 'Allow users to log in with their username instead of email address.',
         ],
 
         'partners' => [

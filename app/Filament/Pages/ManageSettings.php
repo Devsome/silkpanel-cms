@@ -263,6 +263,10 @@ class ManageSettings extends Page
                                         ->columnSpanFull()
                                         ->dehydrated()
                                         ->visible(fn(Get $get) => (bool) $get('tos_enabled')),
+
+                                    Toggle::make('login_with_name')
+                                        ->label(__('filament/settings.form.features.login_with_name'))
+                                        ->helperText(__('filament/settings.form.features.login_with_name_description')),
                                 ]),
 
                             Tab::make(__('filament/settings.form.tabs.partners'))
@@ -374,6 +378,7 @@ class ManageSettings extends Page
             'social_discord',
             'partners',
             'tos_enabled',
+            'login_with_name',
         ];
 
         foreach ($settingKeys as $key) {

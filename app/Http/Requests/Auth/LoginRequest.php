@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,8 +29,12 @@ class LoginRequest extends FormRequest
      */
     public function rules(): array
     {
+        $loginWithName = (bool) Setting::get('login_with_name', false);
+
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => $loginWithName
+                ? ['required', 'string']
+                : ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ];
     }
@@ -43,7 +48,11 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $user = User::where('email', $this->email)->first();
+        $loginWithName = (bool) Setting::get('login_with_name', false);
+
+        $user = $loginWithName
+            ? User::where('email', $this->email)->orWhere('name', $this->email)->first()
+            : User::where('email', $this->email)->first();
 
         if ($user && strlen($user->password) === 32 && !str_starts_with($user->password, '$')) {
             if (md5($this->password) === $user->password) {
@@ -58,7 +67,13 @@ class LoginRequest extends FormRequest
             }
         }
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $credentials = $this->only('email', 'password');
+
+        if ($loginWithName && $user) {
+            $credentials['email'] = $user->email;
+        }
+
+        if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
