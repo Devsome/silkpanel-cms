@@ -5,17 +5,17 @@ namespace App\Filament\Resources\Pages\Pages;
 use App\Filament\Resources\Pages\PageResource;
 use App\Helpers\SettingHelper;
 use App\Models\PageTranslation;
-use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ForceDeleteAction;
 use Filament\Actions\RestoreAction;
-use Filament\Forms\Components\Select;
+use Filament\Actions\SelectAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditPage extends EditRecord
 {
     protected static string $resource = PageResource::class;
 
+    public ?string $switchLocale = null;
     public string $activeLocale = 'en';
     public array $translationsData = [];
 
@@ -48,25 +48,20 @@ class EditPage extends EditRecord
         }
 
         return [
-            Action::make('switchLocale')
+            SelectAction::make('switchLocale')
                 ->label(__('filament/pages.edit.select_language'))
-                ->schema([
-                    Select::make('locale')
-                        ->label(__('filament/pages.edit.select_language_help'))
-                        ->options($frontendLanguages)
-                        ->default($this->activeLocale)
-                        ->native(false)
-                        ->required(),
-                ])
-                ->action(function (array $data): void {
-                    $this->activeLocale = $data['locale'];
-                    $this->loadTranslation();
-                }),
+                ->options($frontendLanguages),
 
             DeleteAction::make(),
             ForceDeleteAction::make(),
             RestoreAction::make(),
         ];
+    }
+
+    public function updatedSwitchLocale()
+    {
+        $this->activeLocale = $this->switchLocale;
+        $this->loadTranslation();
     }
 
     public function updatedActiveLocale()
