@@ -23,7 +23,7 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        return $panel
+        $panel = $panel
             ->default()
             ->id('admin')
             ->path('admin')
@@ -73,5 +73,12 @@ class AdminPanelProvider extends PanelProvider
                     950 => '#3b1078',
                 ]
             ]);
+
+        $votingPluginClass = 'SilkPanel\\Voting\\VotingPlugin';
+        if (class_exists($votingPluginClass)) {
+            $panel->plugin($votingPluginClass::make());
+        }
+
+        return $panel;
     }
 }
