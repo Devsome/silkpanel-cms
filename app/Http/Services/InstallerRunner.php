@@ -64,6 +64,21 @@ class InstallerRunner
                 return $this->runSeeder('Database\\Seeders\\DatabaseSeeder');
             });
 
+            // Step 5a: Seed optional package data
+            $this->runStep('Seeding package data', function () {
+                $output = [];
+
+                $packageSeeders = [
+                    'SilkPanel\\Voting\\Database\\Seeders\\VotingSiteSeeder',
+                ];
+
+                foreach ($packageSeeders as $seeder) {
+                    $output[] = $this->runSeeder($seeder);
+                }
+
+                return implode(', ', array_filter($output)) ?: 'No package seeders run';
+            });
+
             // Step 6: Clear all caches
             $this->runStep('Optimizing application', function () {
                 Artisan::call('config:cache');
