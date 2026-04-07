@@ -2,16 +2,9 @@
 
 This project is the newer version of the old [silkroad-laravel](https://github.com/Devsome/silkroad-laravel) project. The technology stack has been updated to Laravel 12, and the project has been restructured to be a full CMS system with a lot of features and modules.
 
-## License
+## Documentation
 
-This project is licensed under the PolyForm Shield License 1.0.0.
-
-You may view and use the source code for personal and educational purposes.
-Redistribution, commercial use, or offering the software as a service is prohibited.
-
-Commercial modules are available via API key licensing.
-
-Breaking the License Terms may result in legal action. Please review the license terms carefully before using or distributing this software.
+visit the documentation at [https://documentation.devso.me](https://documentation.devso.me) for more details.
 
 ## Setup
 
@@ -27,9 +20,16 @@ php artisan key:generate
 
 after that you can open the webpage on the `/install` route.
 
-## Documentation
+## License
 
-visit the documentation at [https://documentation.devso.me](https://documentation.devso.me) for more details.
+This project is licensed under the PolyForm Shield License 1.0.0.
+
+You may view and use the source code for personal and educational purposes.
+Redistribution, commercial use, or offering the software as a service is prohibited.
+
+Commercial modules are available via API key licensing.
+
+Breaking the License Terms may result in legal action. Please review the license terms carefully before using or distributing this software.
 
 ## For local deployment
 
@@ -44,10 +44,3 @@ ddev artisan ide-helper:generate
 ddev artisan ide-helper:models --write
 ddev artisan ide-helper:models -N
 ```
-
-## Routes for donation webhooks
-
-- PayPal: `/webhook/paypal`
-- Stripe: `/webhook/stripe`
-- HipoPay: `/webhook/hipopay`
-- Fawaterk: `/webhook/fawaterk`

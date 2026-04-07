@@ -12,6 +12,7 @@ return [
         'password' => 'Password *',
         'silkroad_id' => 'Username *',
         'confirm_password' => 'Confirm Password *',
+        'password_confirmation' => 'Confirm Password *',
         'register' => 'Create Account',
         'already_registered' => 'Already registered?',
         'terms_accept' => 'I have read and accept the',

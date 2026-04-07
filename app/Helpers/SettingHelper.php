@@ -310,6 +310,14 @@ class SettingHelper
                 'label' => 'Partners',
                 'description' => 'List of partners',
             ],
+            // Template
+            [
+                'key' => 'active_template',
+                'value' => '',
+                'type' => 'text',
+                'label' => 'Active Template',
+                'description' => 'The currently active frontend template (empty = default views)',
+            ],
         ];
 
         foreach ($defaults as $setting) {

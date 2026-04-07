@@ -31,3 +31,7 @@ database/database.sqlite
 storage/framework/installer-result.json
 installer.lock
 querys.sql
+resources/views/templates/*
+!resources/views/templates/
+!resources/views/templates/basic/
+!resources/views/templates/basic/**

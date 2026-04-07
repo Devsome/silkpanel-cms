@@ -3,11 +3,21 @@
 use App\Helpers\SettingHelper;
 use App\Models\Setting;
 use App\Http\Controllers\ProfileController;
+use App\Services\TemplateService;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('template::welcome');
 })->name('index');
+
+Route::get('/templates/{slug}/preview-image', function (string $slug, TemplateService $templateService) {
+    abort_unless(preg_match('/^[a-z0-9\-]+$/', $slug) === 1, 404);
+
+    $path = $templateService->getPreviewImagePath($slug);
+    abort_unless($path !== null, 404);
+
+    return response()->file($path);
+})->name('template.preview-image');
 
 Route::get('/terms', function () {
     abort_unless((bool) Setting::get('tos_enabled', false), 404);
@@ -18,7 +28,7 @@ Route::get('/terms', function () {
 })->name('terms');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('template::dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/language/{locale}', function (string $locale) {

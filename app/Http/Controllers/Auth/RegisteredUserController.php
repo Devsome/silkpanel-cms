@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
     {
         $tosEnabled = (bool) Setting::get('tos_enabled', false);
 
-        return view('auth.register', compact('tosEnabled'));
+        return view('template::auth.register', compact('tosEnabled'));
     }
 
     /**
