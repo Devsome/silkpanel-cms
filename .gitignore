@@ -35,3 +35,5 @@ resources/views/templates/*
 !resources/views/templates/
 !resources/views/templates/basic/
 !resources/views/templates/basic/**
+!resources/views/templates/silkroad-gaming/
+!resources/views/templates/silkroad-gaming/**
