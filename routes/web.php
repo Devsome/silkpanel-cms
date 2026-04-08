@@ -1,8 +1,13 @@
 <?php
 
 use App\Helpers\SettingHelper;
-use App\Models\Setting;
+use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\NewsController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RankingController;
+use App\Http\Controllers\VotingController;
+use App\Models\Setting;
 use App\Services\TemplateService;
 use Illuminate\Support\Facades\Route;
 
@@ -22,14 +27,10 @@ Route::get('/templates/{slug}/preview-image', function (string $slug, TemplateSe
 Route::get('/terms', function () {
     abort_unless((bool) Setting::get('tos_enabled', false), 404);
 
-    return view('terms', [
+    return view('template::terms', [
         'tosText' => Setting::get('tos_text', ''),
     ]);
 })->name('terms');
-
-Route::get('/dashboard', function () {
-    return view('template::dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/language/{locale}', function (string $locale) {
     abort_unless(in_array($locale, SettingHelper::frontendLanguages(), true), 404);
@@ -38,6 +39,30 @@ Route::get('/language/{locale}', function (string $locale) {
 
     return redirect()->back();
 })->name('language.switch');
+
+// Public content routes
+Route::get('/news', [NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{slug}', [NewsController::class, 'show'])->name('news.show');
+Route::get('/downloads', [DownloadController::class, 'index'])->name('downloads.index');
+Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show');
+
+// Rankings (public)
+Route::prefix('ranking')->name('ranking.')->group(function () {
+    Route::get('/characters', fn() => view('template::ranking.characters'))->name('characters');
+    Route::get('/characters/{id}', [RankingController::class, 'showCharacter'])->name('characters.show')->where('id', '[0-9]+');
+    Route::get('/guilds', fn() => view('template::ranking.guilds'))->name('guilds');
+    Route::get('/guilds/{id}', [RankingController::class, 'showGuild'])->name('guilds.show')->where('id', '[0-9]+');
+    Route::get('/uniques', fn() => view('template::ranking.uniques'))->name('uniques');
+});
+
+// Authenticated routes
+Route::get('/dashboard', function () {
+    return view('template::dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard/voting', [VotingController::class, 'index'])->name('voting.index');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

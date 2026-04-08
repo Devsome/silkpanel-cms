@@ -51,7 +51,7 @@ class LoginRequest extends FormRequest
         $loginWithName = (bool) Setting::get('login_with_name', false);
 
         $user = $loginWithName
-            ? User::where('email', $this->email)->orWhere('name', $this->email)->first()
+            ? User::where('email', $this->email)->orWhere('silkroad_id', $this->email)->first()
             : User::where('email', $this->email)->first();
 
         if ($user && strlen($user->password) === 32 && !str_starts_with($user->password, '$')) {

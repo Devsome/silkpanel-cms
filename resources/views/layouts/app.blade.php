@@ -6,26 +6,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'SilkPanel CMS') }}</title>
-    <!-- {{ Illuminate\Foundation\Application::VERSION }} -->
+    <title>@settings('site_title', 'SilkPanel CMS')</title>
+    <meta name="description" content="@settings('site_description', 'Made by devsome')">
+    <meta name="keywords" content="@settings('site_keywords', 'silkpanel, cms, laravel, filament')">
+
+    @if (\App\Helpers\SettingHelper::get('logo'))
+        <link rel="icon" type="image/png" href="{{ asset('storage/' . \App\Helpers\SettingHelper::get('logo')) }}">
+        <meta property="og:image" content="{{ asset('storage/' . \App\Helpers\SettingHelper::get('logo')) }}">
+    @endif
+
+    @if (\App\Helpers\SettingHelper::get('favicon'))
+        <link rel="icon" href="{{ asset('storage/' . \App\Helpers\SettingHelper::get('favicon')) }}">
+    @endif
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 
-<body class="antialiased">
+<body class="antialiased min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     @include('layouts.navigation')
 
     @isset($header)
-        <header class="bg-white shadow dark:bg-gray-900">
-            <div class="max-w-7xl mx-auto pt-6 pb-2 px-4 sm:px-6 lg:px-8 dark:text-white">
+        <header class="bg-white shadow dark:bg-gray-800 mt-16">
+            <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
                 {{ $header }}
             </div>
         </header>
     @endisset
 
-    <main class="h-auto pt-6 sm:pt-8 md:pt-12 lg:pt-18">
+    <main class="flex-1 pt-16 @isset($header) pt-0 @endisset">
         {{ $slot }}
     </main>
+
+    @include('layouts.partials.footer')
+
+    @livewireScripts
 </body>
 
 </html>

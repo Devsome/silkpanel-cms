@@ -132,4 +132,20 @@ enum CharacterAvatarMapEnum: int
 
         return asset('images/silkroad/chars_avatar/' . $vsroId . '.png');
     }
+
+    /**
+     * Returns the character image URL for a character ID
+     * 
+     * @param int $characterId The character ID (can be ISRO or VSRO)
+     * @param string $version The version ('isro' or 'vsro'). Default: 'vsro'
+     * @return string The complete asset URL to the character image file
+     */
+    public static function getCharacterUrl(int $characterId, string $version = 'vsro'): string
+    {
+        $vsroId = $version === 'isro'
+            ? self::mapIsroToVsro($characterId)
+            : $characterId;
+
+        return asset('images/silkroad/chars_2d/' . $vsroId . '.png');
+    }
 }

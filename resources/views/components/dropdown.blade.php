@@ -28,11 +28,9 @@
         x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
         x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
         x-transition:leave-end="transform opacity-0 scale-95"
-        class="absolute mt-2 {{ $width }} rounded-lg shadow-xl {{ $alignmentClasses }}
-        divide-y divide-gray-100 rounded-md bg-white shadow-lg outline-1 outline-black/5
-        data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out
-        data-leave:duration-75 data-leave:ease-in
-        dark:divide-white/10 dark:bg-gray-800 dark:shadow-none dark:-outline-offset-1 dark:outline-white/10"
+        class="absolute mt-2 {{ $width }} {{ $alignmentClasses }}
+        rounded-lg border border-gray-200 bg-white p-1.5 shadow-lg
+        dark:border-gray-700 dark:bg-gray-800"
         style="display: none;" @click.stop="open = false">
         {{ $content }}
     </div>

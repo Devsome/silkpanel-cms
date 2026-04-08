@@ -1,4 +1,4 @@
-<x-main-layout>
+<x-app-layout>
     <section class="bg-white dark:bg-gray-900">
         <div class="lg:grid lg:min-h-screen lg:grid-cols-6">
             <section class="relative flex h-32 items-end bg-gray-900 lg:col-span-3 lg:h-full">
@@ -55,4 +55,4 @@
             </main>
         </div>
     </section>
-</x-main-layout>
+</x-app-layout>

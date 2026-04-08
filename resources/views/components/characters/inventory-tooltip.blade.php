@@ -110,15 +110,6 @@
             {{ __('Max. no. of magic options: :unit Unit', ['unit' => $item->get('MaxMagicOptCount')]) }}</div><br />
     @endif
 
-    {{-- @if ($typeID3 === 14)
-        <div class="text-xs mt-2">
-            <span class="text-[#efdaa4]">{{ __('Basic Option') }}</span><br />
-            {{ __('MaximumHP :max% Increase', ['max' => $item->get('DevilMaxHP')]) }}<br />
-            {{ __('MaximumMP :max% Increase', ['max' => $item->get('DevilMaxHP')]) }}<br />
-        </div>
-        <br />
-    @endif --}}
-
     @if ($blueInfo->isNotEmpty())
         <div class="mt-2.5 text-xs leading-[1.4]">
             @foreach ($blueInfo as $row)
@@ -160,7 +151,8 @@
         <div class="mt-2 text-xs">{{ __('Quantity') }} {{ $item->get('Amount') }}</div>
     @endif
 
-    @if (auth()->user()->hasAnyRole([App\Enums\UsergroupRoleEnums::ADMIN]))
+    @if (auth()->user()
+            ?->hasAnyRole([App\Enums\UsergroupRoleEnums::ADMIN]))
         <div class="mt-2 text-xs text-[#efdaa4]">{{ __('GM Information:') }}</div>
         <div class="text-xs text-[#ff2f51]">{{ __('ItemID:') }} {{ $item->get('ID64') }}</div>
         <div class="text-xs text-[#ff2f51]">{{ __('RefItemID:') }} {{ $item->get('RefItemID') }}</div>
