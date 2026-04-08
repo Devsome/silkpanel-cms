@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'download' => 'İstemciyi İndir',
+    'register_now' => 'Şimdi Kaydol',
+    'server_info' => 'Sunucu Bilgileri',
+    'cap' => 'Seviye Sınırı',
+    'exp_sp' => 'EXP / SP Oranı',
+    'party_exp' => 'Parti EXP',
+    'drop_rate' => 'Drop Oranı',
+    'gold_drop' => 'Gold Drop',
+    'trade_rate' => 'Ticaret Oranı',
+    'max_player' => 'Maks. Oyuncu',
+    'ip_limit' => 'IP Limiti',
+    'hwid_limit' => 'HWID Limiti',
+    'fortress_war' => 'Kale Savaşları',
+    'races' => 'Irklar',
+    'latest_news' => 'Son Haberler',
+    'featured' => 'Öne Çıkan',
+    'view_all' => 'Tümünü Gör',
+    'quick_links' => 'Hızlı Bağlantılar',
+    'rankings' => 'Sıralamalar',
+    'welcome_title' => 'Sunucumuza Hoş Geldiniz',
+    'welcome_text' => 'En üst düzey Silkroad Online macerasını yaşayın. Topluluğumuza katılın, heyecan verici içerikleri, düzenli güncellemeleri ve gelişen oyuncu kitlesini keşfedin.',
+    'about_title' => 'Hakkımızda',
+    'about_text' => 'Sunucumuz özel özellikler, dengeli oranlar ve özveri ile çalışan bir ekiple benzersiz bir oyun deneyimi sunar. Silkroad Online dünyasında binlerce oyuncuya katılın.',
+];

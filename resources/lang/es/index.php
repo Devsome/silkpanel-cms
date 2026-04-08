@@ -1,0 +1,27 @@
+<?php
+
+return [
+    'download' => 'Descargar cliente',
+    'register_now' => 'Regístrate ahora',
+    'server_info' => 'Información del servidor',
+    'cap' => 'Nivel máximo',
+    'exp_sp' => 'Tasa EXP / SP',
+    'party_exp' => 'EXP de grupo',
+    'drop_rate' => 'Tasa de drop',
+    'gold_drop' => 'Drop de oro',
+    'trade_rate' => 'Tasa de comercio',
+    'max_player' => 'Jugadores máx.',
+    'ip_limit' => 'Límite de IP',
+    'hwid_limit' => 'Límite HWID',
+    'fortress_war' => 'Guerras de fortaleza',
+    'races' => 'Razas',
+    'latest_news' => 'Últimas noticias',
+    'featured' => 'Destacado',
+    'view_all' => 'Ver todo',
+    'quick_links' => 'Enlaces rápidos',
+    'rankings' => 'Clasificaciones',
+    'welcome_title' => 'Bienvenido a nuestro servidor',
+    'welcome_text' => 'Vive la aventura definitiva de Silkroad Online. Únete a nuestra comunidad y descubre contenido emocionante, actualizaciones regulares y una base de jugadores activa.',
+    'about_title' => 'Sobre nosotros',
+    'about_text' => 'Nuestro servidor ofrece una experiencia de juego única con características personalizadas, tasas equilibradas y un equipo dedicado. Únete a miles de jugadores en el mundo de Silkroad Online.',
+];
