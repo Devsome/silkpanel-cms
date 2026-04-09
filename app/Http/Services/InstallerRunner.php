@@ -154,26 +154,18 @@ class InstallerRunner
                 }
             }
 
-            // First connect to MySQL server (use 'mysql' system database to avoid dependency on user database)
-            $serverConnection = [
-                'driver' => 'mysql',
-                'host' => $dbConfig['host'],
-                'port' => $dbConfig['port'],
-                'database' => 'mysql', // Use system database to test connection
-                'username' => $dbConfig['username'],
-                'password' => $dbConfig['password'],
-                'charset' => 'utf8mb4',
-                'collation' => 'utf8mb4_unicode_ci',
-            ];
-
-            config(['database.connections.test_server' => $serverConnection]);
-            DB::purge('test_server');
-            DB::connection('test_server')->getPdo();
+            // Connect to MySQL server without specifying a database (avoids needing access to system databases)
+            $dsn = sprintf('mysql:host=%s;port=%s;charset=utf8mb4', $dbConfig['host'], $dbConfig['port']);
+            $pdo = new \PDO($dsn, $dbConfig['username'], $dbConfig['password'], [
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_TIMEOUT => 10,
+            ]);
 
             // Check if the target database exists
             $dbName = $dbConfig['database'];
-            $result = DB::connection('test_server')->select("SHOW DATABASES LIKE '" . $dbName . "'");
-            $databaseExists = ! empty($result);
+            $stmt = $pdo->prepare('SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?');
+            $stmt->execute([$dbName]);
+            $databaseExists = (bool) $stmt->fetch();
 
             if (! $databaseExists) {
                 return [
@@ -181,12 +173,6 @@ class InstallerRunner
                     'message' => "Connected to MySQL server, but database '{$dbName}' does not exist. It will be created during installation if permissions allow.",
                 ];
             }
-
-            // Now connect with the database selected
-            $fullConnection = array_merge($serverConnection, ['database' => $dbName]);
-            config(['database.connections.test' => $fullConnection]);
-            DB::purge('test');
-            DB::connection('test')->getPdo();
 
             return [
                 'success' => true,
@@ -213,8 +199,15 @@ class InstallerRunner
                 }
             }
 
+            // Detect available SQL Server PDO driver
+            $mssqlDriver = match (true) {
+                extension_loaded('pdo_sqlsrv') => 'sqlsrv',
+                extension_loaded('pdo_dblib') => 'dblib',
+                default => throw new \Exception('No SQL Server PDO driver found. Install php-pdo_sqlsrv (recommended) or php-sybase (pdo_dblib).'),
+            };
+
             $serverConnection = [
-                'driver' => 'sqlsrv',
+                'driver' => $mssqlDriver,
                 'host' => $mssqlConfig['host'],
                 'port' => $mssqlConfig['port'],
                 'database' => 'master',

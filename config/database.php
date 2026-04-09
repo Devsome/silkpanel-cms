@@ -3,6 +3,13 @@
 use App\Enums\DatabaseNameEnums;
 use Illuminate\Support\Str;
 
+// Detect available SQL Server PDO driver (pdo_sqlsrv preferred, pdo_dblib as fallback)
+$sqlsrvDriver = match (true) {
+    extension_loaded('pdo_sqlsrv') => 'sqlsrv',
+    extension_loaded('pdo_dblib') => 'dblib',
+    default => 'sqlsrv', // fallback, will error at connection time if neither is installed
+};
+
 return [
 
     /*
@@ -88,7 +95,7 @@ return [
         |
         */
         DatabaseNameEnums::SRO_SHARD->value => [
-            'driver' => 'sqlsrv',
+            'driver' => $sqlsrvDriver,
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
             'database' => env('DB_SQL_DATABASE_SHARD', 'SRO_VT_SHARD'),
@@ -101,7 +108,7 @@ return [
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
         DatabaseNameEnums::SRO_ACCOUNT->value => [
-            'driver' => 'sqlsrv',
+            'driver' => $sqlsrvDriver,
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
             'database' => env('DB_SQL_DATABASE_ACCOUNT', 'SRO_VT_ACCOUNT'),
@@ -114,7 +121,7 @@ return [
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
         DatabaseNameEnums::SRO_LOG->value => [
-            'driver' => 'sqlsrv',
+            'driver' => $sqlsrvDriver,
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
             'database' => env('DB_SQL_DATABASE_LOG', 'SRO_VT_LOG'),
@@ -127,7 +134,7 @@ return [
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
         DatabaseNameEnums::SRO_CUSTOM->value => [
-            'driver' => 'sqlsrv',
+            'driver' => $sqlsrvDriver,
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
             'database' => env('DB_SQL_DATABASE_CUSTOM', 'SRO_VT_CUSTOM'),
@@ -140,7 +147,7 @@ return [
             'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
         DatabaseNameEnums::SRO_PORTAL->value => [
-            'driver' => 'sqlsrv',
+            'driver' => $sqlsrvDriver,
             'host' => env('DB_SQL_HOST', 'localhost'),
             'port' => env('DB_SQL_PORT', '1433'),
             'database' => env('DB_SQL_DATABASE_PORTAL', 'GB_JoymaxPortal'),

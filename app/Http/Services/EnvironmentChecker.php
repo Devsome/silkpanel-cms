@@ -59,6 +59,7 @@ class EnvironmentChecker
         $requiredExtensions = [
             'openssl' => 'OpenSSL for encryption',
             'pdo' => 'PDO for database access',
+            'pdo_mysql' => 'PDO MySQL driver for application database',
             'mbstring' => 'Mbstring for string handling',
             'tokenizer' => 'Tokenizer for Laravel',
             'xml' => 'XML for parsing',
@@ -69,9 +70,6 @@ class EnvironmentChecker
             'fileinfo' => 'Fileinfo for file type detection',
             'gd' => 'GD for image processing',
             'zip' => 'Zip for archive handling',
-
-            // for silkroad mssql
-            'pdo_sqlite' => 'PDO_SQLite for SQLite database access',
         ];
 
         $extensions = [];
@@ -90,6 +88,19 @@ class EnvironmentChecker
                 'passed' => $installed,
             ];
         }
+
+        // Check for SQL Server driver (pdo_sqlsrv or pdo_dblib - at least one required)
+        $hasMssqlDriver = extension_loaded('pdo_sqlsrv') || extension_loaded('pdo_dblib');
+        if (! $hasMssqlDriver) {
+            $allPassed = false;
+        }
+
+        $extensions[] = [
+            'name' => 'pdo_sqlsrv / pdo_dblib',
+            'description' => 'PDO SQL Server driver for Silkroad database (install php-pdo_sqlsrv or php-sybase)',
+            'installed' => $hasMssqlDriver,
+            'passed' => $hasMssqlDriver,
+        ];
 
         return [
             'name' => 'PHP Extensions',
