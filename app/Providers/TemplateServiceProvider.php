@@ -29,17 +29,21 @@ class TemplateServiceProvider extends ServiceProvider
      */
     protected function registerTemplateViewNamespace(): void
     {
-        $templateService = $this->app->make(TemplateService::class);
-        $activeTemplate = $templateService->getActiveTemplate();
-
         $paths = [];
 
-        // Active template gets priority (if one is set)
-        if ($activeTemplate !== null) {
-            $activePath = $templateService->templatePath($activeTemplate);
-            if (is_dir($activePath)) {
-                $paths[] = $activePath;
+        try {
+            $templateService = $this->app->make(TemplateService::class);
+            $activeTemplate = $templateService->getActiveTemplate();
+
+            // Active template gets priority (if one is set)
+            if ($activeTemplate !== null) {
+                $activePath = $templateService->templatePath($activeTemplate);
+                if (is_dir($activePath)) {
+                    $paths[] = $activePath;
+                }
             }
+        } catch (\Throwable) {
+            // Database not available yet (fresh install / installer not run).
         }
 
         // Root views directory is always the fallback
@@ -55,8 +59,12 @@ class TemplateServiceProvider extends ServiceProvider
     protected function registerTemplateViewComposer(): void
     {
         View::composer('*', function ($view) {
-            $templateService = app(TemplateService::class);
-            $view->with('activeTemplate', $templateService->getActiveTemplate());
+            try {
+                $templateService = app(TemplateService::class);
+                $view->with('activeTemplate', $templateService->getActiveTemplate());
+            } catch (\Throwable) {
+                $view->with('activeTemplate', null);
+            }
         });
     }
 
