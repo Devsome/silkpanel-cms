@@ -199,15 +199,8 @@ class InstallerRunner
                 }
             }
 
-            // Detect available SQL Server PDO driver
-            $mssqlDriver = match (true) {
-                extension_loaded('pdo_sqlsrv') => 'sqlsrv',
-                extension_loaded('pdo_dblib') => 'dblib',
-                default => throw new \Exception('No SQL Server PDO driver found. Install php-pdo_sqlsrv (recommended) or php-sybase (pdo_dblib).'),
-            };
-
             $serverConnection = [
-                'driver' => $mssqlDriver,
+                'driver' => 'sqlsrv',
                 'host' => $mssqlConfig['host'],
                 'port' => $mssqlConfig['port'],
                 'database' => 'master',
