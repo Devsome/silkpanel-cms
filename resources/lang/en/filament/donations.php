@@ -14,6 +14,7 @@ return [
     'provider_field_display_name' => 'Display Name',
     'provider_field_description' => 'Description',
     'provider_field_active' => 'Active',
+    'provider_field_inactive' => 'Inactive',
     'provider_field_active_helper' => 'Enable or disable this payment provider for donations.',
     'provider_field_sort_order' => 'Sort Order',
     'provider_section_assigned_packages' => 'Assigned Packages',

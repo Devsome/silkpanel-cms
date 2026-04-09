@@ -8,6 +8,7 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 
 class PaymentProviderForm
@@ -36,8 +37,11 @@ class PaymentProviderForm
                             ->columnSpanFull(),
 
                         Toggle::make('is_active')
-                            ->label(__('filament/donations.provider_field_active'))
-                            ->helperText(__('filament/donations.provider_field_active_helper')),
+                            ->label(fn(Get $get): string => $get('is_active') ?
+                                __('filament/donations.provider_field_active') : __('filament/donations.provider_field_inactive'))
+                            ->live()
+                            ->helperText(__('filament/donations.provider_field_active_helper'))
+                            ->offIcon('heroicon-o-x-mark'),
 
                         TextInput::make('sort_order')
                             ->label(__('filament/donations.provider_field_sort_order'))

@@ -7,7 +7,7 @@ export default defineConfig({
         tailwindcss(),
         laravel({
             input: ['resources/css/filament/admin/theme.css', 'resources/css/app.css', 'resources/js/app.js'],
-            refresh: ['resources/views/**', 'packages/**'],
+            refresh: ['resources/views/**', 'packages/**', 'vendor/silkpanel/**'],
         }),
     ],
     server: {

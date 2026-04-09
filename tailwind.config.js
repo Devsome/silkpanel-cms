@@ -7,6 +7,8 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './packages/**/*.{blade.php,php,js}',
+        './vendor/silkpanel/*/src/Views/**/*.blade.php',
+        './vendor/silkpanel/*/src/views/**/*.blade.php',
     ],
 
     theme: {
