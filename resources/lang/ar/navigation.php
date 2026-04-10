@@ -7,6 +7,7 @@ return [
     'signed_in_as' => 'مسجل الدخول كـ',
     'profile' => 'الملف الشخصي',
     'language' => 'اللغة',
+    'theme' => 'السمة',
     'login' => 'تسجيل الدخول',
     'register' => 'تسجيل',
     'logout' => 'تسجيل الخروج',

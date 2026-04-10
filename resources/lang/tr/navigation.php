@@ -7,6 +7,7 @@ return [
     'signed_in_as' => 'Giriş yapan',
     'profile' => 'Profil',
     'language' => 'Dil',
+    'theme' => 'Tema',
     'login' => 'Giriş Yap',
     'register' => 'Kaydol',
     'logout' => 'Çıkış Yap',

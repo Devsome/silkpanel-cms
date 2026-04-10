@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+    --theme-transition-x: 50%;
+    --theme-transition-y: 50%;
+}
+
 @theme {
     /* Primary (Violet) */
     --color-primary-50: #f5f3ff;
@@ -33,6 +40,55 @@
 @source '../../packages/**/*.{blade.php,php,js,vue}';
 @source '../../vendor/silkpanel/*/src/Views/**/*.blade.php';
 @source '../../vendor/silkpanel/*/src/views/**/*.blade.php';
+
+[x-cloak] {
+    display: none !important;
+}
+
+@keyframes theme-reveal-in {
+    0% {
+        clip-path: circle(0 at var(--theme-transition-x) var(--theme-transition-y));
+    }
+
+    100% {
+        clip-path: circle(150vmax at var(--theme-transition-x) var(--theme-transition-y));
+    }
+}
+
+@keyframes theme-reveal-out {
+    0% {
+        clip-path: circle(150vmax at var(--theme-transition-x) var(--theme-transition-y));
+    }
+
+    100% {
+        clip-path: circle(0 at var(--theme-transition-x) var(--theme-transition-y));
+    }
+}
+
+::view-transition-new(root) {
+    animation: theme-reveal-in 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+::view-transition-old(root) {
+    animation: theme-reveal-out 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+::view-transition-group(root) {
+    animation-duration: 560ms;
+}
+
+::view-transition-image-pair(root) {
+    isolation: isolate;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    ::view-transition-new(root),
+    ::view-transition-old(root),
+    ::view-transition-group(root) {
+        animation: none !important;
+    }
+}
 
 .disabled {
     @apply border-gray-200 bg-gray-50 text-gray-500 shadow-none dark:border-gray-700 dark:bg-gray-800/20;

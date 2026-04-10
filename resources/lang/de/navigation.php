@@ -7,6 +7,7 @@ return [
     'signed_in_as' => 'Angemeldet als',
     'profile' => 'Profil',
     'language' => 'Sprache',
+    'theme' => 'Design',
     'login' => 'Anmelden',
     'register' => 'Registrieren',
     'logout' => 'Abmelden',
