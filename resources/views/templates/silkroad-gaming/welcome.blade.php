@@ -212,6 +212,9 @@
                         </a>
                     </div>
 
+                    {{-- Event Timers --}}
+                    <livewire:event-timers-list />
+
                     {{-- Server Info --}}
                     <div class="rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur p-5">
                         <h3 class="mb-4 text-xs font-bold uppercase tracking-widest text-emerald-400/70">

@@ -148,6 +148,8 @@
                         </div>
                     @endif
 
+                    <livewire:event-timers />
+
                     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-white">
                             {{ __('index.about_title') }}
@@ -207,6 +209,8 @@
                             @endforeach
                         </dl>
                     </div>
+
+                    <livewire:event-timers-list />
 
                     @if (is_array($races) && count($races) > 0)
                         <div

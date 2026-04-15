@@ -1,12 +1,8 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
-
 import.meta.glob([
     '../images/**',
 ]);
-
-window.Alpine = Alpine;
 
 const themeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 const reducedMotionMediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -108,8 +104,43 @@ const themeStore = {
     },
 };
 
-Alpine.store('theme', themeStore);
-themeStore.init();
+document.addEventListener('alpine:init', () => {
+    Alpine.store('theme', themeStore);
+    themeStore.init();
 
-Alpine.start();
+    Alpine.data('eventCountdown', (targetDate) => ({
+        days: '00',
+        hours: '00',
+        minutes: '00',
+        seconds: '00',
+        target: new Date(targetDate).getTime(),
+        interval: null,
+        init() {
+            this.update();
+            this.interval = setInterval(() => this.update(), 1000);
+        },
+        update() {
+            let diff = Math.max(0, Math.floor((this.target - Date.now()) / 1000));
+
+            if (diff <= 0) {
+                this.days = '00';
+                this.hours = '00';
+                this.minutes = '00';
+                this.seconds = '00';
+                clearInterval(this.interval);
+                return;
+            }
+
+            const d = Math.floor(diff / 86400);
+            diff -= d * 86400;
+            this.days = String(d).padStart(2, '0');
+            this.hours = String(Math.floor(diff / 3600)).padStart(2, '0');
+            this.minutes = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+            this.seconds = String(diff % 60).padStart(2, '0');
+        },
+        destroy() {
+            clearInterval(this.interval);
+        },
+    }));
+});
 
