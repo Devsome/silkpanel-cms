@@ -47,8 +47,8 @@
                             <label for="email" class="block text-sm font-medium gp-text-on-surface-variant mb-1.5">
                                 {{ __('auth/reset-password.form.email') }}
                             </label>
-                            <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}" required
-                                autocomplete="username" class="gp-input block w-full px-4 py-2.5 transition" />
+                            <input id="email" type="email" name="email" value="{{ old('email', $request->email) }}"
+                                required autocomplete="username" class="gp-input block w-full px-4 py-2.5 transition" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
@@ -56,8 +56,8 @@
                             <label for="password" class="block text-sm font-medium gp-text-on-surface-variant mb-1.5">
                                 {{ __('auth/reset-password.form.password') }}
                             </label>
-                            <input id="password" type="password" name="password" required autofocus autocomplete="new-password"
-                                class="gp-input block w-full px-4 py-2.5 transition" />
+                            <input id="password" type="password" name="password" required autofocus
+                                autocomplete="new-password" class="gp-input block w-full px-4 py-2.5 transition" />
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
 

@@ -29,8 +29,7 @@
                 style="background-color: var(--gp-background);">
                 <div class="w-full max-w-md space-y-6">
                     <div>
-                        <h1
-                            class="text-2xl font-bold font-headline gp-text-primary sm:text-3xl uppercase tracking-widest">
+                        <h1 class="text-2xl font-bold font-headline gp-text-primary sm:text-3xl uppercase tracking-widest">
                             {{ __('auth/verify-email.form.title') }}
                         </h1>
                         <p class="mt-2 text-sm gp-text-on-surface-variant">

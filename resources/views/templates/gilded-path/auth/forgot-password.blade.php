@@ -48,8 +48,8 @@
                             <label for="email" class="block text-sm font-medium gp-text-on-surface-variant mb-1.5">
                                 {{ __('auth/forgot-password.form.email') }}
                             </label>
-                            <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                                class="gp-input block w-full px-4 py-2.5 transition" />
+                            <input id="email" type="email" name="email" value="{{ old('email') }}" required
+                                autofocus class="gp-input block w-full px-4 py-2.5 transition" />
                             <x-input-error :messages="$errors->get('email')" class="mt-2" />
                         </div>
 
@@ -58,7 +58,8 @@
                             {{ __('auth/forgot-password.form.submit') }}
                         </button>
 
-                        <a href="{{ route('login') }}" class="block text-sm gp-text-on-surface-variant hover:text-yellow-400 transition">
+                        <a href="{{ route('login') }}"
+                            class="block text-sm gp-text-on-surface-variant hover:text-yellow-400 transition">
                             {{ __('auth/forgot-password.form.already_have_account') }}
                         </a>
                     </form>
