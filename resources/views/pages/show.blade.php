@@ -46,6 +46,16 @@
                                 <div>
                                     {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($data['rich_text'] ?? '') }}
                                 </div>
+                            @elseif ($type === 'bbcode')
+                                <div>
+                                    @php
+                                        $bbcode = $data['bbcode'] ?? '';
+                                        if (is_array($bbcode)) {
+                                            $bbcode = implode("\n", $bbcode);
+                                        }
+                                    @endphp
+                                    {!! str(app(\App\Services\BBCodeService::class)->toHtml($bbcode))->sanitizeHtml() !!}
+                                </div>
                             @elseif ($type === 'image')
                                 <div>
                                     @php

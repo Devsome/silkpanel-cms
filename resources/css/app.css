@@ -94,3 +94,7 @@
 .disabled {
     @apply border-gray-200 bg-gray-50 text-gray-500 shadow-none dark:border-gray-700 dark:bg-gray-800/20;
 }
+
+.silkpanel.prose :where(img):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+    @apply mt-0 mb-0;
+}

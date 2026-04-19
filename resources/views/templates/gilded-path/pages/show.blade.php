@@ -16,7 +16,7 @@
             </header>
 
             <!-- Content -->
-            <div class="prose prose-invert max-w-none gp-page-content">
+            <div class="silkpanel prose prose-invert max-w-none gp-page-content">
                 @if (is_array($translation->content))
                     @foreach ($translation->content as $block)
                         @php
@@ -47,6 +47,16 @@
                             @elseif ($type === 'rich_text')
                                 <div>
                                     {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($data['rich_text'] ?? '') }}
+                                </div>
+                            @elseif ($type === 'bbcode')
+                                @php
+                                    $bbcode = $data['bbcode'] ?? '';
+                                    if (is_array($bbcode)) {
+                                        $bbcode = implode("\n", $bbcode);
+                                    }
+                                @endphp
+                                <div>
+                                    {!! str(app(\App\Services\BBCodeService::class)->toHtml($bbcode))->sanitizeHtml() !!}
                                 </div>
                             @elseif ($type === 'image')
                                 @php

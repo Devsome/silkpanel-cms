@@ -142,6 +142,15 @@ class PageForm
                                         ])
                                         ->columnSpanFull(),
                                 ]),
+                            Block::make('bbcode')
+                                ->schema([
+                                    Textarea::make('bbcode')
+                                        ->label(__('filament/pages.edit.builder.bbcode'))
+                                        ->helperText(__('filament/pages.edit.builder.bbcode_help'))
+                                        ->rows(10)
+                                        ->required()
+                                        ->columnSpanFull(),
+                                ]),
                             Block::make('image')
                                 ->schema([
                                     FileUpload::make('url')

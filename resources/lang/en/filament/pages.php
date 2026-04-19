@@ -49,6 +49,8 @@ return [
             'heading_three' => 'Heading 3',
             'paragraph' => 'Paragraph',
             'rich_text' => 'Rich Text',
+            'bbcode' => 'BBCode',
+            'bbcode_help' => 'Available tags: [b], [i], [u], [strike], [highlight], [quote], [quote=name], [code], [email], [email=...], [url], [url=...], [img], [img=WIDTHxHEIGHT], [color=...], [font=...], [size=...], [small], [big], [sub], [sup], [spoiler], [spoiler=title], [left], [center], [right], [indent], [list], [list=1|a|A|i|I], [table], [table=head], [tr], [th], [td], [video], [youtube], [hr], [hr=0|1|2]WIDTH%[/hr].',
             'image' => 'Image',
             'alt_text' => 'Alt Text',
             'content' => 'Content',
