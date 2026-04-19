@@ -44,6 +44,10 @@
                                 <p class="text-base leading-7 mb-6" style="color: var(--gp-surface-300);">
                                     {!! nl2br(e($paragraphText)) !!}
                                 </p>
+                            @elseif ($type === 'rich_text')
+                                <div>
+                                    {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($data['rich_text'] ?? '') }}
+                                </div>
                             @elseif ($type === 'image')
                                 @php
                                     $imageUrl = $data['url'] ?? '';
@@ -54,7 +58,7 @@
                                 <figure class="my-8 p-4 gp-ornate-border"
                                     style="background-color: var(--gp-surface-800); border-color: var(--gp-primary);">
                                     <img src="{{ asset('storage/' . $imageUrl) }}" alt="{{ e($data['alt'] ?? '') }}"
-                                        class="w-full rounded-lg" loading="lazy">
+                                        class="h-64 rounded-lg" loading="lazy">
                                     @if (!empty($data['alt']))
                                         <figcaption class="text-center mt-4 text-sm" style="color: var(--gp-surface-300);">
                                             {{ e($data['alt']) }}

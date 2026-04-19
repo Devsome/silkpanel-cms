@@ -13,7 +13,7 @@
                     @endif
                 </header>
 
-                <div class="prose prose-gray dark:prose-invert max-w-none">
+                <div class="silkpanel prose prose-gray dark:prose-invert max-w-none grid gap-2">
                     @if (is_array($translation->content))
                         @foreach ($translation->content as $block)
                             @php
@@ -23,14 +23,17 @@
 
                             @if ($type === 'heading')
                                 @php $tag = $data['level'] ?? 'h2'; @endphp
-                                <{{ $tag }}>
-                                    {{ $data['headline'] ?? '' }}
-                                    @if (!empty($data['subheadline']))
-                                        <small
-                                            class="block text-base font-normal text-gray-500 dark:text-gray-400 mt-1">{{ $data['subheadline'] }}</small>
-                                    @endif
-                                    </{{ $tag }}>
-                                @elseif ($type === 'paragraph')
+                                <div>
+                                    <{{ $tag }} class="text-lg">
+                                        {{ $data['headline'] ?? '' }}
+                                        @if (!empty($data['subheadline']))
+                                            <small
+                                                class="block text-base font-normal text-gray-500 dark:text-gray-400">{{ $data['subheadline'] }}</small>
+                                        @endif
+                                        </{{ $tag }}>
+                                </div>
+                            @elseif ($type === 'paragraph')
+                                <div>
                                     @php
                                         $paragraphText = $data['paragraph'] ?? '';
                                         if (is_array($paragraphText)) {
@@ -38,7 +41,13 @@
                                         }
                                     @endphp
                                     {!! nl2br(e($paragraphText)) !!}
-                                @elseif ($type === 'image')
+                                </div>
+                            @elseif ($type === 'rich_text')
+                                <div>
+                                    {{ \Filament\Forms\Components\RichEditor\RichContentRenderer::make($data['rich_text'] ?? '') }}
+                                </div>
+                            @elseif ($type === 'image')
+                                <div>
                                     @php
                                         $imageUrl = $data['url'] ?? '';
                                         if (is_array($imageUrl)) {
@@ -47,11 +56,12 @@
                                     @endphp
                                     <figure>
                                         <img src="{{ asset('storage/' . $imageUrl) }}" alt="{{ e($data['alt'] ?? '') }}"
-                                            class="rounded-lg" loading="lazy">
+                                            class="rounded-lg h-64" loading="lazy">
                                         @if (!empty($data['alt']))
                                             <figcaption>{{ e($data['alt']) }}</figcaption>
                                         @endif
                                     </figure>
+                                </div>
                             @endif
                         @endforeach
                     @elseif (is_string($translation->content) && !empty($translation->content))

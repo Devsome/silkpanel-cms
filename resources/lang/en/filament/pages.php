@@ -48,6 +48,7 @@ return [
             'heading_two' => 'Heading 2',
             'heading_three' => 'Heading 3',
             'paragraph' => 'Paragraph',
+            'rich_text' => 'Rich Text',
             'image' => 'Image',
             'alt_text' => 'Alt Text',
             'content' => 'Content',

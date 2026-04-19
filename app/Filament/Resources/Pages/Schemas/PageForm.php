@@ -6,6 +6,7 @@ use Filament\Forms\Components\Builder;
 use Filament\Forms\Components\Builder\Block;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -109,6 +110,37 @@ class PageForm
                                     Textarea::make('paragraph')
                                         ->label(__('filament/pages.edit.builder.paragraph'))
                                         ->required(),
+                                ]),
+                            Block::make('rich_text')
+                                ->schema([
+                                    RichEditor::make('rich_text')
+                                        ->label(__('filament/pages.edit.builder.rich_text'))
+                                        ->required()
+                                        ->toolbarButtons([
+                                            'heading' => [
+                                                'h1',
+                                                'h2',
+                                                'h3',
+                                                'alignStart',
+                                                'alignCenter',
+                                                'alignEnd'
+                                            ],
+                                            'paragraph' => [
+                                                'bold',
+                                                'italic',
+                                                'underline',
+                                                'strike',
+                                                'subscript',
+                                                'superscript',
+                                            ],
+                                            'list' => [
+                                                'bulletList',
+                                                'orderedList',
+                                                'blockquote',
+                                                'codeBlock',
+                                            ],
+                                        ])
+                                        ->columnSpanFull(),
                                 ]),
                             Block::make('image')
                                 ->schema([
