@@ -70,7 +70,7 @@ class CharacterRanking extends Component
             $startRank = 1;
         }
 
-        return view('livewire.rankings.character-ranking', [
+        return view('template::livewire.rankings.character-ranking', [
             'title' => $title,
             'columns' => $columns,
             'rows' => $rows,

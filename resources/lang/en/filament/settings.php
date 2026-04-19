@@ -94,6 +94,8 @@ return [
             'social_twitter' => 'Twitter/X URL',
             'social_instagram' => 'Instagram URL',
             'social_discord' => 'Discord URL',
+            'discord_id' => 'Discord ID',
+            'discord_id_description' => 'Your Discord server ID, used for the Discord widget on the homepage. You can get this by right-clicking your server icon in Discord, selecting "Copy ID", and pasting it here.',
         ],
 
         'field_types' => [

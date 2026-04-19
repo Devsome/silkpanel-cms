@@ -37,7 +37,7 @@ class UniqueRanking extends Component
         $table = trim((string) Setting::get('ranking_unique_table', ''));
 
         if ($table === '' || empty($columns)) {
-            return view('livewire.rankings.unique-ranking', [
+            return view('template::livewire.rankings.unique-ranking', [
                 'title' => $title,
                 'columns' => [],
                 'rows' => collect(),
@@ -76,7 +76,7 @@ class UniqueRanking extends Component
                 $startRank = 1;
             }
         } catch (\Throwable) {
-            return view('livewire.rankings.unique-ranking', [
+            return view('template::livewire.rankings.unique-ranking', [
                 'title' => $title,
                 'columns' => [],
                 'rows' => collect(),
@@ -86,7 +86,7 @@ class UniqueRanking extends Component
             ]);
         }
 
-        return view('livewire.rankings.unique-ranking', [
+        return view('template::livewire.rankings.unique-ranking', [
             'title' => $title,
             'columns' => $columns,
             'rows' => $rows,

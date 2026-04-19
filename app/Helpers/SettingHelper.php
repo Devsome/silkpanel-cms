@@ -289,6 +289,13 @@ class SettingHelper
                 'label' => 'Discord',
                 'description' => 'Discord profile URL',
             ],
+            [
+                'key' => 'discord_id',
+                'value' => null,
+                'type' => 'text',
+                'label' => 'Discord ID',
+                'description' => 'Discord server ID for widget embed',
+            ],
             // Partners
             [
                 'key' => 'partners',

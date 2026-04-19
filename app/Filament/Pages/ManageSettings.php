@@ -326,6 +326,10 @@ class ManageSettings extends Page
                                     TextInput::make('social_discord')
                                         ->label(__('filament/settings.form.social_media.social_discord'))
                                         ->url(),
+
+                                    TextInput::make('discord_id')
+                                        ->label(__('filament/settings.form.social_media.discord_id'))
+                                        ->helperText(__('filament/settings.form.social_media.discord_id_description')),
                                 ])
                                 ->columns(2),
                         ]),
@@ -376,6 +380,7 @@ class ManageSettings extends Page
             'social_twitter',
             'social_instagram',
             'social_discord',
+            'discord_id',
             'partners',
             'tos_enabled',
             'login_with_name',

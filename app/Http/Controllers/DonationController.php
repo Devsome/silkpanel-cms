@@ -21,7 +21,7 @@ class DonationController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        return view('donation.index', compact('providers'));
+        return view('template::donation.index', compact('providers'));
     }
 
     public function packages(PaymentProvider $provider)
@@ -38,7 +38,7 @@ class DonationController extends Controller
             ->orderBy('sort_order')
             ->get();
 
-        return view('donation.packages', compact('provider', 'packages'));
+        return view('template::donation.packages', compact('provider', 'packages'));
     }
 
     public function checkout(Request $request, DonationPackage $package)
@@ -97,7 +97,7 @@ class DonationController extends Controller
         abort_unless($provider->is_active, 404);
         abort_unless(in_array($provider->slug->value, ['hipocard', 'maxicard']), 404);
 
-        return view('donation.redeem-epin', compact('provider'));
+        return view('template::donation.redeem-epin', compact('provider'));
     }
 
     public function redeemEpin(Request $request, PaymentProvider $provider)
@@ -246,11 +246,11 @@ class DonationController extends Controller
             }
         }
 
-        return view('donation.success', compact('donation'));
+        return view('template::donation.success', compact('donation'));
     }
 
     public function cancel()
     {
-        return view('donation.cancel');
+        return view('template::donation.cancel');
     }
 }

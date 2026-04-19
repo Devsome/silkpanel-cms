@@ -82,7 +82,7 @@ class GuildRanking extends Component
             $startRank = 1;
         }
 
-        return view('livewire.rankings.guild-ranking', [
+        return view('template::livewire.rankings.guild-ranking', [
             'title' => $title,
             'columns' => $columns,
             'rows' => $rows,

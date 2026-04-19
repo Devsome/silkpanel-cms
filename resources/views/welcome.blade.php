@@ -11,6 +11,7 @@
 
         $races = \App\Helpers\SettingHelper::get('sro_race', []);
         $fortressWars = \App\Helpers\SettingHelper::get('sro_fortress_war', []);
+        $maxPlayers = (int) \App\Helpers\SettingHelper::get('sro_max_player', 0);
 
         $serverStats = [
             ['label' => __('index.cap'), 'value' => \App\Helpers\SettingHelper::get('sro_cap', '—')],
@@ -196,6 +197,44 @@
                     </div>
 
                     <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+                                {{ __('index.online_players') }}
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                                <span
+                                    class="text-[10px] font-medium text-green-500 uppercase tracking-wider">Online</span>
+                            </span>
+                        </div>
+                        <div class="flex items-end gap-2">
+                            <span
+                                class="text-3xl font-bold tabular-nums text-gray-900 dark:text-white">@onlineCounter</span>
+                            @if ($maxPlayers > 0)
+                                <span class="text-sm text-gray-400 dark:text-gray-500 mb-0.5">/
+                                    {{ number_format($maxPlayers) }}</span>
+                            @endif
+                        </div>
+                        @if ($maxPlayers > 0)
+                            @php
+                                $onlineCount = \App\View\Components\OnlineCounter::getData();
+                                $pct = $maxPlayers > 0 ? min(100, round(($onlineCount / $maxPlayers) * 100)) : 0;
+                                $barColor = $pct >= 80 ? 'bg-red-500' : ($pct >= 50 ? 'bg-yellow-500' : 'bg-green-500');
+                            @endphp
+                            <div class="mt-3 h-1.5 w-full bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
+                                <div class="{{ $barColor }} h-full rounded-full transition-all duration-700"
+                                    style="width: {{ $pct }}%"></div>
+                            </div>
+                            <p class="mt-1.5 text-[11px] text-gray-400 dark:text-gray-500 text-right">
+                                {{ $pct }}% {{ __('index.server_capacity') }}</p>
+                        @endif
+                    </div>
+
+                    <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5">
                         <h3 class="text-sm font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 mb-4">
                             {{ __('index.server_info') }}
                         </h3>
@@ -211,6 +250,8 @@
                     </div>
 
                     <livewire:event-timers-list />
+
+                    @discordWidget
 
                     @if (is_array($races) && count($races) > 0)
                         <div
