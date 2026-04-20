@@ -44,13 +44,10 @@
                                         {{ __('donation.epin_code') }}
                                     </label>
                                     <div class="mt-2">
-                                        <div
-                                            class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-                                            <input id="epin_code" type="text" name="epin_code" required
-                                                value="{{ old('epin_code') }}"
-                                                placeholder="{{ __('donation.epin_code_placeholder') }}"
-                                                class="block min-w-0 grow bg-white py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
-                                        </div>
+                                        <input id="epin_code" type="text" name="epin_code" required
+                                            value="{{ old('epin_code') }}"
+                                            placeholder="{{ __('donation.epin_code_placeholder') }}"
+                                            class="block w-full rounded-md border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
                                         @error('epin_code')
                                             <p class="text-sm text-red-600">{{ $message }}</p>
                                         @enderror
@@ -62,13 +59,10 @@
                                         {{ __('donation.epin_secret') }}
                                     </label>
                                     <div class="mt-2">
-                                        <div
-                                            class="flex items-center rounded-md bg-white pl-3 outline-1 -outline-offset-1 outline-gray-300 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-600">
-                                            <input id="epin_secret" type="text" name="epin_secret" required
-                                                value="{{ old('epin_secret') }}"
-                                                placeholder="{{ __('donation.epin_secret_placeholder') }}"
-                                                class="block min-w-0 grow bg-white py-1.5 pr-3 pl-1 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none sm:text-sm/6" />
-                                        </div>
+                                        <input id="epin_secret" type="text" name="epin_secret" required
+                                            value="{{ old('epin_secret') }}"
+                                            placeholder="{{ __('donation.epin_secret_placeholder') }}"
+                                            class="block w-full rounded-md border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm placeholder:text-gray-400 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
                                         @error('epin_secret')
                                             <p class="text-sm text-red-600">{{ $message }}</p>
                                         @enderror
