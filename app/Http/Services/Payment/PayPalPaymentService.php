@@ -81,8 +81,9 @@ class PayPalPaymentService implements PaymentServiceInterface
         $accessToken = $this->getAccessToken();
 
         $response = Http::withToken($accessToken)
-            ->withHeader('Content-Type', 'application/json')
-            ->post("{$this->baseUrl}/v2/checkout/orders/{$orderId}/capture");
+            ->acceptJson()
+            ->withBody('{}', 'application/json')
+            ->send('POST', "{$this->baseUrl}/v2/checkout/orders/{$orderId}/capture");
 
         if (!$response->successful()) {
             Log::error('PayPal: Failed to capture order', [
