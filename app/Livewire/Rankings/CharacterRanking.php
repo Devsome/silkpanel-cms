@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Rankings;
 
-use App\Helpers\CrestHelper;
 use App\Models\Setting;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -42,15 +41,18 @@ class CharacterRanking extends Component
         $limit = (int) Setting::get('ranking_chars_limit', 50);
         $cacheTtl = (int) Setting::get('ranking_chars_cache_ttl', 60);
         $excluded = Setting::get('ranking_chars_excluded', []);
+        $search = trim($this->search);
+        $hasSearch = $search !== '';
 
-        $paginate = $limit === 0;
+        // Always search through the full dataset, even when a ranking limit is configured.
+        $paginate = $limit === 0 || $hasSearch;
 
         if ($paginate) {
-            $query = $this->buildQuery(0, $excluded);
-            if ($this->search !== '') {
-                $query->where(function ($q) {
-                    $q->where('chars.CharName16', 'like', '%' . $this->search . '%')
-                        ->orWhere('g.Name', 'like', '%' . $this->search . '%');
+            $query = $this->buildQuery($hasSearch ? 0 : $limit, $excluded);
+            if ($hasSearch) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('chars.CharName16', 'like', '%' . $search . '%')
+                        ->orWhere('g.Name', 'like', '%' . $search . '%');
                 });
             }
             $rows = $query->paginate($this->perPage);
@@ -60,11 +62,11 @@ class CharacterRanking extends Component
             $rows = Cache::remember($cacheKey, $cacheTtl * 60, function () use ($limit, $excluded) {
                 return $this->buildQuery($limit, $excluded)->get();
             });
-            if ($this->search !== '') {
-                $search = mb_strtolower($this->search);
-                $rows = $rows->filter(function ($row) use ($search) {
-                    return str_contains(mb_strtolower($row->CharName16 ?? ''), $search)
-                        || str_contains(mb_strtolower($row->GuildName ?? ''), $search);
+            if ($hasSearch) {
+                $searchLower = mb_strtolower($search);
+                $rows = $rows->filter(function ($row) use ($searchLower) {
+                    return str_contains(mb_strtolower($row->CharName16 ?? ''), $searchLower)
+                        || str_contains(mb_strtolower($row->GuildName ?? ''), $searchLower);
                 })->values();
             }
             $startRank = 1;

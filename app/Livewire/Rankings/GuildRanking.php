@@ -45,13 +45,26 @@ class GuildRanking extends Component
         $limit = (int) Setting::get('ranking_guilds_limit', 50);
         $cacheTtl = (int) Setting::get('ranking_guilds_cache_ttl', 60);
         $excluded = Setting::get('ranking_guilds_excluded', []);
+        $search = trim($this->search);
+        $hasSearch = $search !== '';
+        $memberTable = (new GuildMember)->getTable();
 
-        $paginate = $limit === 0;
+        // Always search through the full dataset, even when a ranking limit is configured.
+        $paginate = $limit === 0 || $hasSearch;
 
         if ($paginate) {
-            $query = $this->buildQuery(0, $excluded);
-            if ($this->search !== '') {
-                $query->where('guilds.Name', 'like', '%' . $this->search . '%');
+            $query = $this->buildQuery($hasSearch ? 0 : $limit, $excluded);
+            if ($hasSearch) {
+                $query->where(function ($q) use ($search, $memberTable) {
+                    $q->where('guilds.Name', 'like', '%' . $search . '%')
+                        ->orWhereExists(function ($exists) use ($memberTable, $search) {
+                            $exists->select(DB::raw(1))
+                                ->from("$memberTable as gm_search")
+                                ->whereColumn('gm_search.GuildID', 'guilds.ID')
+                                ->where('gm_search.MemberClass', 0)
+                                ->where('gm_search.CharName', 'like', '%' . $search . '%');
+                        });
+                });
             }
             $rows = $query->paginate($this->perPage);
             $startRank = $rows->firstItem() ?? 1;
@@ -66,13 +79,6 @@ class GuildRanking extends Component
             $rows = Cache::remember($cacheKey, $cacheTtl * 60, function () use ($limit, $excluded) {
                 return $this->buildQuery($limit, $excluded)->get();
             });
-            if ($this->search !== '') {
-                $search = mb_strtolower($this->search);
-                $rows = $rows->filter(function ($row) use ($search) {
-                    return str_contains(mb_strtolower($row->Name ?? ''), $search)
-                        || str_contains(mb_strtolower($row->LeaderName ?? ''), $search);
-                })->values();
-            }
             $rows = $rows->map(function ($row) {
                 if (!empty($row->CrestIcon)) {
                     $row->CrestDataUri = CrestHelper::decodeHexToDataUri($row->CrestIcon);
