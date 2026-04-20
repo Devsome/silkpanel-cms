@@ -57,14 +57,14 @@
                                     {{ __('auth/register.form.silkroad_id') }}
                                 </label>
                                 <input id="silkroad_id" type="text" name="silkroad_id" value="{{ old('silkroad_id') }}"
-                                    required autofocus class="gp-input block w-full px-4 py-2.5 transition" />
+                                    required autofocus class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                             </div>
                             <div>
                                 <label for="name" class="block text-sm font-medium gp-text-on-surface-variant mb-1.5">
                                     {{ __('auth/register.form.name') }}
                                 </label>
                                 <input id="name" type="text" name="name" value="{{ old('name') }}"
-                                    autocomplete="name" class="gp-input block w-full px-4 py-2.5 transition" />
+                                    autocomplete="name" class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                             </div>
                         </div>
 
@@ -74,7 +74,7 @@
                                 {{ __('auth/register.form.email') }}
                             </label>
                             <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                                autocomplete="email" class="gp-input block w-full px-4 py-2.5 transition" />
+                                autocomplete="email" class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                         </div>
 
                         {{-- Passwords --}}
@@ -84,7 +84,7 @@
                                     {{ __('auth/register.form.password') }}
                                 </label>
                                 <input id="password" type="password" name="password" required autocomplete="new-password"
-                                    class="gp-input block w-full px-4 py-2.5 transition" />
+                                    class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                             </div>
                             <div>
                                 <label for="password_confirmation"
@@ -92,7 +92,8 @@
                                     {{ __('auth/register.form.confirm_password') }}
                                 </label>
                                 <input id="password_confirmation" type="password" name="password_confirmation" required
-                                    autocomplete="new-password" class="gp-input block w-full px-4 py-2.5 transition" />
+                                    autocomplete="new-password"
+                                    class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                             </div>
                         </div>
 

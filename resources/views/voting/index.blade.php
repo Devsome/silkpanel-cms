@@ -7,6 +7,13 @@
 
     <div class="py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <a href="{{ route('dashboard') }}"
+                class="inline-flex items-center text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 mb-6 transition">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                {{ __('dashboard.back_to_dashboard') }}
+            </a>
             @if ($sites->count() > 0)
                 <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     @foreach ($sites as $entry)

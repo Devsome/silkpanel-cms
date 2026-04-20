@@ -3,6 +3,8 @@
 @section('content')
     <section class="py-10">
         <div class="mx-auto max-w-7xl px-4 md:px-8 space-y-8">
+
+            {{-- Welcome --}}
             <div class="gp-card gp-ornate-border p-6 md:p-8">
                 <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline">
                     {{ __('dashboard.title') }}</p>
@@ -12,67 +14,163 @@
                 <p class="mt-2 text-sm gp-text-on-surface-variant">{{ Auth::user()->email }}</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a href="{{ route('profile.edit') }}"
-                    class="group gp-card gp-ornate-border p-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
-                    <div class="flex items-center gap-4">
-                        <div class="flex h-12 w-12 items-center justify-center gp-card-lowest"
-                            style="border:1px solid rgba(242,202,80,0.3);">
-                            <svg class="h-6 w-6 gp-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {{-- Silk Balance + Quick Actions --}}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                {{-- Silk Balance --}}
+                <div class="lg:col-span-2 gp-card gp-ornate-border p-6">
+                    <div class="flex items-center justify-between mb-5">
+                        <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline">
+                            {{ __('dashboard.silk_balance') }}</p>
+                        <a href="{{ route('donate.index') }}"
+                            class="text-xs font-headline uppercase tracking-wider gp-text-primary hover:opacity-80 transition">
+                            {{ __('dashboard.refill_silk') }}
+                        </a>
+                    </div>
+
+                    @if ($silkData['type'] === 'vsro')
+                        <div class="grid grid-cols-3 gap-4">
+                            @foreach ([['label' => __('dashboard.silk_own'), 'value' => $silkData['silk_own']], ['label' => __('dashboard.silk_gift'), 'value' => $silkData['silk_gift']], ['label' => __('dashboard.silk_point'), 'value' => $silkData['silk_point']]] as $item)
+                                <div class="text-center p-3 gp-card-lowest rounded"
+                                    style="border:1px solid rgba(242,202,80,0.15);">
+                                    <p class="text-2xl font-headline font-black gp-text-primary">
+                                        {{ number_format($item['value']) }}
+                                    </p>
+                                    <p class="text-xs gp-text-on-surface-variant mt-1">{{ $item['label'] }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p class="mt-3 text-xs gp-text-on-surface-variant text-right">
+                            {{ __('dashboard.silk_total', ['total' => number_format($silkData['total'])]) }}
+                        </p>
+                    @else
+                        <div class="grid grid-cols-2 gap-4">
+                            @foreach ([['label' => __('dashboard.silk_own'), 'value' => $silkData['silk']], ['label' => __('dashboard.silk_premium'), 'value' => $silkData['premium_silk']]] as $item)
+                                <div class="text-center p-3 gp-card-lowest rounded"
+                                    style="border:1px solid rgba(242,202,80,0.15);">
+                                    <p class="text-2xl font-headline font-black gp-text-primary">
+                                        {{ number_format($item['value']) }}
+                                    </p>
+                                    <p class="text-xs gp-text-on-surface-variant mt-1">{{ $item['label'] }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                        <p class="mt-3 text-xs gp-text-on-surface-variant text-right">
+                            {{ __('dashboard.silk_total', ['total' => number_format($silkData['total'])]) }}
+                        </p>
+                    @endif
+                </div>
+
+                {{-- Quick Actions --}}
+                <div class="gp-card gp-ornate-border p-6">
+                    <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline mb-4">
+                        {{ __('dashboard.quick_actions') }}</p>
+                    <div class="space-y-2">
+                        <a href="{{ route('profile.edit') }}"
+                            class="group flex items-center gap-3 p-3 gp-card-lowest hover:gp-card transition rounded"
+                            style="border:1px solid rgba(242,202,80,0.15);">
+                            <svg class="h-4 w-4 gp-text-primary flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                        </div>
-                        <div>
-                            <h3
-                                class="font-headline font-bold uppercase tracking-wider gp-text-on-surface group-hover:gp-text-primary">
+                            <span
+                                class="text-sm font-headline uppercase tracking-wide gp-text-on-surface group-hover:gp-text-primary transition">
                                 {{ __('dashboard.profile') }}
-                            </h3>
-                            <p class="text-sm gp-text-on-surface-variant">{{ __('dashboard.profile_desc') }}</p>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="{{ route('donate.index') }}"
-                    class="group gp-card gp-ornate-border p-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
-                    <div class="flex items-center gap-4">
-                        <div class="flex h-12 w-12 items-center justify-center gp-card-lowest"
-                            style="border:1px solid rgba(242,202,80,0.3);">
-                            <svg class="h-6 w-6 gp-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            </span>
+                        </a>
+                        <a href="{{ route('donate.index') }}"
+                            class="group flex items-center gap-3 p-3 gp-card-lowest hover:gp-card transition rounded"
+                            style="border:1px solid rgba(242,202,80,0.15);">
+                            <svg class="h-4 w-4 gp-text-primary flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                        </div>
-                        <div>
-                            <h3
-                                class="font-headline font-bold uppercase tracking-wider gp-text-on-surface group-hover:gp-text-primary">
-                                {{ __('dashboard.donations') }}
-                            </h3>
-                            <p class="text-sm gp-text-on-surface-variant">{{ __('dashboard.donations_desc') }}</p>
-                        </div>
+                            <span
+                                class="text-sm font-headline uppercase tracking-wide gp-text-on-surface group-hover:gp-text-primary transition">
+                                {{ __('dashboard.refill_silk') }}
+                            </span>
+                        </a>
+                        @if ($votingEnabled)
+                            <a href="{{ route('voting.index') }}"
+                                class="group flex items-center gap-3 p-3 gp-card-lowest hover:gp-card transition rounded"
+                                style="border:1px solid rgba(242,202,80,0.15);">
+                                <svg class="h-4 w-4 gp-text-primary flex-shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                </svg>
+                                <span
+                                    class="text-sm font-headline uppercase tracking-wide gp-text-on-surface group-hover:gp-text-primary transition">
+                                    {{ __('dashboard.vote_now') }}
+                                </span>
+                            </a>
+                        @endif
                     </div>
-                </a>
-
-                <a href="{{ route('voting.index') }}"
-                    class="group gp-card gp-ornate-border p-6 transition-all hover:-translate-y-0.5 hover:shadow-2xl">
-                    <div class="flex items-center gap-4">
-                        <div class="flex h-12 w-12 items-center justify-center gp-card-lowest"
-                            style="border:1px solid rgba(242,202,80,0.3);">
-                            <svg class="h-6 w-6 gp-text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3
-                                class="font-headline font-bold uppercase tracking-wider gp-text-on-surface group-hover:gp-text-primary">
-                                {{ __('dashboard.voting') }}
-                            </h3>
-                            <p class="text-sm gp-text-on-surface-variant">{{ __('dashboard.voting_desc') }}</p>
-                        </div>
-                    </div>
-                </a>
+                </div>
             </div>
+
+            {{-- Characters --}}
+            <div class="gp-card gp-ornate-border p-6">
+                <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline mb-5">
+                    {{ __('dashboard.your_characters') }}</p>
+
+                @if ($characters->isEmpty())
+                    <p class="text-sm gp-text-on-surface-variant">{{ __('dashboard.no_characters') }}</p>
+                @else
+                    <div class="divide-y" style="border-color:rgba(242,202,80,0.1);">
+                        @foreach ($characters as $char)
+                            <a href="{{ route('ranking.characters.show', $char->CharID) }}"
+                                class="flex items-center gap-4 py-3 -mx-6 px-6 hover:gp-card-lowest transition">
+                                <img src="{{ $char->avatar_url }}" alt="{{ $char->CharName16 }}"
+                                    class="w-10 h-10 rounded-full object-cover gp-card-lowest" loading="lazy">
+                                <div class="flex-1 min-w-0">
+                                    <p
+                                        class="text-sm font-headline font-bold uppercase tracking-wide gp-text-on-surface group-hover:gp-text-primary truncate">
+                                        {{ $char->CharName16 }}
+                                    </p>
+                                    <p class="text-xs gp-text-on-surface-variant">
+                                        {{ __('dashboard.char_level', ['level' => $char->CurLevel]) }}
+                                        @if ($char->NickName16 && $char->NickName16 !== '<No Job>')
+                                            &bull; {{ $char->NickName16 }}
+                                        @endif
+                                    </p>
+                                </div>
+                                <span
+                                    class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full
+                                    {{ $char->is_online ? 'bg-green-900/30 text-green-400' : 'bg-gray-800 text-gray-400' }}">
+                                    <span
+                                        class="w-1.5 h-1.5 rounded-full {{ $char->is_online ? 'bg-green-500' : 'bg-gray-500' }}"></span>
+                                    {{ $char->is_online ? __('dashboard.online') : __('dashboard.offline') }}
+                                </span>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            {{-- Voting Status (only if voting package is installed) --}}
+            @if ($votingEnabled && $votingData)
+                <div class="gp-card gp-ornate-border p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline">
+                            {{ __('dashboard.voting_status') }}</p>
+                        <a href="{{ route('voting.index') }}"
+                            class="text-xs font-headline uppercase tracking-wider gp-text-primary hover:opacity-80 transition">
+                            {{ __('dashboard.vote_now') }}
+                        </a>
+                    </div>
+                    @if ($votingData['voted_today'])
+                        <p class="text-sm text-green-400">{{ __('dashboard.voted_today') }}</p>
+                    @elseif ($votingData['can_vote'])
+                        <p class="text-sm gp-text-primary">{{ __('dashboard.can_vote_now') }}</p>
+                    @else
+                        <p class="text-sm gp-text-on-surface-variant">{{ __('dashboard.voting_desc') }}</p>
+                    @endif
+                </div>
+            @endif
+
         </div>
     </section>
 @endsection

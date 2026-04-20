@@ -12,7 +12,7 @@
                 </svg>
                 <input type="text" wire:model.live.debounce.300ms="search"
                     placeholder="{{ __('ranking.search_guild_placeholder') }}"
-                    class="block min-w-0 grow bg-transparent py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-white dark:placeholder:text-gray-500 sm:text-sm/6">
+                    class="block min-w-0 grow border-0 bg-transparent py-1.5 pr-3 pl-2 text-base text-gray-900 placeholder:text-gray-400 focus:outline-none dark:text-white dark:placeholder:text-gray-500 sm:text-sm/6">
             </div>
         </div>
     </div>

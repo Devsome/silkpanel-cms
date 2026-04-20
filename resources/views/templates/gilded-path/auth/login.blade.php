@@ -51,13 +51,14 @@
                                 </label>
                                 <input id="email" type="text" name="email" value="{{ old('email') }}" required
                                     autofocus autocomplete="username"
-                                    class="gp-input block w-full px-4 py-2.5 transition" />
+                                    class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                             @else
                                 <label for="email" class="block text-sm font-medium gp-text-on-surface-variant mb-1.5">
                                     {{ __('auth/login.form.email') }}
                                 </label>
                                 <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                                    autofocus autocomplete="email" class="gp-input block w-full px-4 py-2.5 transition" />
+                                    autofocus autocomplete="email"
+                                    class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                             @endif
                             @error('email')
                                 <p class="mt-1.5 text-sm text-red-400">{{ $message }}</p>
@@ -70,7 +71,7 @@
                                 {{ __('auth/login.form.password') }}
                             </label>
                             <input id="password" type="password" name="password" required autocomplete="current-password"
-                                class="gp-input block w-full px-4 py-2.5 transition" />
+                                class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                             @error('password')
                                 <p class="mt-1.5 text-sm text-red-400">{{ $message }}</p>
                             @enderror

@@ -6,9 +6,10 @@
     </x-slot>
 
     <div class="py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div
-                class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+
+            {{-- Welcome --}}
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                     {{ __('dashboard.welcome', ['name' => Auth::user()->name]) }}
                 </h3>
@@ -17,76 +18,181 @@
                 </p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <a href="{{ route('profile.edit') }}"
-                    class="group bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md hover:border-indigo-300 dark:hover:border-indigo-600 transition">
-                    <div class="flex items-center gap-4">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
+            {{-- Silk balance + Quick actions --}}
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+                {{-- Silk Balance --}}
+                <div
+                    class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-base font-semibold text-gray-900 dark:text-white">
+                            {{ __('dashboard.silk_balance') }}
+                        </h3>
+                        <a href="{{ route('donate.index') }}"
+                            class="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">
+                            {{ __('dashboard.refill_silk') }}
+                        </a>
+                    </div>
+
+                    @if ($silkData['type'] === 'vsro')
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                                    {{ number_format($silkData['silk_own']) }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    {{ __('dashboard.silk_own') }}
+                                </p>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                                    {{ number_format($silkData['silk_gift']) }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    {{ __('dashboard.silk_gift') }}
+                                </p>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                <p class="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                                    {{ number_format($silkData['silk_point']) }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    {{ __('dashboard.silk_point') }}
+                                </p>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 text-right">
+                            {{ __('dashboard.silk_total', ['total' => number_format($silkData['total'])]) }}
+                        </p>
+                    @else
+                        {{-- ISRO --}}
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                                    {{ number_format($silkData['silk']) }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    {{ __('dashboard.silk_own') }}
+                                </p>
+                            </div>
+                            <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                                <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                                    {{ number_format($silkData['premium_silk']) }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    {{ __('dashboard.silk_premium') }}
+                                </p>
+                            </div>
+                        </div>
+                        <p class="mt-3 text-sm text-gray-500 dark:text-gray-400 text-right">
+                            {{ __('dashboard.silk_total', ['total' => number_format($silkData['total'])]) }}
+                        </p>
+                    @endif
+                </div>
+
+                {{-- Quick Actions --}}
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ __('dashboard.quick_actions') }}
+                    </h3>
+                    <div class="space-y-2">
+                        <a href="{{ route('profile.edit') }}"
+                            class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 text-sm text-gray-700 dark:text-gray-300 hover:text-indigo-700 dark:hover:text-indigo-300 transition">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
-                        </div>
-                        <div>
-                            <h4
-                                class="font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
-                                {{ __('dashboard.profile') }}
-                            </h4>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ __('dashboard.profile_desc') }}
-                            </p>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="{{ route('donate.index') }}"
-                    class="group bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-600 transition">
-                    <div class="flex items-center gap-4">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none"
-                                stroke="currentColor" viewBox="0 0 24 24">
+                            {{ __('dashboard.profile') }}
+                        </a>
+                        <a href="{{ route('donate.index') }}"
+                            class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 text-sm text-gray-700 dark:text-gray-300 hover:text-emerald-700 dark:hover:text-emerald-300 transition">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                        </div>
-                        <div>
-                            <h4
-                                class="font-semibold text-gray-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition">
-                                {{ __('dashboard.donations') }}
-                            </h4>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ __('dashboard.donations_desc') }}
-                            </p>
-                        </div>
+                            {{ __('dashboard.refill_silk') }}
+                        </a>
+                        @if ($votingEnabled)
+                            <a href="{{ route('voting.index') }}"
+                                class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-amber-50 dark:hover:bg-amber-900/20 text-sm text-gray-700 dark:text-gray-300 hover:text-amber-700 dark:hover:text-amber-300 transition">
+                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+                                </svg>
+                                {{ __('dashboard.vote_now') }}
+                            </a>
+                        @endif
                     </div>
-                </a>
-
-                <a href="{{ route('voting.index') }}"
-                    class="group bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 hover:shadow-md hover:border-amber-300 dark:hover:border-amber-600 transition">
-                    <div class="flex items-center gap-4">
-                        <div
-                            class="flex-shrink-0 w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-lg flex items-center justify-center">
-                            <svg class="w-6 h-6 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h4
-                                class="font-semibold text-gray-900 dark:text-white group-hover:text-amber-600 dark:group-hover:text-amber-400 transition">
-                                {{ __('dashboard.voting') }}
-                            </h4>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">
-                                {{ __('dashboard.voting_desc') }}
-                            </p>
-                        </div>
-                    </div>
-                </a>
+                </div>
             </div>
+
+            {{-- Characters --}}
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                    {{ __('dashboard.your_characters') }}
+                </h3>
+
+                @if ($characters->isEmpty())
+                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('dashboard.no_characters') }}</p>
+                @else
+                    <div class="divide-y divide-gray-100 dark:divide-gray-700">
+                        @foreach ($characters as $char)
+                            <a href="{{ route('ranking.characters.show', $char->CharID) }}"
+                                class="flex items-center gap-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/40 -mx-6 px-6 transition">
+                                <img src="{{ $char->avatar_url }}" alt="{{ $char->CharName16 }}"
+                                    class="w-10 h-10 rounded-full object-cover bg-gray-100 dark:bg-gray-700"
+                                    loading="lazy">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                                        {{ $char->CharName16 }}
+                                    </p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                                        {{ __('dashboard.char_level', ['level' => $char->CurLevel]) }}
+                                        @if ($char->NickName16 && $char->NickName16 !== '<No Job>')
+                                            &bull; {{ $char->NickName16 }}
+                                        @endif
+                                    </p>
+                                </div>
+                                <span
+                                    class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full
+                                    {{ $char->is_online
+                                        ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                        : 'bg-gray-100 text-gray-500 dark:bg-gray-700 dark:text-gray-400' }}">
+                                    <span
+                                        class="w-1.5 h-1.5 rounded-full {{ $char->is_online ? 'bg-green-500' : 'bg-gray-400' }}"></span>
+                                    {{ $char->is_online ? __('dashboard.online') : __('dashboard.offline') }}
+                                </span>
+                            </a>
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            {{-- Voting Status (only if voting package is installed) --}}
+            @if ($votingEnabled && $votingData)
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-base font-semibold text-gray-900 dark:text-white">
+                            {{ __('dashboard.voting_status') }}
+                        </h3>
+                        <a href="{{ route('voting.index') }}"
+                            class="text-sm text-amber-600 dark:text-amber-400 hover:underline">
+                            {{ __('dashboard.vote_now') }}
+                        </a>
+                    </div>
+                    @if ($votingData['voted_today'])
+                        <p class="text-sm text-green-600 dark:text-green-400">{{ __('dashboard.voted_today') }}</p>
+                    @elseif ($votingData['can_vote'])
+                        <p class="text-sm text-amber-600 dark:text-amber-400">{{ __('dashboard.can_vote_now') }}</p>
+                    @else
+                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('dashboard.voting_desc') }}</p>
+                    @endif
+                </div>
+            @endif
+
         </div>
     </div>
 </x-app-layout>

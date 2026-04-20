@@ -4,6 +4,7 @@ use App\Helpers\SettingHelper;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RankingController;
 use App\Http\Controllers\VotingController;
@@ -56,9 +57,7 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
 });
 
 // Authenticated routes
-Route::get('/dashboard', function () {
-    return view('template::dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/voting', [VotingController::class, 'index'])->name('voting.index');

@@ -46,7 +46,7 @@
                                 {{ __('auth/confirm-password.form.password') }}
                             </label>
                             <input id="password" type="password" name="password" required autocomplete="current-password"
-                                class="gp-input block w-full px-4 py-2.5 transition" />
+                                class="gp-input border-0 block w-full px-4 py-2.5 transition" />
                             <x-input-error :messages="$errors->get('password')" class="mt-2" />
                         </div>
 
