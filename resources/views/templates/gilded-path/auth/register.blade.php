@@ -118,6 +118,20 @@
                             </div>
                         @endif
 
+                        @if ($referralEnabled)
+                            <div>
+                                <label for="referral" class="block text-sm font-medium gp-text-on-surface-variant mb-1.5">
+                                    {{ __('auth/register.form.referral_code') }}
+                                </label>
+                                <input id="referral" type="text" name="referral"
+                                    value="{{ old('referral', request('ref')) }}" autocomplete="off"
+                                    class="gp-input border-0 block w-full px-4 py-2.5 transition" />
+                                @error('referral')
+                                    <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        @endif
+
                         {{-- Submit --}}
                         <div class="flex flex-col sm:flex-row sm:items-center gap-4">
                             <button type="submit"
