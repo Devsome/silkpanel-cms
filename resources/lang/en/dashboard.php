@@ -35,4 +35,16 @@ return [
     // Quick actions
     'quick_actions' => 'Quick Actions',
     'back_to_dashboard' => 'Back to Dashboard',
+
+    // Referral
+    'referral_title' => 'Referral Program',
+    'referral_valid' => 'Valid',
+    'referral_pending' => 'Pending',
+    'referral_silk_earned' => 'Silk Earned',
+    'referral_your_link' => 'Your referral link',
+    'referral_copy' => 'Copy',
+    'referral_copied' => 'Copied!',
+    'referral_status_valid' => 'Valid',
+    'referral_status_pending' => 'Pending',
+    'referral_no_character' => 'No character created yet',
 ];

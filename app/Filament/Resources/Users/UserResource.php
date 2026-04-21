@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Users;
 
 use App\Filament\Resources\Users\Pages\EditUser;
 use App\Filament\Resources\Users\Pages\ListUser;
+use App\Filament\Resources\Users\RelationManagers\ReferralsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\ShardUsersRelationManager;
 use App\Filament\Resources\Users\RelationManagers\SkSilkHistoryRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
@@ -55,6 +56,7 @@ class UserResource extends Resource
         return [
             ShardUsersRelationManager::class,
             SkSilkHistoryRelationManager::class,
+            ReferralsRelationManager::class,
         ];
     }
 

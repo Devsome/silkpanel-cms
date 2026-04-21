@@ -35,4 +35,16 @@ return [
     // Schnellaktionen
     'quick_actions' => 'Schnellaktionen',
     'back_to_dashboard' => 'Zurück zum Dashboard',
+
+    // Referral
+    'referral_title' => 'Empfehlungsprogramm',
+    'referral_valid' => 'Gültig',
+    'referral_pending' => 'Ausstehend',
+    'referral_silk_earned' => 'Verdientes Silk',
+    'referral_your_link' => 'Dein Empfehlungslink',
+    'referral_copy' => 'Kopieren',
+    'referral_copied' => 'Kopiert!',
+    'referral_status_valid' => 'Gültig',
+    'referral_status_pending' => 'Ausstehend',
+    'referral_no_character' => 'Noch kein Charakter erstellt',
 ];

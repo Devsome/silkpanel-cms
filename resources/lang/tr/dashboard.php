@@ -28,4 +28,16 @@ return [
     'vote_now' => 'Şimdi Oy Ver',
     'quick_actions' => 'Hızlı İşlemler',
     'back_to_dashboard' => 'Panele Dön',
+
+    // Referral
+    'referral_title' => 'Referans Programı',
+    'referral_valid' => 'Geçerli',
+    'referral_pending' => 'Beklemede',
+    'referral_silk_earned' => 'Kazanılan Silk',
+    'referral_your_link' => 'Referans bağlantın',
+    'referral_copy' => 'Kopyala',
+    'referral_copied' => 'Kopyalandı!',
+    'referral_status_valid' => 'Geçerli',
+    'referral_status_pending' => 'Beklemede',
+    'referral_no_character' => 'Henüz karakter oluşturulmadı',
 ];

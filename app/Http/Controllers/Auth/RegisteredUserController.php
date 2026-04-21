@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Models\User;
 use App\Rules\ValidationRules;
+use App\Services\ReferralService;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -36,8 +37,9 @@ class RegisteredUserController extends Controller
     public function create(): View
     {
         $tosEnabled = (bool) Setting::get('tos_enabled', false);
+        $referralEnabled = (bool) Setting::get('referral_enabled', false);
 
-        return view('template::auth.register', compact('tosEnabled'));
+        return view('template::auth.register', compact('tosEnabled', 'referralEnabled'));
     }
 
     /**
@@ -98,6 +100,10 @@ class RegisteredUserController extends Controller
         ]);
 
         $user->assignRole(UsergroupRoleEnums::CUSTOMER);
+
+        if ($referrerId !== null && (bool) Setting::get('referral_enabled', false)) {
+            app(ReferralService::class)->createReferral($referrerId, $user);
+        }
 
         event(new Registered($user));
 

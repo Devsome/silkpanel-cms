@@ -193,6 +193,81 @@
                 </div>
             @endif
 
+            {{-- Referral System (only if enabled) --}}
+            @if ($referralEnabled && $referralData)
+                <div
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+                    <h3 class="text-base font-semibold text-gray-900 dark:text-white mb-4">
+                        {{ __('dashboard.referral_title') }}
+                    </h3>
+
+                    {{-- Stats --}}
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                            <p class="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+                                {{ $referralData['valid_count'] }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                {{ __('dashboard.referral_valid') }}
+                            </p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                            <p class="text-2xl font-bold text-amber-600 dark:text-amber-400">
+                                {{ $referralData['pending_count'] }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                {{ __('dashboard.referral_pending') }}
+                            </p>
+                        </div>
+                        <div class="text-center p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
+                            <p class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+                                {{ number_format($referralData['total_silk_earned']) }}
+                            </p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                {{ __('dashboard.referral_silk_earned') }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {{-- Referral link --}}
+                    <div class="mb-4">
+                        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">
+                            {{ __('dashboard.referral_your_link') }}
+                        </p>
+                        <div class="flex items-center gap-2">
+                            <input type="text" readonly
+                                value="{{ route('register') . '?ref=' . $referralData['reflink'] }}"
+                                class="flex-1 text-sm bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg px-3 py-2 text-gray-700 dark:text-gray-300 truncate" />
+                            <button type="button"
+                                onclick="navigator.clipboard.writeText('{{ route('register') . '?ref=' . $referralData['reflink'] }}').then(() => this.textContent = '{{ __('dashboard.referral_copied') }}')"
+                                class="shrink-0 text-sm px-3 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 transition">
+                                {{ __('dashboard.referral_copy') }}
+                            </button>
+                        </div>
+                    </div>
+
+                    {{-- Referral list --}}
+                    @if ($referralData['referrals']->isNotEmpty())
+                        <div class="mt-4 divide-y divide-gray-100 dark:divide-gray-700">
+                            @foreach ($referralData['referrals'] as $referral)
+                                <div class="flex items-center justify-between py-2">
+                                    <span class="text-sm text-gray-700 dark:text-gray-300">
+                                        {{ $referral->character_name ?? __('dashboard.referral_no_character') }}
+                                    </span>
+                                    <span
+                                        class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full
+                                        {{ $referral->status === 'valid'
+                                            ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                            : 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400' }}">
+                                        {{ $referral->status === 'valid' ? __('dashboard.referral_status_valid') : __('dashboard.referral_status_pending') }}
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            @endif
+
         </div>
     </div>
 </x-app-layout>

@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Enums\Languages;
+use App\Enums\SilkTypeEnum;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -292,6 +293,39 @@ class ManageSettings extends Page
                                         ->columns(2)
                                         ->collapsible(),
                                 ]),
+                            Tab::make(__('filament/settings.form.tabs.referral'))
+                                ->icon('heroicon-o-user-plus')
+                                ->schema([
+                                    Toggle::make('referral_enabled')
+                                        ->label(__('filament/settings.form.referral.enabled'))
+                                        ->helperText(__('filament/settings.form.referral.enabled_description'))
+                                        ->live()
+                                        ->columnSpanFull(),
+
+                                    TextInput::make('referral_min_level')
+                                        ->label(__('filament/settings.form.referral.min_level'))
+                                        ->helperText(__('filament/settings.form.referral.min_level_description'))
+                                        ->numeric()
+                                        ->minValue(1)
+                                        ->maxValue(200)
+                                        ->default(20)
+                                        ->visible(fn(Get $get) => (bool) $get('referral_enabled')),
+
+                                    TextInput::make('referral_silk_reward')
+                                        ->label(__('filament/settings.form.referral.silk_reward'))
+                                        ->helperText(__('filament/settings.form.referral.silk_reward_description'))
+                                        ->numeric()
+                                        ->minValue(1)
+                                        ->default(50)
+                                        ->visible(fn(Get $get) => (bool) $get('referral_enabled')),
+
+                                    Select::make('referral_silk_type')
+                                        ->label(__('filament/settings.form.referral.silk_type'))
+                                        ->options(SilkTypeEnum::class)
+                                        ->default(SilkTypeEnum::SILK_OWN->value)
+                                        ->visible(fn(Get $get) => (bool) $get('referral_enabled')),
+                                ])->columns(2),
+
                             Tab::make(__('filament/settings.form.tabs.contact'))
                                 ->icon('heroicon-o-envelope')
                                 ->schema([
@@ -384,6 +418,10 @@ class ManageSettings extends Page
             'partners',
             'tos_enabled',
             'login_with_name',
+            'referral_enabled',
+            'referral_min_level',
+            'referral_silk_reward',
+            'referral_silk_type',
         ];
 
         foreach ($settingKeys as $key) {

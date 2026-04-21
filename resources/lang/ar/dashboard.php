@@ -28,4 +28,16 @@ return [
     'vote_now' => 'صوّت الآن',
     'quick_actions' => 'إجراءات سريعة',
     'back_to_dashboard' => 'العودة إلى لوحة التحكم',
+
+    // Referral
+    'referral_title' => 'برنامج الإحالة',
+    'referral_valid' => 'صالح',
+    'referral_pending' => 'معلّق',
+    'referral_silk_earned' => 'السيلك المكتسب',
+    'referral_your_link' => 'رابط الإحالة الخاص بك',
+    'referral_copy' => 'نسخ',
+    'referral_copied' => 'تم النسخ!',
+    'referral_status_valid' => 'صالح',
+    'referral_status_pending' => 'معلّق',
+    'referral_no_character' => 'لم يتم إنشاء أي شخصية بعد',
 ];

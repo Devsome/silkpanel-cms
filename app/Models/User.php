@@ -226,5 +226,25 @@ class User extends Authenticatable implements MustVerifyEmail
         };
     }
 
+    /**
+     * Referrals this user has given out (users they invited).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function referrals(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Referral::class, 'referrer_id');
+    }
+
+    /**
+     * The referral record for this user (who invited them).
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function referral(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(Referral::class, 'referred_id');
+    }
+
     #endregion relation
 }

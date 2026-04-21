@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -15,12 +16,16 @@ class DashboardController extends Controller
         $characters = $this->getCharacters($user);
         $votingEnabled = class_exists('SilkPanel\Voting\Models\VotingSite');
         $votingData = $votingEnabled ? $this->getVotingData($user) : null;
+        $referralEnabled = (bool) Setting::get('referral_enabled', false);
+        $referralData = $referralEnabled ? $this->getReferralData($user) : null;
 
         return view('template::dashboard', compact(
             'silkData',
             'characters',
             'votingEnabled',
-            'votingData'
+            'votingData',
+            'referralEnabled',
+            'referralData'
         ));
     }
 
@@ -103,5 +108,43 @@ class DashboardController extends Controller
             'last_vote' => $lastVote,
             'voted_today' => $lastVote && $lastVote->voted_at?->isToday(),
         ];
+    }
+
+    private function getReferralData($user): array
+    {
+        try {
+            $referrals = $user->referrals()->with(['referred.shardUsers'])->get();
+
+            $validCount = $referrals->where('status', 'valid')->count();
+            $pendingCount = $referrals->where('status', 'pending')->count();
+            $totalSilkEarned = $referrals->sum('silk_rewarded');
+
+            $mapped = $referrals->sortByDesc('created_at')->map(function ($referral) {
+                $topChar = $referral->referred?->shardUsers
+                    ?->filter(fn($c) => $c->CharID != 0 && $c->CharName16 !== 'dummy')
+                    ->sortByDesc('CurLevel')
+                    ->first();
+
+                $referral->character_name = $topChar?->CharName16 ?? null;
+
+                return $referral;
+            })->values();
+
+            return [
+                'reflink' => $user->reflink,
+                'valid_count' => $validCount,
+                'pending_count' => $pendingCount,
+                'total_silk_earned' => $totalSilkEarned,
+                'referrals' => $mapped,
+            ];
+        } catch (\Throwable $e) {
+            return [
+                'reflink' => $user->reflink,
+                'valid_count' => 0,
+                'pending_count' => 0,
+                'total_silk_earned' => 0,
+                'referrals' => collect(),
+            ];
+        }
     }
 }

@@ -113,4 +113,15 @@ return [
         'empty_description' => 'This user does not have any characters.',
         'view' => 'View Character',
     ],
+
+    'referrals' => [
+        'title' => 'Referrals',
+        'referred' => 'Referred User',
+        'status' => 'Status',
+        'silk_rewarded' => 'Silk Rewarded',
+        'rewarded_at' => 'Rewarded At',
+        'no_character' => 'No character created yet',
+        'status_pending' => 'Pending',
+        'status_valid' => 'Valid',
+    ],
 ];

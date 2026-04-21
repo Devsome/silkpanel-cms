@@ -94,6 +94,17 @@
                             </div>
                         @endif
 
+                        @if ($referralEnabled)
+                            <div class="col-span-6 sm:col-span-3">
+                                <x-label for="referral" value="{{ __('auth/register.form.referral_code') }}" />
+                                <x-input id="referral" class="block mt-1 w-full dark:bg-gray-800 dark:text-white"
+                                    type="text" name="referral" :value="old('referral', request('ref'))" autocomplete="off" />
+                                @error('referral')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        @endif
+
                         <div class="col-span-6 flex flex-col sm:flex-row sm:items-center sm:gap-4">
                             <x-button>
                                 {{ __('auth/register.form.register') }}

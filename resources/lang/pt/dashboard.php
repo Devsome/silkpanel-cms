@@ -28,4 +28,16 @@ return [
     'vote_now' => 'Votar agora',
     'quick_actions' => 'Ações rápidas',
     'back_to_dashboard' => 'Voltar ao painel',
+
+    // Referral
+    'referral_title' => 'Programa de indicação',
+    'referral_valid' => 'Válido',
+    'referral_pending' => 'Pendente',
+    'referral_silk_earned' => 'Silk ganho',
+    'referral_your_link' => 'Seu link de indicação',
+    'referral_copy' => 'Copiar',
+    'referral_copied' => 'Copiado!',
+    'referral_status_valid' => 'Válido',
+    'referral_status_pending' => 'Pendente',
+    'referral_no_character' => 'Nenhum personagem criado ainda',
 ];

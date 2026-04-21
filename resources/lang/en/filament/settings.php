@@ -18,6 +18,7 @@ return [
             'design' => 'Design',
             'features' => 'Features',
             'partners' => 'Partners',
+            'referral' => 'Referral',
             'contact' => 'Contact',
             'social_media' => 'Social Media',
         ],
@@ -96,6 +97,16 @@ return [
             'social_discord' => 'Discord URL',
             'discord_id' => 'Discord ID',
             'discord_id_description' => 'Your Discord server ID, used for the Discord widget on the homepage. You can get this by right-clicking your server icon in Discord, selecting "Copy ID", and pasting it here.',
+        ],
+
+        'referral' => [
+            'enabled' => 'Enable Referral System',
+            'enabled_description' => 'Allow players to invite others and earn Silk rewards when the referred player reaches the required character level.',
+            'min_level' => 'Minimum Character Level',
+            'min_level_description' => 'The referred player\'s highest character must reach this level before the referral is counted as valid.',
+            'silk_reward' => 'Silk Reward per Referral',
+            'silk_reward_description' => 'Amount of Silk to award to the referrer for each valid referral.',
+            'silk_type' => 'Silk Type',
         ],
 
         'field_types' => [

@@ -28,4 +28,16 @@ return [
     'vote_now' => 'Voter maintenant',
     'quick_actions' => 'Actions rapides',
     'back_to_dashboard' => 'Retour au tableau de bord',
+
+    // Referral
+    'referral_title' => 'Programme de parrainage',
+    'referral_valid' => 'Valide',
+    'referral_pending' => 'En attente',
+    'referral_silk_earned' => 'Silk gagné',
+    'referral_your_link' => 'Votre lien de parrainage',
+    'referral_copy' => 'Copier',
+    'referral_copied' => 'Copié !',
+    'referral_status_valid' => 'Valide',
+    'referral_status_pending' => 'En attente',
+    'referral_no_character' => 'Aucun personnage créé pour l\'instant',
 ];
