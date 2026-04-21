@@ -132,7 +132,7 @@ class RegisteredUserController extends Controller
                 username: $request->silkroad_id,
                 password: $request->password,
                 email: $request->email,
-                ip: $request->ip()
+                ip: filter_var($request->ip(), FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ?: '0.0.0.0'
             );
 
             SkSilk::create([
