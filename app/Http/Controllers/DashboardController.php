@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use SilkPanel\SilkroadModels\Models\Portal\AphChangedSilk;
 
 class DashboardController extends Controller
 {
@@ -108,6 +109,52 @@ class DashboardController extends Controller
             'last_vote' => $lastVote,
             'voted_today' => $lastVote && $lastVote->voted_at?->isToday(),
         ];
+    }
+
+    public function silkHistory(Request $request): View
+    {
+        $user = $request->user();
+        $isro = config('silkpanel.version') === 'isro';
+
+        try {
+            if ($isro) {
+                $history = $this->getIsroSilkHistoryQuery($user)
+                    ->paginate(25);
+            } else {
+                $history = $user->getSkSilkHistory()
+                    ->orderByDesc('AuthDate')
+                    ->paginate(25);
+            }
+        } catch (\Throwable $e) {
+            $history = new \Illuminate\Pagination\LengthAwarePaginator([], 0, 25);
+        }
+
+        return view('template::dashboard.silk-history', [
+            'history' => $history,
+            'isro' => $isro,
+        ]);
+    }
+
+    private function getIsroSilkHistoryQuery($user): \Illuminate\Database\Eloquent\Builder
+    {
+        $portalJid = (int) ($user->pjid ?: $user->jid);
+
+        return AphChangedSilk::query()
+            ->from('dbo.APH_ChangedSilk as APH_ChangedSilk')
+            ->select(
+                'M_CPItem.CPItemCode',
+                'M_CPItem.CPItemName',
+                'APH_ChangedSilk.PTInvoiceID',
+                'APH_ChangedSilk.RemainedSilk',
+                'APH_ChangedSilk.ChangedSilk',
+                'APH_ChangedSilk.SilkType',
+                'APH_ChangedSilk.ChangeDate',
+                'APH_ChangedSilk.AvailableStatus'
+            )
+            ->leftJoin('APH_CPItemSaleDetails', 'APH_CPItemSaleDetails.PTInvoiceID', '=', 'APH_ChangedSilk.PTInvoiceID')
+            ->leftJoin('M_CPItem', 'M_CPItem.CPItemID', '=', 'APH_CPItemSaleDetails.CPItemID')
+            ->where('APH_ChangedSilk.JID', $portalJid)
+            ->orderBy('APH_ChangedSilk.ChangeDate', 'desc');
     }
 
     private function getReferralData($user): array

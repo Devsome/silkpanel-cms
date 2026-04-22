@@ -85,7 +85,18 @@
                     </svg>
                     <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Donate') }}</span>
                 </a>
+
+                <a href="{{ route('dashboard.silk-history') }}"
+                    class="flex items-center gap-3 p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                    <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                    </svg>
+                    <span
+                        class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('dashboard.silk_history') }}</span>
+                </a>
             </div>
         </div>
+
     </div>
 @endsection

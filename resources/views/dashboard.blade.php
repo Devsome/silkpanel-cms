@@ -124,6 +124,14 @@
                                 {{ __('dashboard.vote_now') }}
                             </a>
                         @endif
+                        <a href="{{ route('dashboard.silk-history') }}"
+                            class="flex items-center gap-3 px-4 py-2 rounded-lg bg-gray-50 dark:bg-gray-700/50 hover:bg-purple-50 dark:hover:bg-purple-900/20 text-sm text-gray-700 dark:text-gray-300 hover:text-purple-700 dark:hover:text-purple-300 transition">
+                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            {{ __('dashboard.silk_history') }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -267,7 +275,6 @@
                     @endif
                 </div>
             @endif
-
         </div>
     </div>
 </x-app-layout>

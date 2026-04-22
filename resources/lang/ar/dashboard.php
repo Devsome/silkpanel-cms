@@ -39,5 +39,8 @@ return [
     'referral_copied' => 'تم النسخ!',
     'referral_status_valid' => 'صالح',
     'referral_status_pending' => 'معلّق',
+    'silk_history' => 'سجل السيلك',
+    'silk_history_empty' => 'لا توجد معاملات.',
+    'silk_history_view_all' => 'عرض الكل',
     'referral_no_character' => 'لم يتم إنشاء أي شخصية بعد',
 ];

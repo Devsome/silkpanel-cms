@@ -39,5 +39,8 @@ return [
     'referral_copied' => 'Copiato!',
     'referral_status_valid' => 'Valido',
     'referral_status_pending' => 'In attesa',
+    'silk_history' => 'Cronologia Silk',
+    'silk_history_empty' => 'Nessuna transazione trovata.',
+    'silk_history_view_all' => 'Vedi tutto',
     'referral_no_character' => 'Nessun personaggio ancora creato',
 ];

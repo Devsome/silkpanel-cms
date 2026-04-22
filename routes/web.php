@@ -58,6 +58,7 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
 
 // Authenticated routes
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard/silk-history', [DashboardController::class, 'silkHistory'])->middleware(['auth', 'verified'])->name('dashboard.silk-history');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/voting', [VotingController::class, 'index'])->name('voting.index');

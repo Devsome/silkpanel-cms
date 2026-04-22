@@ -39,5 +39,8 @@ return [
     'referral_copied' => 'Kopyalandı!',
     'referral_status_valid' => 'Geçerli',
     'referral_status_pending' => 'Beklemede',
+    'silk_history' => 'Silk Geçmişi',
+    'silk_history_empty' => 'İşlem bulunamadı.',
+    'silk_history_view_all' => 'Tümünü gör',
     'referral_no_character' => 'Henüz karakter oluşturulmadı',
 ];

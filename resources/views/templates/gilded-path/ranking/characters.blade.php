@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="py-8">
-        <div class="mx-auto max-w-[1600px] px-4 md:px-8">
+        <div class="mx-auto max-w-400 px-4 md:px-8">
             {{-- Ranking Navigation --}}
             <div class="mb-8 flex items-center gap-2 gp-card p-1.5">
                 <a href="{{ route('ranking.characters') }}"

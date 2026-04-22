@@ -46,5 +46,8 @@ return [
     'referral_copied' => 'Kopiert!',
     'referral_status_valid' => 'Gültig',
     'referral_status_pending' => 'Ausstehend',
+    'silk_history' => 'Silk-Verlauf',
+    'silk_history_empty' => 'Keine Transaktionen gefunden.',
+    'silk_history_view_all' => 'Alle anzeigen',
     'referral_no_character' => 'Noch kein Charakter erstellt',
 ];

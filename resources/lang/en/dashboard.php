@@ -47,4 +47,9 @@ return [
     'referral_status_valid' => 'Valid',
     'referral_status_pending' => 'Pending',
     'referral_no_character' => 'No character created yet',
+
+    // Silk History
+    'silk_history' => 'Silk History',
+    'silk_history_empty' => 'No transactions found.',
+    'silk_history_view_all' => 'View all',
 ];
