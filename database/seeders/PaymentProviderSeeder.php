@@ -54,11 +54,15 @@ class PaymentProviderSeeder extends Seeder
             ]
         ];
 
-        foreach ($providers as $provider) {
-            PaymentProvider::updateOrCreate(
-                ['slug' => $provider['slug']],
-                $provider,
-            );
+        if (PaymentProvider::count() === 0) {
+            foreach ($providers as $provider) {
+                PaymentProvider::updateOrCreate(
+                    ['slug' => $provider['slug']],
+                    $provider,
+                );
+            }
+        } else {
+            $this->command->info('Payment providers already seeded, skipping.');
         }
     }
 }

@@ -16,9 +16,10 @@ class RolesAndPermissionsSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create roles
-        Role::firstOrCreate(['name' => UsergroupRoleEnums::ADMIN->value]);
-        Role::firstOrCreate(['name' => UsergroupRoleEnums::SUPPORTER->value]);
-        Role::firstOrCreate(['name' => UsergroupRoleEnums::CUSTOMER->value]);
+        if (Role::count() === 0) {
+            Role::firstOrCreate(['name' => UsergroupRoleEnums::ADMIN->value]);
+            Role::firstOrCreate(['name' => UsergroupRoleEnums::SUPPORTER->value]);
+            Role::firstOrCreate(['name' => UsergroupRoleEnums::CUSTOMER->value]);
+        }
     }
 }
