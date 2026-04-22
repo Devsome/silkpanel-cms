@@ -327,6 +327,9 @@ class SettingHelper
             ],
         ];
 
+        if (Setting::count() > 0) {
+            return;
+        }
         foreach ($defaults as $setting) {
             Setting::set(
                 $setting['key'],

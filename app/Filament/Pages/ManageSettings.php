@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use App\Enums\Languages;
 use App\Enums\SilkTypeEnum;
+use App\Enums\SilkTypeIsroEnum;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -321,8 +322,10 @@ class ManageSettings extends Page
 
                                     Select::make('referral_silk_type')
                                         ->label(__('filament/settings.form.referral.silk_type'))
-                                        ->options(SilkTypeEnum::class)
-                                        ->default(SilkTypeEnum::SILK_OWN->value)
+                                        ->options(fn() => match (config('silkpanel.version')) {
+                                            'isro' => SilkTypeIsroEnum::class,
+                                            default => SilkTypeEnum::class,
+                                        })
                                         ->visible(fn(Get $get) => (bool) $get('referral_enabled')),
                                 ])->columns(2),
 
