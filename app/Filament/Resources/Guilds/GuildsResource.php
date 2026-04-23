@@ -62,6 +62,9 @@ class GuildsResource extends Resource
                         TextEntry::make('FoundationDate')
                             ->label(__('filament/guilds.view.foundation_date'))
                             ->date(),
+                        TextEntry::make('Gold')
+                            ->label(__('filament/guilds.view.gold'))
+                            ->numeric(),
                         TextEntry::make('MasterCommentTitle')
                             ->label(__('filament/guilds.view.master_comment_title'))
                             ->columnStart(1)

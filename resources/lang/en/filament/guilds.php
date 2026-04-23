@@ -29,6 +29,7 @@ return [
         'lvl' => 'Level',
         'members_count' => 'Members Count',
         'foundation_date' => 'Foundation Date',
+        'gold' => 'Gold',
         'member_master' => 'Guild Master',
         'alliance_guilds' => 'Allied Guilds',
         'alliance_id' => 'Alliance ID',
