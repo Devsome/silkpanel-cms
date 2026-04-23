@@ -52,4 +52,17 @@ return [
     'silk_history' => 'Silk History',
     'silk_history_empty' => 'No transactions found.',
     'silk_history_view_all' => 'View all',
+
+    // World Map
+    'world_map'     => 'World Map',
+    'map_subtitle'  => 'Live positions of all online characters',
+    'map_search'    => 'Search character',
+    'map_online'    => 'Online',
+    'map_max_shown' => 'max :n shown',
+    'map_updated'   => 'Updated',
+    'map_refreshed' => 'Refreshed',
+    'map_loading'   => 'Loading',
+    'map_refresh'   => 'Refresh',
+    'map_manual'    => 'Manual',
+    'map_level'     => 'Level',
 ];

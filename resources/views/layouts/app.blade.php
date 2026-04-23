@@ -33,6 +33,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    @stack('styles')
 </head>
 
 <body class="antialiased min-h-screen flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100">
@@ -52,6 +53,7 @@
 
     @include('layouts.partials.footer')
 
+    @stack('scripts')
     @livewireScripts
 </body>
 

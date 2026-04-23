@@ -42,5 +42,18 @@ return [
     'silk_history' => 'سجل السيلك',
     'silk_history_empty' => 'لا توجد معاملات.',
     'silk_history_view_all' => 'عرض الكل',
+
+    // خريطة العالم
+    'world_map'     => 'خريطة العالم',
+    'map_subtitle'  => 'المواقع المباشرة لجميع الشخصيات المتصلة',
+    'map_search'    => 'ابحث عن شخصية',
+    'map_online'    => 'متصل',
+    'map_max_shown' => 'الحد الأقصى :n معروض',
+    'map_updated'   => 'تم التحديث',
+    'map_refreshed' => 'تم التحديث',
+    'map_loading'   => 'جاري التحميل',
+    'map_refresh'   => 'تحديث',
+    'map_manual'    => 'يدوي',
+    'map_level'     => 'المستوى',
     'referral_no_character' => 'لم يتم إنشاء أي شخصية بعد',
 ];

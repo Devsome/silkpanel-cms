@@ -59,6 +59,10 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
 // Authenticated routes
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard/silk-history', [DashboardController::class, 'silkHistory'])->middleware(['auth', 'verified'])->name('dashboard.silk-history');
+Route::get('/dashboard/map', function () {
+    abort_unless((bool) Setting::get('map_frontend_enabled', false), 404);
+    return view('template::dashboard.map');
+})->middleware(['auth', 'verified'])->name('dashboard.map');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/voting', [VotingController::class, 'index'])->name('voting.index');

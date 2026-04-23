@@ -42,5 +42,18 @@ return [
     'silk_history' => 'Silk Geçmişi',
     'silk_history_empty' => 'İşlem bulunamadı.',
     'silk_history_view_all' => 'Tümünü gör',
+
+    // Dünya Haritası
+    'world_map'     => 'Dünya Haritası',
+    'map_subtitle'  => 'Tüm çevrimiçi karakterlerin canlı konumları',
+    'map_search'    => 'Karakter ara',
+    'map_online'    => 'Çevrimiçi',
+    'map_max_shown' => 'maks. :n gösteriliyor',
+    'map_updated'   => 'Güncellendi',
+    'map_refreshed' => 'Yenilendi',
+    'map_loading'   => 'Yükleniyor',
+    'map_refresh'   => 'Yenile',
+    'map_manual'    => 'Manuel',
+    'map_level'     => 'Seviye',
     'referral_no_character' => 'Henüz karakter oluşturulmadı',
 ];

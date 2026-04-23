@@ -19,6 +19,7 @@ class DashboardController extends Controller
         $votingData = $votingEnabled ? $this->getVotingData($user) : null;
         $referralEnabled = (bool) Setting::get('referral_enabled', false);
         $referralData = $referralEnabled ? $this->getReferralData($user) : null;
+        $worldMapEnabled = (bool) Setting::get('map_frontend_enabled', false);
 
         return view('template::dashboard', compact(
             'silkData',
@@ -26,7 +27,8 @@ class DashboardController extends Controller
             'votingEnabled',
             'votingData',
             'referralEnabled',
-            'referralData'
+            'referralData',
+            'worldMapEnabled'
         ));
     }
 

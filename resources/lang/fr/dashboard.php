@@ -42,5 +42,18 @@ return [
     'silk_history' => 'Historique Silk',
     'silk_history_empty' => 'Aucune transaction trouvée.',
     'silk_history_view_all' => 'Voir tout',
+
+    // Carte du monde
+    'world_map'     => 'Carte du monde',
+    'map_subtitle'  => 'Positions en direct de tous les personnages connectés',
+    'map_search'    => 'Rechercher un personnage',
+    'map_online'    => 'En ligne',
+    'map_max_shown' => 'max :n affiché',
+    'map_updated'   => 'Mis à jour',
+    'map_refreshed' => 'Actualisé',
+    'map_loading'   => 'Chargement',
+    'map_refresh'   => 'Actualiser',
+    'map_manual'    => 'Manuel',
+    'map_level'     => 'Niveau',
     'referral_no_character' => 'Aucun personnage créé pour l\'instant',
 ];

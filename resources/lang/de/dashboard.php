@@ -49,5 +49,18 @@ return [
     'silk_history' => 'Silk-Verlauf',
     'silk_history_empty' => 'Keine Transaktionen gefunden.',
     'silk_history_view_all' => 'Alle anzeigen',
+
+    // Weltkarte
+    'world_map'     => 'Weltkarte',
+    'map_subtitle'  => 'Live-Positionen aller Online-Charaktere',
+    'map_search'    => 'Charakter suchen',
+    'map_online'    => 'Online',
+    'map_max_shown' => 'max. :n angezeigt',
+    'map_updated'   => 'Aktualisiert',
+    'map_refreshed' => 'Aktualisiert',
+    'map_loading'   => 'Lädt',
+    'map_refresh'   => 'Aktualisieren',
+    'map_manual'    => 'Manuell',
+    'map_level'     => 'Level',
     'referral_no_character' => 'Noch kein Charakter erstellt',
 ];

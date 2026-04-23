@@ -142,5 +142,116 @@ document.addEventListener('alpine:init', () => {
             clearInterval(this.interval);
         },
     }));
+
+    Alpine.data('silkroadMap', () => {
+        const cfg = window._silkroadMapConfig || {};
+
+        return {
+            search: '',
+            visibleCount: 0,
+            totalCount: 0,
+            loading: false,
+            errorMsg: '',
+            lastRefreshed: '',
+            currentInterval: cfg.refreshInterval ?? 30,
+            _allCharacters: [],
+            _timer: null,
+
+            init() {
+                this.$nextTick(() => {
+                    if (typeof xSROMap === 'undefined') {
+                        this.errorMsg = 'Map library failed to load. Please refresh the page.';
+                        return;
+                    }
+                    xSROMap.init();
+                    this.loadCharacters();
+                    if (this.currentInterval > 0) {
+                        this._timer = setInterval(() => this.loadCharacters(), this.currentInterval * 1000);
+                    }
+                    // Reactive search: watch instead of @input to guarantee updated value
+                    this.$watch('search', () => this.applySearch());
+                });
+            },
+
+            destroy() {
+                clearInterval(this._timer);
+            },
+
+            async loadCharacters() {
+                this.loading = true;
+                this.errorMsg = '';
+                try {
+                    const res = await fetch(cfg.apiUrl, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' },
+                        credentials: 'same-origin',
+                    });
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    const json = await res.json();
+                    if (json.error) throw new Error(json.error);
+
+                    // Remove previous player markers
+                    this._allCharacters.forEach(c => xSROMap.RemovePlayer(c.char_id));
+
+                    // Job-suit characters are already excluded server-side for this route.
+                    this._allCharacters = json.data || [];
+                    this.totalCount = json.total || 0;
+                    this.lastRefreshed = new Date().toLocaleTimeString();
+                    this.applySearch();
+                } catch (err) {
+                    this.errorMsg = 'Could not load map data: ' + err.message;
+                } finally {
+                    this.loading = false;
+                }
+            },
+
+            applySearch() {
+                const term = this.search.trim().toLowerCase();
+                const visible = term
+                    ? this._allCharacters.filter(c => c.name.toLowerCase().includes(term))
+                    : this._allCharacters;
+
+                this.visibleCount = visible.length;
+
+                // Determine if matched results should be highlighted
+                const highlight = term && visible.length >= 1 && visible.length <= 5;
+
+                this._allCharacters.forEach(c => xSROMap.RemovePlayer(c.char_id));
+                visible.forEach(c => {
+                    const color = highlight ? '#facc15' : this._levelColor(c.level);
+                    const popup = `<div style="min-width:140px;line-height:1.6">
+                        <strong>${this._esc(c.name)}</strong><br/>
+                        Level <b>${c.level}</b>
+                    </div>`;
+                    xSROMap.AddPlayer(c.char_id, popup, c.pos_x, c.pos_y, c.pos_z, c.region,
+                        { color, highlighted: highlight });
+                });
+
+                if (highlight) {
+                    xSROMap.FlyView(visible[0].pos_x, visible[0].pos_y, visible[0].pos_z, visible[0].region);
+                }
+            },
+
+            resetTimer() {
+                clearInterval(this._timer);
+                this._timer = null;
+                if (this.currentInterval > 0) {
+                    this._timer = setInterval(() => this.loadCharacters(), this.currentInterval * 1000);
+                }
+            },
+
+            _levelColor(lvl) {
+                if (lvl < 30) return '#60a5fa';
+                if (lvl < 60) return '#34d399';
+                if (lvl < 90) return '#fbbf24';
+                return '#f87171';
+            },
+
+            _esc(str) {
+                const d = document.createElement('div');
+                d.textContent = String(str);
+                return d.innerHTML;
+            },
+        };
+    });
 });
 

@@ -42,5 +42,18 @@ return [
     'silk_history' => 'Histórico de Silk',
     'silk_history_empty' => 'Nenhuma transação encontrada.',
     'silk_history_view_all' => 'Ver tudo',
+
+    // Mapa mundial
+    'world_map'     => 'Mapa mundial',
+    'map_subtitle'  => 'Posições ao vivo de todos os personagens online',
+    'map_search'    => 'Procurar personagem',
+    'map_online'    => 'Online',
+    'map_max_shown' => 'máx. :n exibidos',
+    'map_updated'   => 'Atualizado',
+    'map_refreshed' => 'Atualizado',
+    'map_loading'   => 'Carregando',
+    'map_refresh'   => 'Atualizar',
+    'map_manual'    => 'Manual',
+    'map_level'     => 'Nível',
     'referral_no_character' => 'Nenhum personagem criado ainda',
 ];
