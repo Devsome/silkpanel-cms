@@ -12,6 +12,7 @@ return [
         'guild_title' => 'Guild Information',
         'guild_information_description' => 'Detailed information about the guild.',
         'allied_clans_title' => 'Allied Clans',
+        'guild_chest_title' => 'Guild Chest',
         'members_title' => 'Guild Members',
         'members_information_description' => 'All guild members with quick access to their character pages.',
     ],

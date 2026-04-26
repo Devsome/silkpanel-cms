@@ -5,7 +5,6 @@ namespace App\Filament\Resources\Characters\Pages;
 use App\Enums\CharacterAvatarMapEnum;
 use App\Filament\Resources\Characters\CharacterResource;
 use Filament\Actions\Action;
-use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
@@ -132,7 +131,7 @@ class ViewCharacter extends ViewRecord
                                     ->schema([
                                         ViewEntry::make('inventory')
                                             ->view('filament.characters.partials.inventory')
-                                            ->label(__('filament/characters.view.inventory'))
+                                            ->label(__('filament/characters.inventory.title'))
                                             ->viewData(fn() => $this->getInventoryViewData())
                                             ->columnSpanFull(),
                                         Action::make('clearInventoryCache')
@@ -166,7 +165,7 @@ class ViewCharacter extends ViewRecord
                                     ->schema([
                                         ViewEntry::make('equipment')
                                             ->view('filament.characters.partials.equipment')
-                                            ->label(__('filament/characters.view.equipment'))
+                                            ->label(__('filament/characters.equipment.title'))
                                             ->viewData(fn() => $this->getEquipmentViewData())
                                             ->columnSpanFull(),
                                     ]),
@@ -174,7 +173,7 @@ class ViewCharacter extends ViewRecord
                                     ->schema([
                                         ViewEntry::make('avatar')
                                             ->view('filament.characters.partials.avatar')
-                                            ->label(__('filament/characters.view.avatar'))
+                                            ->label(__('filament/characters.avatar.title'))
                                             ->viewData(fn() => $this->getAvatarViewData())
                                     ]),
                             ])
