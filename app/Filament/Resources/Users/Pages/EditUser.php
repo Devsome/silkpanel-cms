@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Users\Pages;
 
 use App\Filament\Resources\Users\UserResource;
+use App\Helpers\SettingHelper;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
@@ -10,7 +11,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Password;
-use SilkPanel\SilkroadModels\Models\Certification\AbstractShard;
 
 class EditUser extends EditRecord
 {
@@ -61,24 +61,8 @@ class EditUser extends EditRecord
                     Select::make('shard')
                         ->label(__('filament/users.edit.block_shard'))
                         ->options(function () {
-                            /** @var AbstractShard $shardModel */
-                            $shardModel = app(AbstractShard::class);
-
-                            $version = config('silkpanel.version');
-
-                            if ($version === 'vsro') {
-                                return $shardModel->query()
-                                    ->get()
-                                    ->mapWithKeys(fn($item) => [
-                                        $item->ID => "{$item->Name} [{$item->ID}]"
-                                    ]);
-                            }
-
-                            return $shardModel->query()
-                                ->get()
-                                ->mapWithKeys(fn($item) => [
-                                    $item->nID => "{$item->szName} [{$item->nID}]"
-                                ]);
+                            $settingsShardId = SettingHelper::get('sro_shard_id', 64);
+                            return [$settingsShardId => "Shard [{$settingsShardId}]"];
                         }),
                     DateTimePicker::make('duration')
                         ->label(__('filament/users.edit.block_duration'))

@@ -126,6 +126,13 @@ class SettingHelper
             ],
             // Silkroad Online
             [
+                'key' => 'sro_shard_id',
+                'value' => 64,
+                'type' => 'number',
+                'label' => 'Shard ID',
+                'description' => 'Unique identifier of the gameShardID (e.g. VSRO 64, ISRO 323)',
+            ],
+            [
                 'key' => 'sro_max_player',
                 'value' => 500,
                 'type' => 'number',

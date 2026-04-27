@@ -6,7 +6,6 @@ enum DatabaseNameEnums: string
 {
     case MYSQL = 'mysql';
     case SRO_SHARD = 'sro_shard';
-    case SRO_CERTIFICATION = 'sro_certification';
     case SRO_ACCOUNT = 'sro_account';
     case SRO_LOG = 'sro_log';
     case SRO_CUSTOM = 'sro_custom';

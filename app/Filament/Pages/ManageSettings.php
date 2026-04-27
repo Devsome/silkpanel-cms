@@ -103,6 +103,16 @@ class ManageSettings extends Page
                             Tab::make(__('filament/settings.form.tabs.silkroad_online'))
                                 ->icon('heroicon-o-globe-alt')
                                 ->schema([
+                                    Section::make(__('filament/settings.form.silkroad_online.internal_settings'))
+                                        ->schema([
+                                            TextInput::make('sro_shard_id')
+                                                ->label(__('filament/settings.form.silkroad_online.shard_id'))
+                                                ->helperText(__('filament/settings.form.silkroad_online.shard_id_description'))
+                                                ->numeric()
+                                                ->default(64),
+                                        ])->columns(2)
+                                        ->columnSpan(2)
+                                        ->secondary(),
                                     Section::make(__('filament/settings.form.silkroad_online.general_settings'))
                                         ->schema([
                                             TextInput::make('sro_max_player')
@@ -442,6 +452,7 @@ class ManageSettings extends Page
             'site_description',
             'site_keywords',
             'frontend_languages',
+            'sro_shard_id',
             'sro_max_player',
             'sro_cap',
             'sro_exp_sp',

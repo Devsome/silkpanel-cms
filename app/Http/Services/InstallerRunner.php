@@ -192,7 +192,7 @@ class InstallerRunner
     public function testMssqlConnection(array $mssqlConfig): array
     {
         try {
-            $requiredKeys = ['host', 'port', 'username', 'password', 'database_account', 'database_shard', 'database_log', 'database_certification', 'database_custom'];
+            $requiredKeys = ['host', 'port', 'username', 'password', 'database_account', 'database_shard', 'database_log', 'database_custom'];
             foreach ($requiredKeys as $key) {
                 if (! array_key_exists($key, $mssqlConfig)) {
                     throw new \Exception("Missing required MSSQL configuration key: {$key}");
@@ -219,7 +219,6 @@ class InstallerRunner
                 $mssqlConfig['database_account'],
                 $mssqlConfig['database_shard'],
                 $mssqlConfig['database_log'],
-                $mssqlConfig['database_certification'],
                 $mssqlConfig['database_custom'],
             ];
 
