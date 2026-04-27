@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use App\Http\Middleware\VerifySilkPanelApiKey;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -55,5 +56,13 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (HttpException $e) {
+            $status = $e->getStatusCode();
+
+            if (in_array($status, [401, 402, 403, 404, 419, 429, 500, 503])) {
+                return response()->view("template::errors.$status", ['exception' => $e], $status);
+            }
+
+            return null;
+        });
     })->create();

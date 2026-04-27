@@ -31,10 +31,10 @@
             <div class="absolute inset-0">
                 <img src="{{ asset('storage/' . \App\Helpers\SettingHelper::get('background_image')) }}" alt=""
                     class="w-full h-full object-cover">
-                <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80"></div>
+                <div class="absolute inset-0 bg-linear-to-b from-black/60 to-black/80"></div>
             </div>
         @else
-            <div class="absolute inset-0 bg-gradient-to-br from-indigo-900 via-gray-900 to-gray-800"></div>
+            <div class="absolute inset-0 bg-linear-to-br from-indigo-900 via-gray-900 to-gray-800"></div>
         @endif
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32 text-center">
             @if (\App\Helpers\SettingHelper::get('logo'))
@@ -92,7 +92,7 @@
                             <a href="{{ route('news.show', $featuredNews->slug) }}"
                                 class="group block bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm border border-gray-200 dark:border-gray-700 hover:shadow-lg transition">
                                 @if ($featuredNews->thumbnail)
-                                    <div class="aspect-[21/9] overflow-hidden">
+                                    <div class="aspect-21/9 overflow-hidden">
                                         <img src="{{ asset('storage/' . $featuredNews->thumbnail) }}"
                                             alt="{{ e($featuredNews->name) }}"
                                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
@@ -127,7 +127,7 @@
                                             class="group flex gap-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-3 hover:shadow-md transition">
                                             @if ($news->thumbnail)
                                                 <div
-                                                    class="flex-shrink-0 w-24 h-16 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700">
+                                                    class="shrink-0 w-24 h-16 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700">
                                                     <img src="{{ asset('storage/' . $news->thumbnail) }}"
                                                         alt="{{ e($news->name) }}"
                                                         class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
@@ -170,7 +170,7 @@
                         </h3>
                         <a href="{{ route('downloads.index') }}"
                             class="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg shadow-sm transition">
-                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                             </svg>
@@ -179,7 +179,7 @@
                         @guest
                             <a href="{{ route('register') }}"
                                 class="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-900/20 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 rounded-lg transition">
-                                <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                                 </svg>
@@ -188,7 +188,7 @@
                         @endguest
                         <a href="{{ route('ranking.characters') }}"
                             class="flex items-center gap-3 w-full px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700/50 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition">
-                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                             </svg>
