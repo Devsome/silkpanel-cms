@@ -59,6 +59,7 @@ class NewsResource extends Resource
                 RichEditor::make('content')
                     ->label(__('filament/news.form.content'))
                     ->required()
+                    ->fileAttachmentsVisibility('public')
                     ->toolbarButtons([
                         'heading' => [
                             'h1',
@@ -81,6 +82,9 @@ class NewsResource extends Resource
                             'orderedList',
                             'blockquote',
                             'codeBlock',
+                        ],
+                        'image' => [
+                            'attachFiles',
                         ],
                     ])
                     ->columnSpanFull(),
