@@ -174,6 +174,7 @@ class InstallerController extends Controller
             'mssql_database_account' => 'required|string|max:64',
             'mssql_database_shard' => 'required|string|max:64',
             'mssql_database_log' => 'required|string|max:64',
+            'mssql_database_certification' => 'required|string|max:64',
             'mssql_database_custom' => 'required|string|max:64',
             'mssql_database_portal' => 'nullable|string|max:64',
         ]);
@@ -194,6 +195,7 @@ class InstallerController extends Controller
             'database_account' => $request->input('mssql_database_account'),
             'database_shard' => $request->input('mssql_database_shard'),
             'database_log' => $request->input('mssql_database_log'),
+            'database_certification' => $request->input('mssql_database_certification'),
             'database_custom' => $request->input('mssql_database_custom'),
         ];
 
@@ -268,6 +270,7 @@ class InstallerController extends Controller
             'mssql_database_account' => 'required|string|max:64',
             'mssql_database_shard' => 'required|string|max:64',
             'mssql_database_log' => 'required|string|max:64',
+            'mssql_database_certification' => 'required|string|max:64',
             'mssql_database_custom' => 'required|string|max:64',
             'mssql_database_portal' => 'nullable|string|max:64',
 
@@ -325,6 +328,7 @@ class InstallerController extends Controller
                 ->set('DB_SQL_DATABASE_ACCOUNT', $request->input('mssql_database_account'))
                 ->set('DB_SQL_DATABASE_SHARD', $request->input('mssql_database_shard'))
                 ->set('DB_SQL_DATABASE_LOG', $request->input('mssql_database_log'))
+                ->set('DB_SQL_DATABASE_CERTIFICATION', $request->input('mssql_database_certification'))
                 ->set('DB_SQL_DATABASE_CUSTOM', $request->input('mssql_database_custom'))
 
                 ->set('SESSION_DRIVER', 'database') // Switch to database sessions after installation

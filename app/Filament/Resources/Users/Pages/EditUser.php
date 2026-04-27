@@ -10,7 +10,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Support\Facades\Password;
-use SilkPanel\SilkroadModels\Models\Account\Shard;
+use SilkPanel\SilkroadModels\Models\Certification\AbstractShard;
 
 class EditUser extends EditRecord
 {
@@ -60,7 +60,26 @@ class EditUser extends EditRecord
                         ->maxLength(255),
                     Select::make('shard')
                         ->label(__('filament/users.edit.block_shard'))
-                        ->options(Shard::query()->pluck('szName', 'nID')),
+                        ->options(function () {
+                            /** @var AbstractShard $shardModel */
+                            $shardModel = app(AbstractShard::class);
+
+                            $version = config('silkpanel.version');
+
+                            if ($version === 'VSRO') {
+                                return $shardModel->query()
+                                    ->get()
+                                    ->mapWithKeys(fn($item) => [
+                                        $item->ID => "{$item->Name} [{$item->ID}]"
+                                    ]);
+                            }
+
+                            return $shardModel->query()
+                                ->get()
+                                ->mapWithKeys(fn($item) => [
+                                    $item->nID => "{$item->szName} [{$item->nID}]"
+                                ]);
+                        }),
                     DateTimePicker::make('duration')
                         ->label(__('filament/users.edit.block_duration'))
                         ->helperText(__('filament/users.edit.block_duration_helper'))
