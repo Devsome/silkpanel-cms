@@ -66,7 +66,7 @@ class EditUser extends EditRecord
 
                             $version = config('silkpanel.version');
 
-                            if ($version === 'VSRO') {
+                            if ($version === 'vsro') {
                                 return $shardModel->query()
                                     ->get()
                                     ->mapWithKeys(fn($item) => [
