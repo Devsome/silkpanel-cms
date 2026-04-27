@@ -51,7 +51,15 @@ class NoticeResource extends Resource
                     ->required(),
                 Select::make('ContentID')
                     ->label(__('filament/notice.form.block_shard'))
-                    ->options(Shard::query()->pluck('szName', 'nContentID')),
+                    ->options(
+                        function () {
+                            $last = Notice::query()->latest('ID')->first();
+                            if (!$last) {
+                                return Shard::query()->pluck('szName', 'nContentID');
+                            }
+                            return [$last?->ContentID => "ContentID: {$last?->ContentID}"];
+                        }
+                    ),
                 Textarea::make('Article')
                     ->label(__('filament/notice.form.article'))
                     ->helperText(__('filament/notice.form.article_helper'))
