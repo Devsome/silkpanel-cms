@@ -56,4 +56,7 @@ return [
     'map_manual'    => 'يدوي',
     'map_level'     => 'المستوى',
     'referral_no_character' => 'لم يتم إنشاء أي شخصية بعد',
+
+    // Ticket system
+    'support_tickets' => 'تذاكر الدعم',
 ];

@@ -65,4 +65,7 @@ return [
     'map_refresh'   => 'Refresh',
     'map_manual'    => 'Manual',
     'map_level'     => 'Level',
+
+    // Ticket System
+    'support_tickets' => 'Support Tickets',
 ];

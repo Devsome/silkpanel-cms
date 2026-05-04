@@ -56,4 +56,7 @@ return [
     'map_manual'    => 'Manuel',
     'map_level'     => 'Seviye',
     'referral_no_character' => 'Henüz karakter oluşturulmadı',
+
+    // Ticket System
+    'support_tickets' => 'Destek Biletleri',
 ];

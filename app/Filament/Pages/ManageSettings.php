@@ -428,6 +428,13 @@ class ManageSettings extends Page
                                         ->helperText(__('filament/settings.form.social_media.discord_id_description')),
                                 ])
                                 ->columns(2),
+                            Tab::make(__('filament/settings.form.tabs.ticket_system'))
+                                ->icon('heroicon-o-ticket')
+                                ->schema([
+                                    Toggle::make('is_ticket_system_enabled')
+                                        ->label(__('filament/settings.form.ticket_system.enabled'))
+                                        ->helperText(__('filament/settings.form.ticket_system.enabled_description')),
+                                ])->columns(2)
                         ]),
                 ])
                     ->livewireSubmitHandler('save')
@@ -493,6 +500,7 @@ class ManageSettings extends Page
             'map_excluded_chars',
             'map_max_characters',
             'map_frontend_enabled',
+            'is_ticket_system_enabled',
         ];
 
         foreach ($settingKeys as $key) {

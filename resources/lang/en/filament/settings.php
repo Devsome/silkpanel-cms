@@ -21,6 +21,7 @@ return [
             'referral' => 'Referral',
             'contact' => 'Contact',
             'social_media' => 'Social Media',
+            'ticket_system' => 'Ticket System',
         ],
 
         'page_info' => [
@@ -110,6 +111,11 @@ return [
             'silk_reward' => 'Silk Reward per Referral',
             'silk_reward_description' => 'Amount of Silk to award to the referrer for each valid referral.',
             'silk_type' => 'Silk Type',
+        ],
+
+        'ticket_system' => [
+            'enabled' => 'Enable Ticket System',
+            'enabled_description' => 'Allow users to submit support tickets',
         ],
 
         'field_types' => [

@@ -332,6 +332,14 @@ class SettingHelper
                 'label' => 'Active Template',
                 'description' => 'The currently active frontend template (empty = default views)',
             ],
+            // Ticket System
+            [
+                'key' => 'is_ticket_system_enabled',
+                'value' => true,
+                'type' => 'toggle',
+                'label' => 'Enable Ticket System',
+                'description' => 'Allow users to submit support tickets',
+            ],
         ];
 
         if (Setting::count() > 0) {

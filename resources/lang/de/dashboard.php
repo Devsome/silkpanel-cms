@@ -63,4 +63,7 @@ return [
     'map_manual'    => 'Manuell',
     'map_level'     => 'Level',
     'referral_no_character' => 'Noch kein Charakter erstellt',
+
+    // Ticket System
+    'support_tickets' => 'Support-Tickets',
 ];

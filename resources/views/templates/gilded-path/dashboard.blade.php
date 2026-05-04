@@ -4,7 +4,6 @@
     <section class="py-10">
         <div class="mx-auto max-w-7xl px-4 md:px-8 space-y-8">
 
-            {{-- Welcome --}}
             <div class="gp-card gp-ornate-border p-6 md:p-8">
                 <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline">
                     {{ __('dashboard.title') }}</p>
@@ -14,10 +13,8 @@
                 <p class="mt-2 text-sm gp-text-on-surface-variant">{{ Auth::user()->email }}</p>
             </div>
 
-            {{-- Silk Balance + Quick Actions --}}
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-                {{-- Silk Balance --}}
                 <div class="lg:col-span-2 gp-card gp-ornate-border p-6">
                     <div class="flex items-center justify-between mb-5">
                         <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline">
@@ -61,7 +58,6 @@
                     @endif
                 </div>
 
-                {{-- Quick Actions --}}
                 <div class="gp-card gp-ornate-border p-6">
                     <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline mb-4">
                         {{ __('dashboard.quick_actions') }}</p>
@@ -135,11 +131,25 @@
                                 {{ __('dashboard.silk_history') }}
                             </span>
                         </a>
+                        @if (Route::has('tickets.index') && $ticketSystemEnabled)
+                            <a href="{{ route('tickets.index') }}"
+                                class="group flex items-center gap-3 p-3 gp-card-lowest hover:gp-card transition rounded"
+                                style="border:1px solid rgba(242,202,80,0.15);">
+                                <svg class="h-4 w-4 gp-text-primary shrink-0" xmlns="http://www.w3.org/2000/svg"
+                                    fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 0 1 0 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 0 1 0-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+                                </svg>
+                                <span
+                                    class="text-sm font-headline uppercase tracking-wide gp-text-on-surface group-hover:gp-text-primary transition">
+                                    {{ __('dashboard.support_tickets') }}
+                                </span>
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
 
-            {{-- Characters --}}
             <div class="gp-card gp-ornate-border p-6">
                 <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline mb-5">
                     {{ __('dashboard.your_characters') }}</p>
@@ -178,7 +188,6 @@
                 @endif
             </div>
 
-            {{-- Voting Status (only if voting package is installed) --}}
             @if ($votingEnabled && $votingData)
                 <div class="gp-card gp-ornate-border p-6">
                     <div class="flex items-center justify-between mb-3">
@@ -199,13 +208,11 @@
                 </div>
             @endif
 
-            {{-- Referral System (only if enabled) --}}
             @if ($referralEnabled && $referralData)
                 <div class="gp-card gp-ornate-border p-6">
                     <p class="text-xs font-headline font-bold uppercase tracking-widest gp-text-outline mb-5">
                         {{ __('dashboard.referral_title') }}</p>
 
-                    {{-- Stats --}}
                     <div class="grid grid-cols-3 gap-4 mb-6">
                         <div class="text-center p-3 gp-card-lowest rounded"
                             style="border:1px solid rgba(242,202,80,0.15);">
@@ -231,7 +238,6 @@
                         </div>
                     </div>
 
-                    {{-- Referral link --}}
                     <div class="mb-4">
                         <p class="text-xs font-headline uppercase tracking-wider gp-text-on-surface-variant mb-2">
                             {{ __('dashboard.referral_your_link') }}
@@ -249,7 +255,6 @@
                         </div>
                     </div>
 
-                    {{-- Referral list --}}
                     @if ($referralData['referrals']->isNotEmpty())
                         <div class="mt-4 divide-y border-amber-500 text-amber-400"
                             style="border-color:rgba(242,202,80,0.1);">

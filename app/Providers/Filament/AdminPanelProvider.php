@@ -74,6 +74,11 @@ class AdminPanelProvider extends PanelProvider
                 ]
             ]);
 
+        $ticketSystemPluginClass = 'SilkPanel\\TicketSystem\\TicketSystemPlugin';
+        if (class_exists($ticketSystemPluginClass)) {
+            $panel->plugin($ticketSystemPluginClass::make());
+        }
+
         $votingPluginClass = 'SilkPanel\\Voting\\VotingPlugin';
         if (class_exists($votingPluginClass)) {
             $panel->plugin($votingPluginClass::make());
