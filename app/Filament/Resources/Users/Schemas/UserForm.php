@@ -233,7 +233,7 @@ class UserForm
                                                 $jidPjid,
                                                 $silkAmount,
                                                 $get('silk_type')->value,
-                                                Str::limit(request()->ip(), 45)
+                                                request()->ip()
                                             );
                                             $record->refresh();
                                         } catch (\Exception $e) {

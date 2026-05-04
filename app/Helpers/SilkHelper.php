@@ -4,6 +4,7 @@ namespace App\Helpers;
 
 use App\Enums\SilkTypeIsroEnum;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use SilkPanel\SilkroadModels\Models\Account\SkSilk;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
 use SilkPanel\SilkroadModels\Models\Portal\AphChangedSilk;
@@ -30,6 +31,7 @@ class SilkHelper
     public static function addSilk(int $jid, int $amount, string $type, ?string $ip = null): void
     {
         $helper = new self();
+        $ip = Str::limit($ip, 16);
 
         match (config('silkpanel.version')) {
             'isro' => $helper->addSilkIsro($jid, $amount, $type, $ip),
