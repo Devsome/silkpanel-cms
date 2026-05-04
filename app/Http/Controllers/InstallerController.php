@@ -474,7 +474,7 @@ class InstallerController extends Controller
     {
         Log::info('[Installer] Ensuring SilkPanel packages are installed...');
 
-        $this->configureComposerRepository($apiKey);
+        $this->configureComposerRepository();
 
         if ($this->isComposerPackageInstalled(self::SILKPANEL_WIDGETS_PACKAGE)) {
             Log::info('[Installer] SilkPanel package already installed', [
@@ -488,7 +488,7 @@ class InstallerController extends Controller
             ? [...$this->resolveComposerCommand(), 'install', '--no-interaction', '--prefer-dist', '--optimize-autoloader']
             : [...$this->resolveComposerCommand(), 'require', self::SILKPANEL_WIDGETS_PACKAGE . ':' . self::SILKPANEL_WIDGETS_VERSION, '--no-interaction', '--prefer-dist', '--no-progress'];
 
-        $this->runComposerCommand($command);
+        $this->runComposerCommand($command, $apiKey);
 
         if (! $this->isComposerPackageInstalled(self::SILKPANEL_WIDGETS_PACKAGE)) {
             throw new \RuntimeException('Composer finished, but silkpanel/widgets-dashboard is still missing from vendor.');
@@ -499,7 +499,7 @@ class InstallerController extends Controller
         ]);
     }
 
-    private function configureComposerRepository(string $apiKey): void
+    private function configureComposerRepository(): void
     {
         $composerPath = base_path('composer.json');
 
@@ -533,13 +533,6 @@ class InstallerController extends Controller
         $privateRepository = [
             'type' => 'composer',
             'url' => 'https://composer.devso.me',
-            'options' => [
-                'http' => [
-                    'header' => [
-                        "API-TOKEN: {$apiKey}",
-                    ],
-                ],
-            ],
         ];
 
         if ($repositoryIndex === null) {
@@ -611,11 +604,21 @@ class InstallerController extends Controller
         return ['composer'];
     }
 
-    private function runComposerCommand(array $command): void
+    private function runComposerCommand(array $command, ?string $apiKey = null): void
     {
-        $process = new Process($command, base_path(), [
+        $environment = [
             'COMPOSER_ALLOW_SUPERUSER' => '1',
-        ]);
+        ];
+
+        if ($apiKey !== null && $apiKey !== '') {
+            $environment['COMPOSER_AUTH'] = json_encode([
+                'custom-headers' => [
+                    'composer.devso.me' => ["API-TOKEN: {$apiKey}"],
+                ],
+            ], JSON_UNESCAPED_SLASHES);
+        }
+
+        $process = new Process($command, base_path(), $environment);
 
         $process->setTimeout(900);
         $process->run();

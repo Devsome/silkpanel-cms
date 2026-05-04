@@ -96,14 +96,7 @@
     "repositories": [
         {
             "type": "composer",
-            "url": "https://composer.devso.me",
-            "options": {
-                "http": {
-                    "header": [
-                        "API-TOKEN: <YOUR SECRET TOKEN>"
-                    ]
-                }
-            }
+            "url": "https://composer.devso.me"
         }
     ]
 }
