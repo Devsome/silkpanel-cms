@@ -47,6 +47,7 @@ class SilkHelper
     {
         $now = now();
         $silkOwn = SkSilk::where('JID', $jid)->pluck($type)->first();
+        $oldestOrderNumber = SkSilkBuyList::max('OrderNumber') ?? 0;
 
         SkSilkBuyList::create([
             'UserJID' => $jid,
@@ -56,10 +57,10 @@ class SilkHelper
             'Silk_Remain' => $amount >= 0 ? $silkOwn + $amount : $silkOwn - abs($amount),
             'ID' => $jid,
             'BuyQuantity' => $amount,
-            'OrderNumber' => 0,
+            'OrderNumber' => $oldestOrderNumber + 1,
             'AuthDate' => $now->format('Y-m-d H:i:s'),
             'SubJID' => Auth::id(),
-            'SlipPaper' => 'Web Admin Adjustment',
+            'SlipPaper' => 'Web Admin',
             'IP' => $ip,
             'RegDate' => $now->format('Y-m-d H:i:s')
         ]);
@@ -68,8 +69,8 @@ class SilkHelper
             'JID' => $jid,
             'silk_remain' => $amount >= 0 ? $silkOwn + $amount : $silkOwn - abs($amount),
             'silk_offset' => $amount,
-            'silk_type' => SkSilkChangeByWeb::SILK_REASON_WEB,
-            'reason' => SkSilkChangeByWeb::SILK_REASON_WEB,
+            'silk_type' => 0,
+            'reason' => 0,
         ]);
 
         if ($amount >= 0) {
@@ -108,8 +109,8 @@ class SilkHelper
             'JID' => $jid,
             'silk_remain' => abs($amount),
             'silk_offset' => $amount < 0 ? $amount : 0,
-            'silk_type' => SkSilkChangeByWeb::SILK_REASON_WEB,
-            'reason' => SkSilkChangeByWeb::SILK_REASON_WEB,
+            'silk_type' => 0,
+            'reason' => 0,
         ]);
     }
 }
