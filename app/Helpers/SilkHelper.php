@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use SilkPanel\SilkroadModels\Models\Account\SkSilk;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
+use SilkPanel\SilkroadModels\Models\Account\SkSilkChangeByWeb;
 use SilkPanel\SilkroadModels\Models\Portal\AphChangedSilk;
 
 class SilkHelper
@@ -63,6 +64,14 @@ class SilkHelper
             'RegDate' => $now->format('Y-m-d H:i:s')
         ]);
 
+        SkSilkChangeByWeb::create([
+            'JID' => $jid,
+            'silk_remain' => $amount >= 0 ? $silkOwn + $amount : $silkOwn - abs($amount),
+            'silk_offset' => $amount,
+            'silk_type' => SkSilkChangeByWeb::SILK_REASON_WEB,
+            'reason' => SkSilkChangeByWeb::SILK_REASON_WEB,
+        ]);
+
         if ($amount >= 0) {
             SkSilk::where('JID', $jid)
                 ->increment($type, $amount);
@@ -93,6 +102,14 @@ class SilkHelper
             'ChangeDate' => now(),
             'AvailableDate' => now()->addYears(1),
             'AvailableStatus' => $amount < 0 ? 'N' : 'Y',
+        ]);
+
+        SkSilkChangeByWeb::create([
+            'JID' => $jid,
+            'silk_remain' => abs($amount),
+            'silk_offset' => $amount < 0 ? $amount : 0,
+            'silk_type' => SkSilkChangeByWeb::SILK_REASON_WEB,
+            'reason' => SkSilkChangeByWeb::SILK_REASON_WEB,
         ]);
     }
 }
