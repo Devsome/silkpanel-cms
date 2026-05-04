@@ -48,7 +48,7 @@ class SilkHelper
     {
         $now = now();
         $silkOwn = SkSilk::where('JID', $jid)->pluck($type)->first();
-        $oldestOrderNumber = SkSilkBuyList::max('OrderNumber') ?? 0;
+        $orderNumber = Str::random(30);
 
         $silkType = match ($type) {
             'silk_own' => SilkroadSilksEnum::OWN,
@@ -58,13 +58,13 @@ class SilkHelper
 
         SkSilkBuyList::create([
             'UserJID' => $jid,
-            'Silk_Type' => $silkType,
+            'Silk_Type' => $silkType, // 1 = adding
             'Silk_Reason' => SkSilkBuyList::SILK_REASON_WEB,
             'Silk_Offset' => $silkOwn,
             'Silk_Remain' => $amount >= 0 ? $silkOwn + $amount : $silkOwn - abs($amount),
             'ID' => $jid,
             'BuyQuantity' => $amount,
-            'OrderNumber' => $oldestOrderNumber + 1,
+            'OrderNumber' => $orderNumber,
             'AuthDate' => $now->format('Y-m-d H:i:s'),
             'SubJID' => Auth::id(),
             'SlipPaper' => 'Web Admin',
@@ -76,7 +76,7 @@ class SilkHelper
             'JID' => $jid,
             'silk_remain' => $amount >= 0 ? $silkOwn + $amount : $silkOwn - abs($amount),
             'silk_offset' => $amount,
-            'silk_type' => 0,
+            'silk_type' => $silkType,
             'reason' => 0,
         ]);
 
@@ -116,7 +116,7 @@ class SilkHelper
             'JID' => $jid,
             'silk_remain' => abs($amount),
             'silk_offset' => $amount < 0 ? $amount : 0,
-            'silk_type' => 0,
+            'silk_type' => $isroSilkType,
             'reason' => 0,
         ]);
     }
