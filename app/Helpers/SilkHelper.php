@@ -5,6 +5,7 @@ namespace App\Helpers;
 use App\Enums\SilkTypeIsroEnum;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use SilkPanel\SilkroadModels\Enums\SilkroadSilksEnum;
 use SilkPanel\SilkroadModels\Models\Account\SkSilk;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkChangeByWeb;
@@ -49,9 +50,15 @@ class SilkHelper
         $silkOwn = SkSilk::where('JID', $jid)->pluck($type)->first();
         $oldestOrderNumber = SkSilkBuyList::max('OrderNumber') ?? 0;
 
+        $silkType = match ($type) {
+            'silk_own' => SilkroadSilksEnum::OWN,
+            'silk_gift' => SilkroadSilksEnum::GIFT,
+            'silk_point' => SilkroadSilksEnum::POINT,
+        };
+
         SkSilkBuyList::create([
             'UserJID' => $jid,
-            'Silk_Type' => SkSilkBuyList::SILK_TYPE_WEB,
+            'Silk_Type' => $silkType,
             'Silk_Reason' => SkSilkBuyList::SILK_REASON_WEB,
             'Silk_Offset' => $silkOwn,
             'Silk_Remain' => $amount >= 0 ? $silkOwn + $amount : $silkOwn - abs($amount),
