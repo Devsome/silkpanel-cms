@@ -31,7 +31,7 @@ class SilkHelper
     public static function addSilk(int $jid, int $amount, string $type, ?string $ip = null): void
     {
         $helper = new self();
-        $ip = Str::limit($ip, 16);
+        $ip = Str::limit($ip, 16, '');
 
         match (config('silkpanel.version')) {
             'isro' => $helper->addSilkIsro($jid, $amount, $type, $ip),
