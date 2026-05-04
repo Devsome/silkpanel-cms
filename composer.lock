@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d51cda6e27b6dc674ad5f09c1d1f07d8",
+    "content-hash": "aea27d34c33239ee9891d246b686a3c4",
     "packages": [
         {
             "name": "blade-ui-kit/blade-heroicons",
@@ -5089,6 +5089,278 @@
                 }
             ],
             "time": "2022-12-17T21:53:22+00:00"
+        },
+        {
+            "name": "silkpanel/db-tables",
+            "version": "1.0.2",
+            "dist": {
+                "type": "path",
+                "url": "packages/db-tables",
+                "reference": "fa9e33088abba0dc397c21d025c4b2d5563e7739"
+            },
+            "require": {
+                "laravel/framework": "^12.0",
+                "php": "^8.3"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^9.0",
+                "phpunit/phpunit": "^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SilkPanel\\DbTables\\DbTablesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SilkPanel\\DbTables\\": "src/",
+                    "SilkPanel\\DbTables\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "SilkPanel\\DbTables\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "test-coverage": [
+                    "vendor/bin/phpunit --coverage-html coverage"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Frank",
+                    "email": "info@devsome.com"
+                }
+            ],
+            "description": "A package for migrations and database management in SilkPanel CMS.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "silkpanel/heartbeat",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/heartbeat",
+                "reference": "b83e5cfe07d49fc75f9a97ea5497bfcf3a59d112"
+            },
+            "require": {
+                "laravel/framework": "^12.0",
+                "php": "^8.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SilkPanel\\Heartbeat\\HeartbeatServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SilkPanel\\Heartbeat\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Frank",
+                    "email": "info@devsome.com"
+                }
+            ],
+            "description": "A package for monitoring server health and performance in SilkPanel CMS.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "silkpanel/silkroad-models",
+            "version": "1.1.8",
+            "dist": {
+                "type": "path",
+                "url": "packages/silkroad-models",
+                "reference": "b4278ff7ba35ce6b3459f3c30e70aaa9f736d805"
+            },
+            "require": {
+                "laravel/framework": "^12.0",
+                "php": "^8.3",
+                "silkpanel/db-tables": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SilkPanel\\SilkroadModels\\SilkroadModelsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SilkPanel\\SilkroadModels\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Frank",
+                    "email": "info@devsome.com"
+                }
+            ],
+            "description": "Models for vsro and isro for SilkPanel CMS",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "silkpanel/ticket-system",
+            "version": "1.0.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/ticket-system",
+                "reference": "2e0477707d4efab7b941436114444202972ebff9"
+            },
+            "require": {
+                "php": "^8.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SilkPanel\\TicketSystem\\TicketSystemServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SilkPanel\\TicketSystem\\": "src/"
+                },
+                "classmap": [
+                    "database/seeders"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Frank",
+                    "email": "info@devsome.com"
+                }
+            ],
+            "description": "A package for managing ticketing system in SilkPanel CMS.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "silkpanel/voting",
+            "version": "1.0.2",
+            "dist": {
+                "type": "path",
+                "url": "packages/voting",
+                "reference": "551e869570a57a87fb849dde2c561d69664ea7a1"
+            },
+            "require": {
+                "filament/filament": "^5.0",
+                "laravel/framework": "^12.0",
+                "php": "^8.3",
+                "silkpanel/db-tables": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SilkPanel\\Voting\\VotingServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SilkPanel\\Voting\\": "src/"
+                },
+                "classmap": [
+                    "database/seeders"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Frank",
+                    "email": "info@devsome.com"
+                }
+            ],
+            "description": "A package for voting in SilkPanel CMS.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "silkpanel/widgets-dashboard",
+            "version": "1.1.3",
+            "dist": {
+                "type": "path",
+                "url": "packages/widgets-dashboard",
+                "reference": "a2b1925eaa54ec6ef65db0b6f5d20f6d86197189"
+            },
+            "require": {
+                "filament/filament": "^5.0",
+                "laravel/framework": "^12.0",
+                "php": "^8.3",
+                "silkpanel/db-tables": "*",
+                "silkpanel/heartbeat": "*",
+                "silkpanel/silkroad-models": "*",
+                "silkpanel/ticket-system": "*",
+                "silkpanel/voting": "*"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "SilkPanel\\WidgetsDashboard\\WidgetsDashboardServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "SilkPanel\\WidgetsDashboard\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Frank",
+                    "email": "info@devsome.com"
+                }
+            ],
+            "description": "A package for filament dashboard widgets in SilkPanel CMS.",
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "spatie/invade",
