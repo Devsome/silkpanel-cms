@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             SettingsSeeder::class,
             PaymentProviderSeeder::class,
+            SmcDelItemSilkpanelVsroSeeder::class,
+            SmcDelItemSilkpanelIsroSeeder::class,
+            AddItemSilkpanelAutoVsroSeeder::class,
+            AddItemSilkpanelAutoIsroSeeder::class,
         ]);
     }
 }

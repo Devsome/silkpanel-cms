@@ -6,7 +6,7 @@
     $inventoryBySlot = collect($inventory)->filter()->keyBy(fn($item) => (int) data_get($item, 'info.Slot', -1));
 @endphp
 
-<div x-data="{ page: 0, maxPages: {{ $maxPages }}, selectedPage: 0, selectedIndex: null }" class="grid gap-3">
+<div x-data="{ page: 0, maxPages: {{ $maxPages }}, selectedPage: 0, selectedIndex: null, selectedSlot: null, confirmingDelete: false }" class="grid gap-3">
     @for ($page = 0; $page < $maxPages; $page++)
 
         <section x-show="page === {{ $page }}" x-cloak>
@@ -23,7 +23,7 @@
                             @if ($item)
                                 <div class="flex items-center">
                                     <div class="relative inline-flex cursor-pointer flex-col items-center"
-                                        @click="selectedPage = {{ $page }}; selectedIndex = {{ $index }}"
+                                        @click="selectedPage = {{ $page }}; selectedIndex = {{ $index }}; selectedSlot = {{ $slot }}; confirmingDelete = false"
                                         :class="selectedPage === {{ $page }} && selectedIndex === {{ $index }} ?
                                             'rounded ring-2 ring-primary-500 ring-offset-1 ring-offset-white' : ''">
 
@@ -65,6 +65,32 @@
                         @if ($selectedItem)
                             <div x-show="selectedIndex === {{ $index }}" x-cloak>
                                 <x-characters.inventory-tooltip :item="$selectedInfo" :inline="true" />
+
+                                <div class="mt-3 border-t border-gray-200 pt-3 dark:border-gray-700">
+                                    <template x-if="!confirmingDelete">
+                                        <button type="button" @click="confirmingDelete = true"
+                                            class="inline-flex items-center gap-1.5 rounded-md border border-danger-300 bg-white px-3 py-1.5 text-sm font-medium text-danger-600 shadow-sm hover:bg-danger-50 dark:border-danger-600 dark:bg-gray-800 dark:text-danger-400 dark:hover:bg-danger-900/20">
+                                            <x-heroicon-o-trash class="size-4" />
+                                            {{ __('filament/characters.view.delete_item') }}
+                                        </button>
+                                    </template>
+                                    <template x-if="confirmingDelete">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-sm font-medium text-danger-600 dark:text-danger-400">
+                                                {{ __('filament/characters.view.delete_item_confirm') }}
+                                            </span>
+                                            <button type="button"
+                                                @click="$wire.dispatch('deleteInventoryItem', { slot: selectedSlot }); confirmingDelete = false; selectedIndex = null; selectedSlot = null"
+                                                class="inline-flex items-center rounded-md bg-danger-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-danger-700">
+                                                {{ __('filament/characters.view.delete_item_confirm_yes') }}
+                                            </button>
+                                            <button type="button" @click="confirmingDelete = false"
+                                                class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300">
+                                                {{ __('filament/characters.view.delete_item_confirm_cancel') }}
+                                            </button>
+                                        </div>
+                                    </template>
+                                </div>
                             </div>
                         @endif
                     @endfor
