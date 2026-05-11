@@ -20,10 +20,10 @@ BEGIN
             RAISERROR('Either CodeName or RefItemID must be provided.', 16, 1);
             RETURN -1;
         END
-        SELECT @RefItemID = ID FROM _RefObjCommon WHERE Codename128 = @CodeName;
+        SELECT @RefItemID = ID FROM _RefObjCommon WITH (NOLOCK) WHERE Codename128 = @CodeName;
         IF @RefItemID IS NULL RETURN -1;
     END
-    ELSE IF NOT EXISTS (SELECT 1 FROM _RefObjCommon WHERE ID = @RefItemID)
+    ELSE IF NOT EXISTS (SELECT 1 FROM _RefObjCommon WITH (NOLOCK) WHERE ID = @RefItemID)
         RETURN -1;
 
     DECLARE @InvSize INT = 45;
@@ -35,12 +35,12 @@ BEGIN
             RETURN -2;
         END
         SELECT @CharID = CharID, @InvSize = ISNULL(InventorySize, 45)
-        FROM _Char WHERE CharName16 = @CharName;
+        FROM _Char WITH (NOLOCK) WHERE CharName16 = @CharName;
         IF @CharID IS NULL RETURN -2;
     END
     ELSE
     BEGIN
-        SELECT @InvSize = ISNULL(InventorySize, 45) FROM _Char WHERE CharID = @CharID;
+        SELECT @InvSize = ISNULL(InventorySize, 45) FROM _Char WITH (NOLOCK) WHERE CharID = @CharID;
         IF @InvSize IS NULL RETURN -2;
     END
 
@@ -50,22 +50,25 @@ BEGIN
 
     DECLARE @Link INT, @Type1 TINYINT, @Type2 TINYINT, @Type3 TINYINT, @Type4 TINYINT;
     SELECT @Link = Link, @Type1 = TypeID1, @Type2 = TypeID2, @Type3 = TypeID3, @Type4 = TypeID4
-    FROM _RefObjCommon WHERE ID = @RefItemID;
+    FROM _RefObjCommon WITH (NOLOCK) WHERE ID = @RefItemID;
 
+    IF @Link IS NULL OR @Link = 0 RETURN -5;
     IF @Type1 <> 3 RETURN -6;
 
     IF @Type1 = 3 AND @Type2 = 1
-        SELECT @Data = Dur_L FROM _RefObjItem WHERE ID = @Link;
+    BEGIN
+        SELECT @Data = Dur_L FROM _RefObjItem WITH (NOLOCK) WHERE ID = @Link;
+        IF @OptLevel < 0 SET @OptLevel = 0 ELSE IF @OptLevel > 15 SET @OptLevel = 15;
+    END
     ELSE IF @Type1 = 3 AND @Type2 = 2 AND @Type3 = 1 AND @Type4 IN (1,2)
         SET @Data = 0;
     ELSE
     BEGIN
         DECLARE @MaxStack INT;
-        SELECT @MaxStack = MaxStack FROM _RefObjItem WHERE ID = @Link;
+        SELECT @MaxStack = MaxStack FROM _RefObjItem WITH (NOLOCK) WHERE ID = @Link;
         IF @Data <= 0 OR @Data > @MaxStack SET @Data = @MaxStack;
+        SET @OptLevel = 0;
     END
-
-    IF @OptLevel < 0 SET @OptLevel = 0 ELSE IF @OptLevel > 15 SET @OptLevel = 15;
 
     DECLARE @FreeSlot INT;
     SET @FreeSlot = NULL;
@@ -82,7 +85,7 @@ BEGIN
     ELSE
     BEGIN
         DECLARE @ChestSize INT = 150;
-        SELECT @ChestSize = ChestSize FROM _ChestInfo WHERE JID = @UserJID;
+        SELECT @ChestSize = ChestSize FROM _ChestInfo WITH (NOLOCK) WHERE JID = @UserJID;
         IF @ChestSize IS NULL SET @ChestSize = 150;
 
         SELECT TOP 1 @FreeSlot = Slot FROM _Chest WITH (NOLOCK)

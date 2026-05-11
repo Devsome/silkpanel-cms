@@ -95,13 +95,21 @@ BEGIN
     SELECT @UserJID = UserJID FROM _User WITH (NOLOCK) WHERE CharID = @CharID;
     IF @UserJID IS NULL RETURN -2; -- Sollte nicht vorkommen
 
-    -- 7. Inventar-Platz suchen (über _RefDummySlot / iSRO-Logik)
+    -- 7. Inventar-Platz suchen (CTE-basierter Nummern-Generator, ohne _RefDummySlot)
     DECLARE @EmptySlotInv INT = NULL;
-    SELECT TOP 1 @EmptySlotInv = D.cnt
-    FROM _RefDummySlot AS D WITH (NOLOCK)
-    WHERE D.cnt >= 13
-      AND D.cnt < @InvSize
-      AND NOT EXISTS (SELECT 1 FROM _Inventory AS I WITH (NOLOCK) WHERE I.Slot = D.cnt AND I.CharID = @CharID);
+    ;WITH Slots AS (
+        SELECT 13 AS cnt
+        UNION ALL
+        SELECT cnt + 1 FROM Slots WHERE cnt + 1 < @InvSize
+    )
+    SELECT TOP 1 @EmptySlotInv = S.cnt
+    FROM Slots AS S
+    WHERE NOT EXISTS (
+        SELECT 1 FROM _Inventory AS I WITH (NOLOCK)
+        WHERE I.Slot = S.cnt AND I.CharID = @CharID
+    )
+    ORDER BY S.cnt
+    OPTION (MAXRECURSION 300);
 
     IF @EmptySlotInv IS NOT NULL
     BEGIN
@@ -125,30 +133,43 @@ BEGIN
     END
 
     -- 8. Inventar voll → Storage (Chest) versuchen
+    -- Freien Slot via NOT EXISTS suchen (funktioniert auch wenn _Chest nur belegte Zeilen hat)
     DECLARE @ChestSize INT = 150;
     SELECT @ChestSize = ISNULL(ChestSize, 150) FROM _ChestInfo WITH (NOLOCK) WHERE JID = @UserJID;
     IF @ChestSize IS NULL SET @ChestSize = 150;
 
     DECLARE @EmptySlotChest INT = NULL;
-    SELECT TOP 1 @EmptySlotChest = Slot
-    FROM _Chest WITH (NOLOCK)
-    WHERE UserJID = @UserJID
-      AND Slot < @ChestSize
-      AND (ItemID = 0 OR ItemID IS NULL)
-    ORDER BY Slot;
+    ;WITH ChestSlots AS (
+        SELECT 0 AS cnt
+        UNION ALL
+        SELECT cnt + 1 FROM ChestSlots WHERE cnt + 1 < @ChestSize
+    )
+    SELECT TOP 1 @EmptySlotChest = C.cnt
+    FROM ChestSlots AS C
+    WHERE NOT EXISTS (
+        SELECT 1 FROM _Chest AS CH WITH (NOLOCK)
+        WHERE CH.UserJID = @UserJID
+          AND CH.Slot = C.cnt
+          AND CH.ItemID IS NOT NULL
+          AND CH.ItemID <> 0
+    )
+    ORDER BY C.cnt
+    OPTION (MAXRECURSION 300);
 
     IF @EmptySlotChest IS NOT NULL
     BEGIN
-        -- Storage einfügen via iSRO-Prozedur (vorausgesetzt _ADD_ITEM_EXTERN_CHEST_FAST existiert)
+        -- Storage einfügen via iSRO-Prozedur
         DECLARE @ChestRet INT;
         EXEC @ChestRet = _ADD_ITEM_EXTERN_CHEST_FAST @UserJID, @RefItemID, @Data, @OptLevel;
 
         IF @ChestRet = 1
         BEGIN
-            -- Neue ItemID aus der Chest auslesen
+            -- Die Prozedur wählt intern den Slot — aktuellsten Eintrag für diesen User lesen
             SELECT @NewItemID = ISNULL(MAX(ItemID), 0)
             FROM _Chest WITH (NOLOCK)
-            WHERE UserJID = @UserJID AND Slot = @EmptySlotChest;
+            WHERE UserJID = @UserJID
+              AND ItemID IS NOT NULL
+              AND ItemID <> 0;
 
             SET @Destination = 'Storage';
             SET @Slot = @EmptySlotChest;
