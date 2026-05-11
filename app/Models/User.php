@@ -13,6 +13,7 @@ use SilkPanel\SilkroadModels\Models\Account\SkSilk;
 use SilkPanel\SilkroadModels\Models\Account\SkSilkBuyList;
 use SilkPanel\SilkroadModels\Models\Portal\AphChangedSilk;
 use SilkPanel\SilkroadModels\Models\Portal\MuUser;
+use App\Models\WebmallPurchase;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -224,6 +225,16 @@ class User extends Authenticatable implements MustVerifyEmail
             'isro' => $this->hasManyThrough(AphChangedSilk::class, MuUser::class, 'JID', 'JID', 'pjid', 'JID'),
             default => $this->hasMany(SkSilkBuyList::class, 'UserJID', 'jid'),
         };
+    }
+
+    /**
+     * Webmall purchases made by this user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function webmallPurchases(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(WebmallPurchase::class, 'user_id');
     }
 
     /**

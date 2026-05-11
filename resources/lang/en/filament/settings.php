@@ -78,6 +78,10 @@ return [
             'tos_text_placeholder' => 'Enter your Terms of Service here...',
             'login_with_name' => 'Login with Name',
             'login_with_name_description' => 'Allow users to log in with their username instead of email address.',
+            'webmall_enabled' => 'Enable Webmall',
+            'webmall_enabled_description' => 'Enable the Webmall where players can purchase items with Silk or Gold.',
+            'webmall_require_logout' => 'Require Characters to be Logged Out',
+            'webmall_require_logout_description' => 'If enabled, characters must be offline before they can purchase items from the Webmall. This prevents potential issues when items are delivered to online characters.',
         ],
 
         'partners' => [

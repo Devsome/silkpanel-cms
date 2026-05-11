@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'error' => [
+        'insufficient_balance'            => 'رصيدك غير كافٍ لإتمام هذا الشراء.',
+        'item_unavailable'                => 'هذا العنصر لم يعد متاحاً.',
+        'item_delivery_failed'            => 'تعذّر تسليم العنصر. يرجى التواصل مع الدعم.',
+        'unexpected'                      => 'حدث خطأ غير متوقع. حاول مرة أخرى.',
+        'character_must_be_offline'       => 'يجب أن تكون شخصيتك خارج اللعبة قبل الشراء من المتجر.',
+        'character_must_be_offline_short' => 'سجّل الخروج أولاً',
+    ],
+    'success' => [
+        'purchase' => 'تم شراء :item بنجاح. تم الإرسال إلى :destination.',
+    ],
+    'ui' => [
+        'page_title'            => 'Webmall',
+        'subtitle'              => 'تصفح واشتري الأدوات بالـ Silk أو الذهب.',
+        'purchase_as_character' => 'اختر الشخصية',
+        'no_characters'         => 'ليس لديك شخصيات. أنشئ شخصية في اللعبة أولاً.',
+        'empty_heading'         => 'المتجر فارغ.',
+        'empty_description'     => 'عُد لاحقاً!',
+        'sold_out'              => 'نفد المخزون',
+        'remaining_stock'       => 'متبقي :count',
+        'non_trade'             => 'غير قابل للتداول',
+        'female'                => 'أنثى',
+        'male'                  => 'ذكر',
+        'until'                 => 'حتى :date',
+        'buy'                   => 'شراء',
+        'sold_out_button'       => 'نفد المخزون',
+        'modal_title'           => 'تأكيد الشراء',
+        'modal_item'            => 'العنصر',
+        'modal_price'           => 'السعر',
+        'modal_character'       => 'الشخصية',
+        'modal_cancel'          => 'إلغاء',
+        'modal_confirm'         => 'تأكيد الشراء',
+        'modal_processing'      => 'جارٍ المعالجة…',
+        'modal_disclaimer'      => 'سيتم خصم المبلغ فوراً وإرسال العنصر إلى شخصيتك.',
+        'balance_current'       => 'الرصيد الحالي :type',
+        'balance_price'         => '− السعر',
+        'balance_remaining'     => '= المتبقي',
+    ],
+];

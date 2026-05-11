@@ -68,4 +68,7 @@ return [
 
     // Ticket System
     'support_tickets' => 'Support Tickets',
+
+    // Webmall
+    'webmall' => 'Webmall',
 ];

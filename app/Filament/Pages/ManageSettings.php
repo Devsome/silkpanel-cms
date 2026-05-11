@@ -280,6 +280,16 @@ class ManageSettings extends Page
                                     Toggle::make('login_with_name')
                                         ->label(__('filament/settings.form.features.login_with_name'))
                                         ->helperText(__('filament/settings.form.features.login_with_name_description')),
+
+                                    Toggle::make('webmall_enabled')
+                                        ->label(__('filament/settings.form.features.webmall_enabled'))
+                                        ->helperText(__('filament/settings.form.features.webmall_enabled_description'))
+                                        ->live(),
+
+                                    Toggle::make('webmall_require_logout')
+                                        ->label(__('filament/settings.form.features.webmall_require_logout'))
+                                        ->helperText(__('filament/settings.form.features.webmall_require_logout_description'))
+                                        ->visible(fn(Get $get) => (bool) $get('webmall_enabled')),
                                 ]),
 
                             Tab::make(__('filament/settings.form.tabs.partners'))
@@ -501,6 +511,8 @@ class ManageSettings extends Page
             'map_max_characters',
             'map_frontend_enabled',
             'is_ticket_system_enabled',
+            'webmall_enabled',
+            'webmall_require_logout',
         ];
 
         foreach ($settingKeys as $key) {

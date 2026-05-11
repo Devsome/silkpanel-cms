@@ -59,4 +59,7 @@ return [
 
     // Ticket system
     'support_tickets' => 'تذاكر الدعم',
+
+    // Webmall
+    'webmall' => 'المتجر الإلكتروني',
 ];

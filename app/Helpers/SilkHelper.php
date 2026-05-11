@@ -91,6 +91,11 @@ class SilkHelper
 
     /**
      * Adding silk for ISRO (AphChangedSilk)
+     *
+     * For additions: insert a new 'Y' entry → B_GetJCash adds it to the balance.
+     * For deductions: consume existing 'Y' entries oldest-first until the amount is
+     * covered. Fully consumed rows are marked 'N'; partially consumed rows have their
+     * RemainedSilk reduced in-place. A new 'N' row is inserted for the log.
      */
     private function addSilkIsro(int $jid, int $amount, string $type, ?string $ip = null): void
     {
@@ -100,24 +105,69 @@ class SilkHelper
             default => SilkTypeIsroEnum::SILK_TYPE_NORMAL->value,
         };
 
-        AphChangedSilk::create([
-            'JID' => $jid,
-            'PTInvoiceID' => null,
-            'RemainedSilk' => abs($amount),
-            'ChangedSilk' => $amount < 0 ? $amount : 0,
-            'SilkType' => $isroSilkType,
-            'SellingTypeID' => 2,
-            'ChangeDate' => now(),
-            'AvailableDate' => now()->addYears(1),
-            'AvailableStatus' => $amount < 0 ? 'N' : 'Y',
-        ]);
+        if ($amount >= 0) {
+            AphChangedSilk::create([
+                'JID'             => $jid,
+                'PTInvoiceID'     => null,
+                'RemainedSilk'    => $amount,
+                'ChangedSilk'     => 0,
+                'SilkType'        => $isroSilkType,
+                'SellingTypeID'   => 2,
+                'ChangeDate'      => now(),
+                'AvailableDate'   => now()->addYears(1),
+                'AvailableStatus' => 'Y',
+            ]);
+        } else {
+            // Consume existing 'Y' entries oldest-first.
+            $toDeduct = abs($amount);
+
+            $availableEntries = AphChangedSilk::where('JID', $jid)
+                ->where('SilkType', $isroSilkType)
+                ->where('AvailableStatus', 'Y')
+                ->where('RemainedSilk', '>', 0)
+                ->orderBy('CSID', 'asc')
+                ->get();
+
+            $totalAvailable = $availableEntries->sum('RemainedSilk');
+
+            if ($toDeduct > $totalAvailable) {
+                return;
+            }
+
+            $remaining = $toDeduct;
+
+            foreach ($availableEntries as $entry) {
+                if ($remaining <= 0) {
+                    break;
+                }
+
+                if ($entry->RemainedSilk <= $remaining) {
+                    // Fully consume this entry
+                    $remaining -= $entry->RemainedSilk;
+                    $entry->update([
+                        'RemainedSilk'    => 0,
+                        'ChangedSilk'     => -$entry->RemainedSilk,
+                        'AvailableStatus' => 'N',
+                    ]);
+                } else {
+                    // Partially consume this entry
+                    $newRemained = $entry->RemainedSilk - $remaining;
+                    $entry->update([
+                        'RemainedSilk' => $newRemained,
+                        'ChangedSilk'  => -$remaining,
+                    ]);
+
+                    $remaining = 0;
+                }
+            }
+        }
 
         SkSilkChangeByWeb::create([
-            'JID' => $jid,
+            'JID'         => $jid,
             'silk_remain' => abs($amount),
             'silk_offset' => $amount < 0 ? $amount : 0,
-            'silk_type' => $isroSilkType,
-            'reason' => 0,
+            'silk_type'   => $isroSilkType,
+            'reason'      => 0,
         ]);
     }
 }

@@ -66,6 +66,10 @@ Route::get('/dashboard/map', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard/voting', [VotingController::class, 'index'])->name('voting.index');
+    Route::get('/dashboard/webmall', function () {
+        abort_unless((bool) Setting::get('webmall_enabled', false), 404);
+        return view('template::webmall.index');
+    })->name('webmall.index');
 });
 
 Route::middleware('auth')->group(function () {

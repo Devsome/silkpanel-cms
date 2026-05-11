@@ -11,8 +11,6 @@ use Throwable;
 
 class SilkroadItemService
 {
-    private const DESTINATION_LENGTH = 10;
-
     public function __construct(
         private readonly DatabaseManager $database,
     ) {}

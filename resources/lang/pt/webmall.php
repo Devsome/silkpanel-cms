@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'error' => [
+        'insufficient_balance'            => 'Saldo insuficiente para concluir esta compra.',
+        'item_unavailable'                => 'Este item não está mais disponível.',
+        'item_delivery_failed'            => 'Não foi possível entregar o item. Entre em contato com o suporte.',
+        'unexpected'                      => 'Ocorreu um erro inesperado. Tente novamente.',
+        'character_must_be_offline'       => 'Seu personagem deve estar desconectado do jogo antes de comprar no Webmall.',
+        'character_must_be_offline_short' => 'Saia do jogo primeiro',
+    ],
+    'success' => [
+        'purchase' => ':item comprado com sucesso. Foi enviado para :destination.',
+    ],
+    'ui' => [
+        'page_title'            => 'Webmall',
+        'subtitle'              => 'Navegue e compre itens com Silk ou Gold.',
+        'purchase_as_character' => 'Comprar como personagem',
+        'no_characters'         => 'Você não tem personagens. Crie um personagem no jogo primeiro.',
+        'empty_heading'         => 'O Webmall está vazio.',
+        'empty_description'     => 'Volte mais tarde!',
+        'sold_out'              => 'Esgotado',
+        'remaining_stock'       => ':count restantes',
+        'non_trade'             => 'Não negociável',
+        'female'                => 'Feminino',
+        'male'                  => 'Masculino',
+        'until'                 => 'Até :date',
+        'buy'                   => 'Comprar',
+        'sold_out_button'       => 'Esgotado',
+        'modal_title'           => 'Confirmar compra',
+        'modal_item'            => 'Item',
+        'modal_price'           => 'Preço',
+        'modal_character'       => 'Personagem',
+        'modal_cancel'          => 'Cancelar',
+        'modal_confirm'         => 'Confirmar compra',
+        'modal_processing'      => 'Processando…',
+        'modal_disclaimer'      => 'O valor será debitado imediatamente e o item será enviado para o seu personagem.',
+        'balance_current'       => ':type atual',
+        'balance_price'         => '− Preço',
+        'balance_remaining'     => '= Restante',
+    ],
+];

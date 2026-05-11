@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'error' => [
+        'insufficient_balance'            => 'Solde insuffisant pour effectuer cet achat.',
+        'item_unavailable'                => 'Cet objet n\'est plus disponible.',
+        'item_delivery_failed'            => 'L\'objet n\'a pas pu être livré. Contactez le support.',
+        'unexpected'                      => 'Une erreur inattendue s\'est produite. Réessayez.',
+        'character_must_be_offline'       => 'Votre personnage doit être déconnecté du jeu avant d\'acheter dans le Webmall.',
+        'character_must_be_offline_short' => 'Déconnectez-vous d\'abord',
+    ],
+    'success' => [
+        'purchase' => ':item acheté avec succès. Il a été envoyé à :destination.',
+    ],
+    'ui' => [
+        'page_title'            => 'Webmall',
+        'subtitle'              => "Parcourez et achetez des objets avec du Silk ou de l'Or.",
+        'purchase_as_character' => 'Acheter en tant que personnage',
+        'no_characters'         => 'Vous n\'avez aucun personnage. Créez-en un dans le jeu d\'abord.',
+        'empty_heading'         => 'Le Webmall est vide.',
+        'empty_description'     => 'Revenez plus tard !',
+        'sold_out'              => 'Épuisé',
+        'remaining_stock'       => ':count restant(s)',
+        'non_trade'             => 'Non échangeable',
+        'female'                => 'Féminin',
+        'male'                  => 'Masculin',
+        'until'                 => 'Jusqu\'au :date',
+        'buy'                   => 'Acheter',
+        'sold_out_button'       => 'Épuisé',
+        'modal_title'           => 'Confirmer l\'achat',
+        'modal_item'            => 'Objet',
+        'modal_price'           => 'Prix',
+        'modal_character'       => 'Personnage',
+        'modal_cancel'          => 'Annuler',
+        'modal_confirm'         => 'Confirmer l\'achat',
+        'modal_processing'      => 'Traitement…',
+        'modal_disclaimer'      => 'Le montant sera déduit immédiatement et l\'objet sera envoyé à votre personnage.',
+        'balance_current'       => ':type actuel',
+        'balance_price'         => '− Prix',
+        'balance_remaining'     => '= Restant',
+    ],
+];

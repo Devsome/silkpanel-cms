@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'error' => [
+        'insufficient_balance'            => 'Insufficient balance to complete this purchase.',
+        'item_unavailable'                => 'This item is no longer available.',
+        'item_delivery_failed'            => 'Item could not be delivered. Please contact support.',
+        'unexpected'                      => 'An unexpected error occurred. Please try again.',
+        'character_must_be_offline'       => 'Your character must be logged out of the game before purchasing from the Webmall.',
+        'character_must_be_offline_short' => 'Log out first',
+    ],
+    'success' => [
+        'purchase' => 'Successfully purchased :item. It has been sent to :destination.',
+    ],
+    'ui' => [
+        'page_title'            => 'Webmall',
+        'subtitle'              => 'Browse and purchase items with Silk or Gold.',
+        'purchase_as_character' => 'Purchase as character',
+        'no_characters'         => 'You have no characters. Create a character in-game first.',
+        'empty_heading'         => 'The Webmall is empty.',
+        'empty_description'     => 'Come back later!',
+        'sold_out'              => 'Sold out',
+        'remaining_stock'       => ':count left',
+        'non_trade'             => 'Non-Trade',
+        'female'                => 'Female',
+        'male'                  => 'Male',
+        'until'                 => 'Until :date',
+        'buy'                   => 'Buy',
+        'sold_out_button'       => 'Sold Out',
+        'modal_title'           => 'Confirm Purchase',
+        'modal_item'            => 'Item',
+        'modal_price'           => 'Price',
+        'modal_character'       => 'Character',
+        'modal_cancel'          => 'Cancel',
+        'modal_confirm'         => 'Confirm Purchase',
+        'modal_processing'      => 'Processing…',
+        'modal_disclaimer'      => 'The amount will be deducted from your account immediately and the item will be sent to your character.',
+        'balance_current'       => 'Current :type',
+        'balance_price'         => '− Price',
+        'balance_remaining'     => '= Remaining',
+    ],
+];

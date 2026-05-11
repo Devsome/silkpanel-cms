@@ -7,6 +7,7 @@ use App\Filament\Resources\Users\Pages\ListUser;
 use App\Filament\Resources\Users\RelationManagers\ReferralsRelationManager;
 use App\Filament\Resources\Users\RelationManagers\ShardUsersRelationManager;
 use App\Filament\Resources\Users\RelationManagers\SkSilkHistoryRelationManager;
+use App\Filament\Resources\Users\RelationManagers\WebmallPurchasesRelationManager;
 use App\Filament\Resources\Users\Schemas\UserForm;
 use App\Filament\Resources\Users\Tables\UserTable;
 use App\Models\User;
@@ -56,6 +57,7 @@ class UserResource extends Resource
         return [
             ShardUsersRelationManager::class,
             SkSilkHistoryRelationManager::class,
+            WebmallPurchasesRelationManager::class,
             ReferralsRelationManager::class,
         ];
     }

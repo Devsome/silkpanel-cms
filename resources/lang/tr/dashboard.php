@@ -59,4 +59,7 @@ return [
 
     // Ticket System
     'support_tickets' => 'Destek Biletleri',
+
+    // Webmall
+    'webmall' => 'Webmall',
 ];

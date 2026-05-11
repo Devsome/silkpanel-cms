@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'error' => [
+        'insufficient_balance'            => 'Bu satın almayı tamamlamak için yeterli bakiyeniz yok.',
+        'item_unavailable'                => 'Bu eşya artık mevcut değil.',
+        'item_delivery_failed'            => 'Eşya teslim edilemedi. Lütfen destek ile iletişime geçin.',
+        'unexpected'                      => 'Beklenmedik bir hata oluştu. Lütfen tekrar deneyin.',
+        'character_must_be_offline'       => 'Webmall\'dan satın almadan önce karakterinizin oyun dışında olması gerekir.',
+        'character_must_be_offline_short' => 'Önce çıkış yapın',
+    ],
+    'success' => [
+        'purchase' => ':item başarıyla satın alındı. :destination adresine gönderildi.',
+    ],
+    'ui' => [
+        'page_title'            => 'Webmall',
+        'subtitle'              => 'Silk veya Gold ile eşyalara göz at ve satın al.',
+        'purchase_as_character' => 'Karakter olarak satın al',
+        'no_characters'         => 'Hiç karakteriniz yok. Önce oyunda bir karakter oluşturun.',
+        'empty_heading'         => 'Webmall boş.',
+        'empty_description'     => 'Daha sonra tekrar gel!',
+        'sold_out'              => 'Tükendi',
+        'remaining_stock'       => ':count kaldı',
+        'non_trade'             => 'Takas edilemez',
+        'female'                => 'Kadın',
+        'male'                  => 'Erkek',
+        'until'                 => 'Bitiş: :date',
+        'buy'                   => 'Satın Al',
+        'sold_out_button'       => 'Tükendi',
+        'modal_title'           => 'Satın Almayı Onayla',
+        'modal_item'            => 'Eşya',
+        'modal_price'           => 'Fiyat',
+        'modal_character'       => 'Karakter',
+        'modal_cancel'          => 'İptal',
+        'modal_confirm'         => 'Satın Almayı Onayla',
+        'modal_processing'      => 'İşleniyor…',
+        'modal_disclaimer'      => 'Tutar hemen düşülecek ve eşya karakterinize gönderilecektir.',
+        'balance_current'       => 'Mevcut :type',
+        'balance_price'         => '− Fiyat',
+        'balance_remaining'     => '= Kalan',
+    ],
+];

@@ -1,0 +1,126 @@
+<?php
+
+return [
+
+    // Navigation
+    'navigation_group'             => 'Webmall',
+    'navigation_categories'        => 'Categories',
+    'navigation_purchase_log'      => 'Purchase Log',
+
+    // Category resource
+    'category_model_label'         => 'Category',
+    'category_model_label_plural'  => 'Webmall Categories',
+
+    'section_category_details'     => 'Category Details',
+    'section_availability'         => 'Availability',
+    'section_availability_desc'    => 'Leave empty to always show this category. Current server time: :time (:tz)',
+
+    'field_name'                   => 'Name',
+    'field_slug'                   => 'Slug',
+    'field_order'                  => 'Sort Order',
+    'field_enabled'                => 'Enabled',
+    'field_available_from'         => 'Available From',
+    'field_available_until'        => 'Available Until',
+    'field_schedule_days'          => 'Recurring Days',
+    'field_schedule_days_hint'     => 'Leave empty to show every day.',
+    'day_monday'                   => 'Monday',
+    'day_tuesday'                  => 'Tuesday',
+    'day_wednesday'                => 'Wednesday',
+    'day_thursday'                 => 'Thursday',
+    'day_friday'                   => 'Friday',
+    'day_saturday'                 => 'Saturday',
+    'day_sunday'                   => 'Sunday',
+    'day_mon'                      => 'Mon',
+    'day_tue'                      => 'Tue',
+    'day_wed'                      => 'Wed',
+    'day_thu'                      => 'Thu',
+    'day_fri'                      => 'Fri',
+    'day_sat'                      => 'Sat',
+    'day_sun'                      => 'Sun',
+    'schedule_every_day'           => 'Every day',
+    'tooltip_clear_date'           => 'Clear date',
+
+    // Category table
+    'col_id'                       => 'ID',
+    'col_name'                     => 'Name',
+    'col_slug'                     => 'Slug',
+    'col_items'                    => 'Items',
+    'col_order'                    => 'Order',
+    'col_enabled'                  => 'Enabled',
+    'col_from'                     => 'From',
+    'col_until'                    => 'Until',
+    'col_schedule'                 => 'Schedule',
+    'col_created'                  => 'Created',
+    'placeholder_always'           => 'Always',
+    'empty_categories_heading'     => 'No categories yet',
+    'empty_categories_desc'        => 'Create your first Webmall category.',
+
+    // Items relation manager
+    'items_title'                  => 'Items',
+    'col_item_id'                  => 'Item ID',
+    'col_item_name'                => 'Item Name',
+    'col_price_type'               => 'Price Type',
+    'col_price'                    => 'Price',
+    'col_hot'                      => 'HOT',
+    'col_stock'                    => 'Stock',
+    'col_available_from'           => 'Available From',
+    'col_available_until'          => 'Available Until',
+    'col_order'                    => 'Order',
+
+    'field_item'                   => 'Item',
+    'field_display_name'           => 'Display Name (snapshot)',
+    'field_display_name_helper'    => 'Auto-filled from item selection. You may override it.',
+    'field_price_type'             => 'Price Type',
+    'field_price'                  => 'Price',
+    'field_sort_order'             => 'Sort Order',
+    'field_stock_limit'            => 'Stock Limit',
+    'field_stock_limit_helper'     => 'Leave empty for unlimited stock.',
+    'field_is_hot'                 => 'Mark as HOT',
+    'section_item_info'            => 'Item Info',
+    'info_req_level'               => 'Req. Level',
+    'info_npc_price'               => 'NPC Price',
+    'info_sell_price'              => 'Sell Price',
+    'info_repair_cost'             => 'Repair Cost',
+    'info_tradeable'               => 'Tradeable',
+    'info_can_sell'                => 'Can Sell',
+    'info_can_buy'                 => 'Can Buy',
+    'info_max_stack'               => 'Max Stack',
+
+    'empty_items_heading'          => 'No items in this category',
+    'empty_items_desc'             => 'Add items to allow players to purchase them.',
+
+    // Purchases relation manager / resource
+    'purchases_title'              => 'Purchase Log',
+    'col_user'                     => 'User',
+    'col_character'                => 'Character',
+    'col_item'                     => 'Item',
+    'col_price_paid'               => 'Price Paid',
+    'col_date'                     => 'Date',
+    'filter_price_type'            => 'Price Type',
+    'filter_from'                  => 'From',
+    'filter_until'                 => 'Until',
+    'empty_purchases_heading'      => 'No purchases yet',
+    'empty_purchases_desc'         => 'Purchases will appear here once players start buying.',
+
+    // User → Webmall purchases relation manager
+    'user_purchases_title'         => 'Webmall Purchases',
+    'empty_user_purchases_heading' => 'No Webmall purchases yet',
+    'empty_user_purchases_desc'    => 'Purchases will appear here once the user buys something from the Webmall.',
+
+    // Widgets
+    'stat_total_purchases'         => 'Total Purchases',
+    'stat_total_purchases_desc'    => 'All time',
+    'stat_silk_revenue'            => 'Silk Revenue',
+    'stat_silk_revenue_desc'       => 'Total silk collected',
+    'stat_gold_revenue'            => 'Gold Revenue',
+    'stat_gold_revenue_desc'       => 'Total gold collected',
+    'stat_sales_today'             => 'Sales Today',
+    'stat_sales_today_desc'        => 'Purchases in the last 24h',
+    'chart_daily_revenue'          => 'Daily Revenue (Last 14 Days)',
+    'chart_silk_revenue'           => 'Silk Revenue',
+    'chart_gold_revenue'           => 'Gold Revenue',
+
+    // Purchase log (standalone resource)
+    'purchase_model_label'         => 'Purchase',
+    'purchase_model_label_plural'  => 'Purchase Log',
+];

@@ -1,0 +1,42 @@
+<?php
+
+return [
+    'error' => [
+        'insufficient_balance'            => 'Nicht genug Guthaben, um diesen Kauf abzuschließen.',
+        'item_unavailable'                => 'Dieses Item ist nicht mehr verfügbar.',
+        'item_delivery_failed'            => 'Das Item konnte nicht geliefert werden. Bitte kontaktiere den Support.',
+        'unexpected'                      => 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.',
+        'character_must_be_offline'       => 'Dein Charakter muss aus dem Spiel ausgeloggt sein, bevor du im Webmall kaufen kannst.',
+        'character_must_be_offline_short' => 'Zuerst ausloggen',
+    ],
+    'success' => [
+        'purchase' => ':item wurde erfolgreich gekauft. Es wurde an :destination gesendet.',
+    ],
+    'ui' => [
+        'page_title'            => 'Webmall',
+        'subtitle'              => 'Durchstöbere Items und kaufe sie mit Silk oder Gold.',
+        'purchase_as_character' => 'Als Charakter kaufen',
+        'no_characters'         => 'Du hast keine Charaktere. Erstelle zuerst einen Charakter im Spiel.',
+        'empty_heading'         => 'Der Webmall ist leer.',
+        'empty_description'     => 'Komm später wieder!',
+        'sold_out'              => 'Ausverkauft',
+        'remaining_stock'       => 'Noch :count',
+        'non_trade'             => 'Nicht handelbar',
+        'female'                => 'Weiblich',
+        'male'                  => 'Männlich',
+        'until'                 => 'Bis :date',
+        'buy'                   => 'Kaufen',
+        'sold_out_button'       => 'Ausverkauft',
+        'modal_title'           => 'Kauf bestätigen',
+        'modal_item'            => 'Item',
+        'modal_price'           => 'Preis',
+        'modal_character'       => 'Charakter',
+        'modal_cancel'          => 'Abbrechen',
+        'modal_confirm'         => 'Kauf bestätigen',
+        'modal_processing'      => 'Verarbeitung…',
+        'modal_disclaimer'      => 'Der Betrag wird sofort abgezogen und das Item wird an deinen Charakter gesendet.',
+        'balance_current'       => 'Aktuell :type',
+        'balance_price'         => '− Preis',
+        'balance_remaining'     => '= Verbleibend',
+    ],
+];
