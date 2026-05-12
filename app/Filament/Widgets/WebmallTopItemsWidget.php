@@ -6,6 +6,7 @@ use App\Models\WebmallPurchase;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
+use Illuminate\Support\Facades\DB;
 
 class WebmallTopItemsWidget extends BaseWidget
 {
@@ -18,7 +19,7 @@ class WebmallTopItemsWidget extends BaseWidget
         return $table
             ->query(
                 WebmallPurchase::query()
-                    ->select('item_name', \Illuminate\Support\Facades\DB::raw('COUNT(*) as total_sold'))
+                    ->select('item_name', DB::raw('COUNT(*) as total_sold'))
                     ->where('created_at', '>=', now()->subDays(7))
                     ->groupBy('item_name')
                     ->orderByDesc('total_sold')
@@ -33,6 +34,7 @@ class WebmallTopItemsWidget extends BaseWidget
                     ->badge()
                     ->color('success'),
             ])
+            ->defaultSort('total_sold', 'desc')
             ->paginated(false);
     }
 
