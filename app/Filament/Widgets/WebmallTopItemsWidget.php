@@ -16,14 +16,16 @@ class WebmallTopItemsWidget extends BaseWidget
 
     public function table(Table $table): Table
     {
+        $subquery = DB::table('webmall_purchases')
+            ->select('item_name', DB::raw('COUNT(*) as total_sold'), DB::raw('MIN(id) as id'))
+            ->where('created_at', '>=', now()->subDays(7))
+            ->groupBy('item_name')
+            ->orderByDesc('total_sold')
+            ->limit(10);
+
         return $table
             ->query(
-                WebmallPurchase::query()
-                    ->select('item_name', DB::raw('COUNT(*) as total_sold'))
-                    ->where('created_at', '>=', now()->subDays(7))
-                    ->groupBy('item_name')
-                    ->orderByDesc('total_sold')
-                    ->limit(10)
+                WebmallPurchase::query()->fromSub($subquery, 'webmall_purchases')
             )
             ->recordTitleAttribute('item_name')
             ->columns([
