@@ -7,7 +7,7 @@
                     <div class="flex items-center gap-3 min-w-0">
                         @if ($timer['image'])
                             <img src="{{ asset('storage/' . $timer['image']) }}" alt="{{ e($timer['name']) }}"
-                                class="h-[50px] w-[50px] rounded object-cover shrink-0">
+                                class="h-12.5 w-12.5 rounded object-cover shrink-0">
                         @elseif ($timer['icon'])
                             <x-dynamic-component :component="'heroicon-o-' . $timer['icon']" class="h-5 w-5 text-primary-500 shrink-0" />
                         @else

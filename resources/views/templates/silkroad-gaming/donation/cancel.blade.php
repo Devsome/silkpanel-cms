@@ -20,7 +20,7 @@
 
                 <div class="mt-8">
                     <a href="{{ route('donate.index') }}"
-                        class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition">
+                        class="px-6 py-2.5 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition">
                         {{ __('donation.back_to_donations') }}
                     </a>
                 </div>

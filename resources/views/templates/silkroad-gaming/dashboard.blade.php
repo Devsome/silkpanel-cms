@@ -33,7 +33,7 @@
                             @foreach ([['label' => __('dashboard.silk_own'), 'value' => $silkData['silk_own']], ['label' => __('dashboard.silk_gift'), 'value' => $silkData['silk_gift']], ['label' => __('dashboard.silk_point'), 'value' => $silkData['silk_point']]] as $item)
                                 <div class="text-center p-4 rounded-xl border border-gray-800 bg-gray-900/80">
                                     <p
-                                        class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                                        class="text-2xl font-bold bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                                         {{ number_format($item['value']) }}
                                     </p>
                                     <p class="text-xs text-gray-500 mt-1">{{ $item['label'] }}</p>
@@ -48,7 +48,7 @@
                             @foreach ([['label' => __('dashboard.silk_own'), 'value' => $silkData['silk']], ['label' => __('dashboard.silk_premium'), 'value' => $silkData['premium_silk']]] as $item)
                                 <div class="text-center p-4 rounded-xl border border-gray-800 bg-gray-900/80">
                                     <p
-                                        class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                                        class="text-2xl font-bold bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                                         {{ number_format($item['value']) }}
                                     </p>
                                     <p class="text-xs text-gray-500 mt-1">{{ $item['label'] }}</p>
@@ -222,7 +222,7 @@
                         @foreach ([['label' => __('dashboard.referral_valid'), 'value' => $referralData['valid_count']], ['label' => __('dashboard.referral_pending'), 'value' => $referralData['pending_count']], ['label' => __('dashboard.referral_silk_earned'), 'value' => number_format($referralData['total_silk_earned'])]] as $item)
                             <div class="text-center p-4 rounded-xl border border-gray-800 bg-gray-900/80">
                                 <p
-                                    class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                                    class="text-2xl font-bold bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                                     {{ $item['value'] }}
                                 </p>
                                 <p class="text-xs text-gray-500 mt-1">{{ $item['label'] }}</p>
@@ -239,7 +239,7 @@
                                 class="flex-1 text-sm bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-gray-300 truncate focus:outline-none" />
                             <button type="button"
                                 onclick="navigator.clipboard.writeText('{{ route('register') . '?ref=' . $referralData['reflink'] }}').then(() => this.textContent = '{{ __('dashboard.referral_copied') }}')"
-                                class="shrink-0 text-xs font-semibold px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 hover:brightness-110 transition">
+                                class="shrink-0 text-xs font-semibold px-4 py-2 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 hover:brightness-110 transition">
                                 {{ __('dashboard.referral_copy') }}
                             </button>
                         </div>

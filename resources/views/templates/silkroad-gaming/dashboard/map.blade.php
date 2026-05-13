@@ -66,7 +66,7 @@
                         x-text="lastRefreshed ? '{{ __('dashboard.map_updated') }}: ' + lastRefreshed : ''"></span>
 
                     <button @click="loadCharacters()" :disabled="loading"
-                        class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-semibold hover:brightness-110 transition disabled:opacity-50">
+                        class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-semibold hover:brightness-110 transition disabled:opacity-50">
                         <svg x-show="!loading" class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5"
                             viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round"

@@ -27,7 +27,7 @@
 
                 <div class="mt-8 flex items-center justify-center gap-4">
                     <a href="{{ route('dashboard') }}"
-                        class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition">
+                        class="px-6 py-2.5 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition">
                         {{ __('dashboard.title') }}
                     </a>
                     <a href="{{ route('donate.index') }}" class="text-sm text-gray-400 hover:text-emerald-400 transition">

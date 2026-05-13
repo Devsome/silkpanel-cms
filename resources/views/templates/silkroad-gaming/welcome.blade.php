@@ -38,7 +38,7 @@
                 <div class="absolute inset-0 bg-gradient-to-b from-gray-950/70 via-gray-950/50 to-gray-950"></div>
             </div>
         @else
-            <div class="absolute inset-0 bg-gradient-to-br from-emerald-950 via-gray-950 to-cyan-950"></div>
+            <div class="absolute inset-0 bg-linear-to-br from-emerald-950 via-gray-950 to-cyan-950"></div>
             <div class="absolute inset-0 opacity-20"
                 style="background-image: radial-gradient(circle at 25% 25%, rgba(16,185,129,0.15) 0%, transparent 50%), radial-gradient(circle at 75% 75%, rgba(6,182,212,0.15) 0%, transparent 50%);">
             </div>
@@ -50,7 +50,7 @@
                     alt="@settings('site_title', 'SilkPanel')" class="mx-auto mb-6 h-20 w-auto drop-shadow-2xl">
             @endif
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight">
-                <span class="bg-gradient-to-r from-emerald-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent">
+                <span class="bg-linear-to-r from-emerald-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent">
                     @settings('site_title', 'SilkPanel CMS')
                 </span>
             </h1>
@@ -61,7 +61,7 @@
             </p>
             <div class="mt-8 flex justify-center gap-4">
                 <a href="{{ route('downloads.index') }}"
-                    class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-gray-950 bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 rounded-xl shadow-lg shadow-emerald-500/25 transition">
+                    class="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-gray-950 bg-linear-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 rounded-xl shadow-lg shadow-emerald-500/25 transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
@@ -201,7 +201,7 @@
                         </div>
                         <div class="flex items-end gap-2">
                             <span
-                                class="text-3xl font-bold tabular-nums bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                                class="text-3xl font-bold tabular-nums bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                                 @onlineCounter
                             </span>
                             @if ($maxPlayers > 0)
@@ -220,7 +220,7 @@
                                             : 'from-emerald-500 to-cyan-400');
                             @endphp
                             <div class="mt-3 h-1.5 w-full bg-gray-800 rounded-full overflow-hidden">
-                                <div class="bg-gradient-to-r {{ $barColor }} h-full rounded-full transition-all duration-700"
+                                <div class="bg-linear-to-r {{ $barColor }} h-full rounded-full transition-all duration-700"
                                     style="width: {{ $pct }}%"></div>
                             </div>
                             <p class="mt-1.5 text-[11px] text-gray-500 text-right">{{ $pct }}%
@@ -234,7 +234,7 @@
                             {{ __('index.quick_links') }}
                         </h3>
                         <a href="{{ route('downloads.index') }}"
-                            class="flex items-center gap-3 w-full rounded-xl px-4 py-2.5 text-sm font-medium text-gray-950 bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 shadow-lg shadow-emerald-500/20 transition">
+                            class="flex items-center gap-3 w-full rounded-xl px-4 py-2.5 text-sm font-medium text-gray-950 bg-linear-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 shadow-lg shadow-emerald-500/20 transition">
                             <svg class="h-4 w-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

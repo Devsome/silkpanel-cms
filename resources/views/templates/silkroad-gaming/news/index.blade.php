@@ -28,7 +28,7 @@
                                 </div>
                             @else
                                 <div
-                                    class="aspect-video flex items-center justify-center bg-gradient-to-br from-emerald-900/30 to-cyan-900/20">
+                                    class="aspect-video flex items-center justify-center bg-linear-to-br from-emerald-900/30 to-cyan-900/20">
                                     <svg class="w-10 h-10 text-emerald-700" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

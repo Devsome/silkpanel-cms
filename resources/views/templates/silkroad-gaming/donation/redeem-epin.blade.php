@@ -57,7 +57,7 @@
                             {{ __('donation.cancel') }}
                         </a>
                         <button type="submit"
-                            class="px-5 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition">
+                            class="px-5 py-2 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition">
                             {{ __('donation.redeem_epin') }}
                         </button>
                     </div>

@@ -7,7 +7,7 @@
             <div class="mb-8 flex items-center gap-2 rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur p-1.5">
                 <a href="{{ route('ranking.characters') }}"
                     class="flex-1 sm:flex-none px-5 py-2 text-center text-sm font-semibold rounded-xl transition
-                        {{ request()->routeIs('ranking.characters') ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                        {{ request()->routeIs('ranking.characters') ? 'bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
                     <span class="inline-flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -18,7 +18,7 @@
                 </a>
                 <a href="{{ route('ranking.guilds') }}"
                     class="flex-1 sm:flex-none px-5 py-2 text-center text-sm font-semibold rounded-xl transition
-                        {{ request()->routeIs('ranking.guilds') ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                        {{ request()->routeIs('ranking.guilds') ? 'bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
                     <span class="inline-flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -29,7 +29,7 @@
                 </a>
                 <a href="{{ route('ranking.uniques') }}"
                     class="flex-1 sm:flex-none px-5 py-2 text-center text-sm font-semibold rounded-xl transition
-                        {{ request()->routeIs('ranking.uniques') ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                        {{ request()->routeIs('ranking.uniques') ? 'bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
                     <span class="inline-flex items-center gap-1.5">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

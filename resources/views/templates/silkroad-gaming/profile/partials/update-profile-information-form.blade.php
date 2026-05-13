@@ -51,7 +51,7 @@
 
         <div class="flex items-center gap-4 pt-2">
             <button type="submit"
-                class="px-5 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-semibold hover:brightness-110 transition">
+                class="px-5 py-2 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-semibold hover:brightness-110 transition">
                 {{ __('Save') }}
             </button>
             @if (session('status') === 'profile-updated')

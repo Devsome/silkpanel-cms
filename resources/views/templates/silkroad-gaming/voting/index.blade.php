@@ -47,7 +47,7 @@
                                 <div class="mt-auto pt-4">
                                     @if ($canVote)
                                         <a href="{{ $site->url }}" target="_blank" rel="noopener noreferrer"
-                                            class="inline-flex w-full items-center justify-center px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 text-xs font-bold uppercase tracking-widest hover:brightness-110 transition">
+                                            class="inline-flex w-full items-center justify-center px-4 py-2 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 text-xs font-bold uppercase tracking-widest hover:brightness-110 transition">
                                             {{ __('voting.vote_now') }}
                                         </a>
                                     @else

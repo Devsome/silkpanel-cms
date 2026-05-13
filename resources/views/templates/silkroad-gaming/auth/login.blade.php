@@ -7,10 +7,10 @@
             <div class="relative hidden lg:flex items-end bg-gray-950">
                 <img alt="" src="{{ Vite::asset('resources/images/banner/background-one.png') }}"
                     class="absolute inset-0 h-full w-full object-cover opacity-60" />
-                <div class="absolute inset-0 bg-gradient-to-r from-gray-950/30 to-gray-950"></div>
+                <div class="absolute inset-0 bg-linear-to-r from-gray-950/30 to-gray-950"></div>
                 <div class="relative p-12">
                     <h2 class="text-3xl font-black md:text-4xl">
-                        <span class="bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                        <span class="bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                             {{ __('auth/login.title', ['app_name' => config('app.name')]) }}
                         </span>
                     </h2>
@@ -87,7 +87,7 @@
 
                         {{-- Submit --}}
                         <button type="submit"
-                            class="w-full rounded-xl px-6 py-3 text-sm font-semibold text-gray-950 bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 shadow-lg shadow-emerald-500/25 transition">
+                            class="w-full rounded-xl px-6 py-3 text-sm font-semibold text-gray-950 bg-linear-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 shadow-lg shadow-emerald-500/25 transition">
                             {{ __('auth/login.form.login') }}
                         </button>
                     </form>

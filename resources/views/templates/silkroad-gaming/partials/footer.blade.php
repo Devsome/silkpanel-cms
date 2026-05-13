@@ -44,7 +44,7 @@
                         alt="@settings('site_title', 'SilkPanel')" class="h-8 w-auto mb-3 opacity-80">
                 @else
                     <span
-                        class="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                        class="text-lg font-bold bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                         @settings('site_title', 'SilkPanel')
                     </span>
                 @endif

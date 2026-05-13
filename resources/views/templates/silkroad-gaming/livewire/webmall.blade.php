@@ -22,7 +22,7 @@
                     <button wire:click="selectCharacter({{ $char->CharID }}, '{{ $char->CharName16 }}')"
                         class="cursor-pointer px-4 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider transition-all
                             {{ $selectedCharId == $char->CharID
-                                ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20'
+                                ? 'bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20'
                                 : 'border border-gray-700 bg-gray-900/60 text-gray-400 hover:text-white hover:border-emerald-500/40' }}">
                         {{ $char->CharName16 }}
                         <span class="ml-1 opacity-60">Lv.{{ $char->CurLevel }}</span>
@@ -158,7 +158,7 @@
                                 @else
                                     <button wire:click="confirmPurchase({{ $item->id }})"
                                         wire:loading.attr="disabled"
-                                        class="cursor-pointer mt-auto w-full text-xs py-1.5 px-3 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 font-bold uppercase tracking-wider hover:brightness-110 transition disabled:opacity-50">
+                                        class="cursor-pointer mt-auto w-full text-xs py-1.5 px-3 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 font-bold uppercase tracking-wider hover:brightness-110 transition disabled:opacity-50">
                                         {{ __('webmall.ui.buy') }}
                                     </button>
                                 @endif
@@ -263,7 +263,7 @@
                     </button>
                     <button wire:click="executePurchase" wire:loading.attr="disabled" @disabled($confirmDisabled)
                         class="px-4 py-2 text-xs font-bold uppercase tracking-wider rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed
-                            {{ $confirmDisabled ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'cursor-pointer bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 hover:brightness-110' }}">
+                            {{ $confirmDisabled ? 'bg-gray-800 text-gray-500 cursor-not-allowed' : 'cursor-pointer bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 hover:brightness-110' }}">
                         <span wire:loading.remove
                             wire:target="executePurchase">{{ __('webmall.ui.modal_confirm') }}</span>
                         <span wire:loading wire:target="executePurchase">{{ __('webmall.ui.modal_processing') }}</span>

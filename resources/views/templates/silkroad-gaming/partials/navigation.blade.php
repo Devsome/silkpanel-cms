@@ -32,7 +32,7 @@
                         alt="@settings('site_title', 'SilkPanel')" class="h-8 w-auto">
                 @else
                     <span
-                        class="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                        class="text-lg font-bold bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                         @settings('site_title', 'SilkPanel')
                     </span>
                 @endif
@@ -183,7 +183,7 @@
                     </a>
                     @settingsRegistrationOpen
                         <a href="{{ route('register') }}"
-                            class="px-4 py-1.5 rounded-lg text-sm font-medium text-gray-950 bg-gradient-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 shadow-lg shadow-emerald-500/25 transition">
+                            class="px-4 py-1.5 rounded-lg text-sm font-medium text-gray-950 bg-linear-to-r from-emerald-400 to-cyan-400 hover:from-emerald-300 hover:to-cyan-300 shadow-lg shadow-emerald-500/25 transition">
                             {{ __('navigation.register') }}
                         </a>
                     @endsettingsRegistrationOpen

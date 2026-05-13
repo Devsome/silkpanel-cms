@@ -77,7 +77,7 @@
                             <button @click="tab = 'equipment'" type="button"
                                 :class="tab === 'equipment'
                                     ?
-                                    'bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' :
+                                    'bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' :
                                     'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800 cursor-pointer'"
                                 class="px-4 py-1.5 rounded-xl text-sm font-semibold transition">
                                 {{ __('ranking.equipment') }}
@@ -86,7 +86,7 @@
                                 <button @click="tab = 'avatar'" type="button"
                                     :class="tab === 'avatar'
                                         ?
-                                        'bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' :
+                                        'bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' :
                                         'bg-gray-800/50 text-gray-400 hover:text-white hover:bg-gray-800 cursor-pointer'"
                                     class="px-4 py-1.5 rounded-xl text-sm font-semibold transition">
                                     {{ __('ranking.avatar') }}

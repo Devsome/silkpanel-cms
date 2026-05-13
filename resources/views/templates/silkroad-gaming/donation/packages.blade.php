@@ -49,7 +49,7 @@
 
                                 <div class="mt-4 flex items-center justify-between">
                                     <span
-                                        class="text-2xl font-black bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                                        class="text-2xl font-black bg-linear-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                                         {{ number_format($package->silk_amount) }}
                                         <span class="text-sm font-semibold">{{ __('donation.silk') }}</span>
                                     </span>
@@ -63,7 +63,7 @@
                                         @csrf
                                         <input type="hidden" name="provider" value="{{ $provider->slug->value }}">
                                         <button type="submit"
-                                            class="w-full px-4 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition">
+                                            class="w-full px-4 py-2.5 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 text-sm font-bold uppercase tracking-widest hover:brightness-110 transition">
                                             {{ __('donation.buy_now') }}
                                         </button>
                                     </form>

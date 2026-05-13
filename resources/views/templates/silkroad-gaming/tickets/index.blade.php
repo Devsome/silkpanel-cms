@@ -27,7 +27,7 @@
                         <p class="mt-2 text-sm text-gray-400">{{ __('ticket::ticket.page_index_subtitle') }}</p>
                     </div>
                     <a href="{{ route('tickets.create') }}"
-                        class="inline-flex items-center gap-2 rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 px-4 py-2 text-xs font-bold uppercase tracking-wider hover:brightness-110 transition">
+                        class="inline-flex items-center gap-2 rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 px-4 py-2 text-xs font-bold uppercase tracking-wider hover:brightness-110 transition">
                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
@@ -108,7 +108,7 @@
                 <div class="rounded-2xl border border-gray-800 bg-gray-900/50 p-10 text-center">
                     <p class="text-sm text-gray-500 mb-4">{{ __('ticket::ticket.page_index_empty') }}</p>
                     <a href="{{ route('tickets.create') }}"
-                        class="inline-flex items-center rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 px-4 py-2 text-xs font-bold uppercase tracking-wider hover:brightness-110 transition">
+                        class="inline-flex items-center rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 px-4 py-2 text-xs font-bold uppercase tracking-wider hover:brightness-110 transition">
                         {{ __('ticket::ticket.button_new_ticket') }}
                     </a>
                 </div>

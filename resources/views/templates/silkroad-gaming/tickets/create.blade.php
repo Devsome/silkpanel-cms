@@ -89,7 +89,7 @@
                         </label>
                         <input type="file" id="attachments" name="attachments[]" multiple
                             accept="image/jpeg,image/png,image/gif,image/webp"
-                            class="block w-full text-sm text-gray-400 file:mr-4 file:rounded-lg file:border-0 file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-wider file:bg-gradient-to-r file:from-emerald-500 file:to-cyan-500 file:text-gray-950 file:cursor-pointer hover:file:brightness-110">
+                            class="block w-full text-sm text-gray-400 file:mr-4 file:rounded-lg file:border-0 file:px-4 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-wider file:bg-linear-to-r file:from-emerald-500 file:to-cyan-500 file:text-gray-950 file:cursor-pointer hover:file:brightness-110">
                         @error('attachments.*')
                             <p class="mt-1 text-xs text-red-400">{{ $message }}</p>
                         @enderror
@@ -101,7 +101,7 @@
                             {{ __('ticket::ticket.button_cancel') }}
                         </a>
                         <button type="submit"
-                            class="cursor-pointer rounded-lg bg-gradient-to-r from-emerald-500 to-cyan-500 text-gray-950 px-5 py-2 text-xs font-bold uppercase tracking-wider hover:brightness-110 transition">
+                            class="cursor-pointer rounded-lg bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 px-5 py-2 text-xs font-bold uppercase tracking-wider hover:brightness-110 transition">
                             {{ __('ticket::ticket.button_submit_ticket') }}
                         </button>
                     </div>
