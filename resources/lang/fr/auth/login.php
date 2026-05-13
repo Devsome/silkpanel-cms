@@ -13,5 +13,8 @@ return [
         'remember_me' => 'Se souvenir de moi',
         'login' => 'Connexion',
         'forgot_password' => 'Mot de passe oublié ?',
+        'submit' => 'Se connecter',
+        'no_account' => "Vous n'avez pas de compte ?",
+        'register'   => 'Créer un compte',
     ]
 ];

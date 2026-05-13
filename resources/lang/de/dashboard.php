@@ -69,4 +69,14 @@ return [
 
     // Webmall
     'webmall' => 'Webmall',
+    'support' => 'Support',
+    'characters' => 'Charaktere',
+    'map'               => 'Weltkarte',
+    'map_title'         => 'Live-Weltkarte',
+    'no_map'            => 'Karte nicht konfiguriert.',
+    'no_silk_history'   => 'Keine Transaktionen gefunden.',
+    'silk_history_title' => 'Silk-Verlauf',
+    'history_amount'    => 'Betrag',
+    'history_date'      => 'Datum',
+    'history_type'      => 'Typ',
 ];

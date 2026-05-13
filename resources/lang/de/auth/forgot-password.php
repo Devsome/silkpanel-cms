@@ -10,5 +10,6 @@ return [
         'description' => 'Passwort vergessen? Kein Problem. Gib uns einfach deine E-Mail-Adresse und wir senden dir einen Link zum Zurücksetzen deines Passworts, mit dem du ein neues wählen kannst.',
         'already_have_account' => 'Bereits ein Konto?',
         'submit' => 'Link zum Zurücksetzen senden',
+        'back_to_login' => 'Zurück zum Login',
     ]
 ];

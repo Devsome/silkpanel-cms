@@ -71,4 +71,14 @@ return [
 
     // Webmall
     'webmall' => 'Webmall',
+    'support' => 'Support',
+    'characters' => 'Characters',
+    'map'               => 'World Map',
+    'map_title'         => 'Live World Map',
+    'no_map'            => 'Map not configured.',
+    'no_silk_history'   => 'No transactions found.',
+    'silk_history_title' => 'Silk History',
+    'history_amount'    => 'Amount',
+    'history_date'      => 'Date',
+    'history_type'      => 'Type',
 ];

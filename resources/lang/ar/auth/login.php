@@ -13,5 +13,8 @@ return [
         'remember_me' => 'تذكرني',
         'login' => 'تسجيل الدخول',
         'forgot_password' => 'هل نسيت كلمة المرور؟',
+        'submit' => 'تسجيل الدخول',
+        'no_account' => 'ليس لديك حساب؟',
+        'register'   => 'إنشاء حساب',
     ]
 ];

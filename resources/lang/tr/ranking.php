@@ -26,4 +26,7 @@ return [
     'nickname' => 'Takma Ad',
     'join_date' => 'Katılma Tarihi',
     'no_members' => 'Üye bulunamadı.',
+    'character' => 'Karakter',
+    'section_label' => 'Sıralamalar',
+    'guild' => 'Lonca',
 ];

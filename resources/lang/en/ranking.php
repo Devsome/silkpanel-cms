@@ -26,4 +26,7 @@ return [
     'nickname' => 'Nickname',
     'join_date' => 'Joined',
     'no_members' => 'No members found.',
+    'character' => 'Character',
+    'section_label' => 'Leaderboards',
+    'guild' => 'Guild',
 ];

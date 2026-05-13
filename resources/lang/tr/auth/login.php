@@ -13,5 +13,8 @@ return [
         'remember_me' => 'Beni hatırla',
         'login' => 'Giriş Yap',
         'forgot_password' => 'Şifrenizi mi unuttunuz?',
+        'submit' => 'Giriş Yap',
+        'no_account' => 'Hesabınız yok mu?',
+        'register'   => 'Hesap oluştur',
     ]
 ];

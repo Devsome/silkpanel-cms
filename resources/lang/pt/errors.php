@@ -42,4 +42,7 @@ return [
     ],
 
     'back_to_home' => 'Voltar para a página inicial',
+    'go_home'     => 'Ir para o Início',
+    'go_back'     => 'Voltar',
+    'retry_later' => 'Tentar Mais Tarde',
 ];

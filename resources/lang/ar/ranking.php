@@ -26,4 +26,7 @@ return [
     'nickname' => 'اللقب',
     'join_date' => 'تاريخ الانضمام',
     'no_members' => 'لم يتم العثور على أعضاء.',
+    'character' => 'الشخصية',
+    'section_label' => 'قوائم المتصدرين',
+    'guild' => 'نقابة',
 ];

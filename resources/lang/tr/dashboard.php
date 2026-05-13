@@ -62,4 +62,14 @@ return [
 
     // Webmall
     'webmall' => 'Webmall',
+    'support' => 'Destek',
+    'characters' => 'Karakterler',
+    'map'               => 'Dünya Haritası',
+    'map_title'         => 'Canlı Dünya Haritası',
+    'no_map'            => 'Harita yapılandırılmamış.',
+    'no_silk_history'   => 'İşlem bulunamadı.',
+    'silk_history_title' => 'Silk Geçmişi',
+    'history_amount'    => 'Miktar',
+    'history_date'      => 'Tarih',
+    'history_type'      => 'Tür',
 ];

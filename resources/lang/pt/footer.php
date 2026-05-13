@@ -6,5 +6,6 @@ return [
     'links' => 'Links rápidos',
     'social' => 'Redes sociais',
     'terms' => 'Termos de serviço',
+    'tos' => 'Termos de serviço',
     'rights' => 'Todos os direitos reservados.',
 ];

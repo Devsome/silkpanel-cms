@@ -42,4 +42,7 @@ return [
     ],
 
     'back_to_home' => 'Ana Sayfaya Dön',
+    'go_home'     => 'Ana Sayfaya Git',
+    'go_back'     => 'Geri',
+    'retry_later' => 'Daha Sonra Tekrar Dene',
 ];

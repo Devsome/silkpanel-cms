@@ -26,4 +26,7 @@ return [
     'nickname' => 'Spitzname',
     'join_date' => 'Beigetreten',
     'no_members' => 'Keine Mitglieder gefunden.',
+    'character' => 'Charakter',
+    'section_label' => 'Ranglisten',
+    'guild' => 'Gilde',
 ];

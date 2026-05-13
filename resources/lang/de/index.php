@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'server_online'  => 'Server Online',
+    'server_offline' => 'Server Offline',
     'download' => 'Client herunterladen',
     'register_now' => 'Jetzt registrieren',
     'server_info' => 'Server-Informationen',

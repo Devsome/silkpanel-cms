@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'server_online'  => 'السيرفر متصل',
+    'server_offline' => 'السيرفر غير متصل',
     'download' => 'تنزيل العميل',
     'register_now' => 'سجّل الآن',
     'server_info' => 'معلومات السيرفر',

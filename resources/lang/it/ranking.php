@@ -26,4 +26,7 @@ return [
     'nickname' => 'Soprannome',
     'join_date' => 'Data di adesione',
     'no_members' => 'Nessun membro trovato.',
+    'character' => 'Personaggio',
+    'section_label' => 'Classifiche',
+    'guild' => 'Gilda',
 ];

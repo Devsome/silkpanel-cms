@@ -10,5 +10,6 @@ return [
         'description' => 'Şifrenizi mi unuttunuz? Sorun değil. E-posta adresinizi bize bildirin, yeni bir şifre seçmenizi sağlayacak bir şifre sıfırlama bağlantısı göndereceğiz.',
         'already_have_account' => 'Zaten bir hesabınız var mı?',
         'submit' => 'Şifre Sıfırlama Bağlantısı Gönder',
+        'back_to_login' => 'Girişe Dön',
     ]
 ];

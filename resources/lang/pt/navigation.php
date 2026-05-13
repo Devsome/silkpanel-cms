@@ -18,4 +18,7 @@ return [
     'ranking_characters' => 'Personagens',
     'ranking_guilds' => 'Guildas',
     'ranking_uniques' => 'Uniques',
+    'voting' => 'Votação',
+    'donate' => 'Doação',
+    'webmall' => 'Webmall',
 ];

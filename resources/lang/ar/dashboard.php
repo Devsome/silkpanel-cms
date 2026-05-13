@@ -62,4 +62,14 @@ return [
 
     // Webmall
     'webmall' => 'المتجر الإلكتروني',
+    'support' => 'الدعم',
+    'characters' => 'الشخصيات',
+    'map'               => 'خريطة العالم',
+    'map_title'         => 'خريطة العالم المباشرة',
+    'no_map'            => 'الخريطة غير مهيأة.',
+    'no_silk_history'   => 'لم يتم العثور على معاملات.',
+    'silk_history_title' => 'سجل الحرير',
+    'history_amount'    => 'المبلغ',
+    'history_date'      => 'التاريخ',
+    'history_type'      => 'النوع',
 ];

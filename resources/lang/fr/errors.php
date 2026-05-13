@@ -42,4 +42,7 @@ return [
     ],
 
     'back_to_home' => 'Retour à l\'accueil',
+    'go_home'     => 'Accueil',
+    'go_back'     => 'Retour',
+    'retry_later' => 'Réessayer Plus Tard',
 ];

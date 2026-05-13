@@ -18,4 +18,7 @@ return [
     'ranking_characters' => 'Karakterler',
     'ranking_guilds' => 'Loncalar',
     'ranking_uniques' => 'Uniqueler',
+    'voting' => 'Oylama',
+    'donate' => 'Bağış',
+    'webmall' => 'Webmall',
 ];

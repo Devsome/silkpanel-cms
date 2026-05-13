@@ -18,4 +18,7 @@ return [
     'ranking_characters' => 'Characters',
     'ranking_guilds' => 'Guilds',
     'ranking_uniques' => 'Uniques',
+    'voting' => 'Voting',
+    'donate' => 'Donate',
+    'webmall' => 'Webmall',
 ];

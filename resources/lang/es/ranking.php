@@ -26,4 +26,7 @@ return [
     'nickname' => 'Apodo',
     'join_date' => 'Fecha de ingreso',
     'no_members' => 'No se encontraron miembros.',
+    'character' => 'Personaje',
+    'section_label' => 'Clasificaciones',
+    'guild' => 'Gremio',
 ];

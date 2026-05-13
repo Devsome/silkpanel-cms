@@ -62,4 +62,14 @@ return [
 
     // Webmall
     'webmall' => 'Boutique en ligne',
+    'support' => 'Support',
+    'characters' => 'Personnages',
+    'map'               => 'Carte du Monde',
+    'map_title'         => 'Carte du Monde en Direct',
+    'no_map'            => 'Carte non configurée.',
+    'no_silk_history'   => 'Aucune transaction trouvée.',
+    'silk_history_title' => 'Historique de Soie',
+    'history_amount'    => 'Montant',
+    'history_date'      => 'Date',
+    'history_type'      => 'Type',
 ];

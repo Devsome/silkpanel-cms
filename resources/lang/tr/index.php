@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'server_online'  => 'Sunucu Çevrimiçi',
+    'server_offline' => 'Sunucu Çevrimdışı',
     'download' => 'İstemciyi İndir',
     'register_now' => 'Şimdi Kaydol',
     'server_info' => 'Sunucu Bilgileri',

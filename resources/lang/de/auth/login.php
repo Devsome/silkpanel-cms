@@ -13,5 +13,8 @@ return [
         'remember_me' => 'Angemeldet bleiben',
         'login' => 'Anmelden',
         'forgot_password' => 'Passwort vergessen?',
+        'submit' => 'Einloggen',
+        'no_account' => 'Noch kein Konto?',
+        'register'   => 'Konto erstellen',
     ]
 ];
