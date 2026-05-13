@@ -1,0 +1,119 @@
+/* ============================================================
+   Neon Strike — Template Custom CSS
+   Cyberpunk / neon aesthetic overrides on top of Tailwind
+   ============================================================ */
+
+/* Neon glow utility classes */
+.ns-glow-violet {
+    box-shadow: 0 0 20px rgba(139, 92, 246, 0.25), 0 0 40px rgba(139, 92, 246, 0.08);
+}
+
+.ns-glow-fuchsia {
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.25), 0 0 40px rgba(217, 70, 239, 0.08);
+}
+
+.ns-glow-cyan {
+    box-shadow: 0 0 20px rgba(34, 211, 238, 0.2), 0 0 40px rgba(34, 211, 238, 0.06);
+}
+
+/* Neon border glow */
+.ns-border-glow {
+    border-color: rgba(139, 92, 246, 0.4);
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.15), inset 0 0 12px rgba(139, 92, 246, 0.03);
+}
+
+/* Scanline overlay effect */
+.ns-scanlines::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 0, 0, 0.08) 2px,
+            rgba(0, 0, 0, 0.08) 4px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Diagonal stripe card background */
+.ns-stripe-bg {
+    background-image: repeating-linear-gradient(-45deg,
+            transparent,
+            transparent 8px,
+            rgba(139, 92, 246, 0.03) 8px,
+            rgba(139, 92, 246, 0.03) 16px);
+}
+
+/* Corner accent lines */
+.ns-corner::before,
+.ns-corner::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(139, 92, 246, 0.7);
+    border-style: solid;
+}
+
+.ns-corner::before {
+    top: -1px;
+    left: -1px;
+    border-width: 2px 0 0 2px;
+}
+
+.ns-corner::after {
+    bottom: -1px;
+    right: -1px;
+    border-width: 0 2px 2px 0;
+}
+
+/* Glitch text animation (used on hero title) */
+@keyframes ns-glitch {
+
+    0%,
+    100% {
+        text-shadow: none;
+    }
+
+    20% {
+        text-shadow: 2px 0 0 rgba(217, 70, 239, 0.7), -2px 0 0 rgba(34, 211, 238, 0.7);
+    }
+
+    40% {
+        text-shadow: -2px 0 0 rgba(217, 70, 239, 0.7), 2px 0 0 rgba(34, 211, 238, 0.7);
+    }
+
+    60% {
+        text-shadow: none;
+    }
+}
+
+.ns-glitch:hover {
+    animation: ns-glitch 0.3s ease-in-out;
+}
+
+/* Neon hr divider */
+.ns-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), rgba(217, 70, 239, 0.3), transparent);
+    border: none;
+}
+
+/* Scrollbar theming */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(139, 92, 246, 0.4);
+    border-radius: 0;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 92, 246, 0.7);
+}
