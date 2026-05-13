@@ -17,6 +17,7 @@ class TemplateServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerTemplateViewNamespace();
+        $this->registerTemplateLangPath();
         $this->registerTemplateViewComposer();
         $this->registerBladeDirective();
     }
@@ -29,7 +30,7 @@ class TemplateServiceProvider extends ServiceProvider
      */
     protected function registerTemplateViewNamespace(): void
     {
-        $paths = [];
+        $activePath = null;
 
         try {
             $templateService = $this->app->make(TemplateService::class);
@@ -37,20 +38,65 @@ class TemplateServiceProvider extends ServiceProvider
 
             // Active template gets priority (if one is set)
             if ($activeTemplate !== null) {
-                $activePath = $templateService->templatePath($activeTemplate);
-                if (is_dir($activePath)) {
-                    $paths[] = $activePath;
+                $candidate = $templateService->templatePath($activeTemplate);
+                if (is_dir($candidate)) {
+                    $activePath = $candidate;
                 }
             }
         } catch (\Throwable) {
             // Database not available yet (fresh install / installer not run).
         }
 
-        // Root views directory is always the fallback
-        $paths[] = resource_path('views');
+        $paths = array_values(array_filter([
+            $activePath,
+            // When a non-basic template is active, fall back to basic's views so that
+            // shared partials (e.g. template::partials.navigation) are always resolvable
+            // even if the active template does not override them.
+            ($activePath !== null && basename($activePath) !== 'basic')
+                ? resource_path('views/templates/basic')
+                : null,
+            resource_path('views'),
+        ]));
 
         // Register under the 'template' namespace: template::welcome, template::auth.login, etc.
         View::addNamespace('template', $paths);
+
+        // Also prepend the active template path to the DEFAULT view finder so that
+        // Blade anonymous components (<x-app-layout>) and bare view() calls also
+        // resolve template overrides first.
+        // e.g. templates/my-theme/layouts/app.blade.php overrides resources/views/layouts/app.blade.php
+        if ($activePath !== null) {
+            View::prependLocation($activePath);
+        }
+    }
+
+    /**
+     * Add the active template's lang/ directory to the default translation loader.
+     *
+     * Lang files placed inside the template folder (e.g. lang/en/my-template.php)
+     * are automatically picked up by __('my-template.key') — no namespace prefix needed.
+     * This means gitignoring the whole template folder also excludes its translations.
+     */
+    protected function registerTemplateLangPath(): void
+    {
+        try {
+            $templateService = $this->app->make(TemplateService::class);
+            $activeTemplate  = $templateService->getActiveTemplate();
+
+            if ($activeTemplate === null) {
+                return;
+            }
+
+            $langPath = $templateService->templatePath($activeTemplate) . '/lang';
+
+            if (is_dir($langPath)) {
+                /** @var \Illuminate\Translation\FileLoader $loader */
+                $loader = $this->app['translation.loader'];
+                $loader->addPath($langPath);
+            }
+        } catch (\Throwable) {
+            // Database not available yet or template not found — skip silently.
+        }
     }
 
     /**
@@ -75,6 +121,12 @@ class TemplateServiceProvider extends ServiceProvider
     {
         Blade::directive('templateView', function (string $expression): string {
             return "<?php echo \$__env->make('template::' . {$expression}, \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>";
+        });
+
+        // Outputs the Vite <link> tag for the active template's assets/app.css (if present).
+        // Usage: add @templateStyles inside <head> of every base layout.
+        Blade::directive('templateStyles', function (): string {
+            return "<?php echo app(\App\Services\TemplateService::class)->renderTemplateStyles(); ?>";
         });
     }
 }

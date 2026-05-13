@@ -20,6 +20,7 @@
     @endif
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @templateStyles
     @livewireStyles
 
     @stack('styles')
@@ -31,7 +32,11 @@
 
     {{-- Page Content --}}
     <main class="flex-1 pt-16">
-        @yield('content')
+        @isset($slot)
+            {{ $slot }}
+        @else
+            @yield('content')
+        @endisset
     </main>
 
     {{-- Footer --}}

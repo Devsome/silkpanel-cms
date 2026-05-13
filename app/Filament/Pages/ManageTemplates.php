@@ -255,8 +255,37 @@ class ManageTemplates extends Page
             'preview_image' => 'preview.png',
         ], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
+        // Provide a starter assets/app.css that hooks into the compiled main CSS.
+        // @reference lets you use @apply with the main theme's colors/fonts without
+        // duplicating the entire Tailwind output. Add your own custom CSS rules here.
+        $starterAssetsCss = <<<'CSS'
+/*
+ * Template-specific CSS entry point.
+ *
+ * @reference points to the main app.css so you can use @apply with all
+ * custom colors/fonts defined there — without duplicating the full Tailwind output.
+ *
+ * Example:
+ *   .my-hero { @apply text-4xl font-bold text-primary-500; }
+ *
+ * Vite compiles this file automatically when it is present on disk.
+ * @templateStyles in your layout loads it automatically — no @vite() call needed.
+ */
+@reference "../../../../css/app.css";
+
+/* Add your custom template styles below */
+
+.custom-hero-header {
+    @apply text-4xl font-bold text-primary-500;
+    color: red;
+}
+CSS;
+
+        $zip->addFromString('my-template/assets/app.css', $starterAssetsCss);
+
         $skeletonFiles = [
             'welcome.blade.php',
+            'layouts/app.blade.php',
             'auth/login.blade.php',
             'auth/register.blade.php',
             'auth/forgot-password.blade.php',

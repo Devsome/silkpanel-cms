@@ -38,6 +38,7 @@
 @source '../../resources/views/**/*.blade.php';
 @source '../../resources/views/**/*.php';
 @source '../../resources/js/**/*.js';
+@source '../../resources/views/templates/**/assets/**/*.js';
 @source '../../packages/**/*.{blade.php,php,js,vue}';
 @source '../../vendor/silkpanel/*/src/Views/**/*.blade.php';
 @source '../../vendor/silkpanel/*/src/views/**/*.blade.php';

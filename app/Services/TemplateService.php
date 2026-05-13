@@ -270,4 +270,36 @@ class TemplateService
 
         return array_map('basename', File::directories($this->templatesPath));
     }
+
+    /**
+     * Return the relative Vite entry-point path for the active template's CSS,
+     * or null when the file does not exist.
+     */
+    public function getTemplateCssEntryPoint(): ?string
+    {
+        $activeTemplate = $this->getActiveTemplate();
+
+        if ($activeTemplate === null) {
+            return null;
+        }
+
+        $relative = "resources/views/templates/{$activeTemplate}/assets/app.css";
+
+        return File::exists(base_path($relative)) ? $relative : null;
+    }
+
+    /**
+     * Render the Vite <link> tag(s) for the active template's custom CSS.
+     * Returns an empty string when no template CSS entry point exists.
+     */
+    public function renderTemplateStyles(): string
+    {
+        $entry = $this->getTemplateCssEntryPoint();
+
+        if ($entry === null) {
+            return '';
+        }
+
+        return (string) app(\Illuminate\Foundation\Vite::class)([$entry]);
+    }
 }

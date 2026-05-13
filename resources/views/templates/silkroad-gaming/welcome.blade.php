@@ -14,6 +14,8 @@
         $races = \App\Helpers\SettingHelper::get('sro_race', []);
         $fortressWars = \App\Helpers\SettingHelper::get('sro_fortress_war', []);
 
+        $maxPlayers = (int) \App\Helpers\SettingHelper::get('sro_max_player', 0);
+
         $serverStats = [
             ['label' => __('index.cap'), 'value' => \App\Helpers\SettingHelper::get('sro_cap', '—')],
             ['label' => __('index.exp_sp'), 'value' => \App\Helpers\SettingHelper::get('sro_exp_sp', '—')],
@@ -54,6 +56,8 @@
             </h1>
             <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-400">
                 @settings('site_description', 'A powerful Silkroad Online private server.')
+                <br />
+                {{ __('silkroad-gaming.title') }}
             </p>
             <div class="mt-8 flex justify-center gap-4">
                 <a href="{{ route('downloads.index') }}"
@@ -179,6 +183,51 @@
                 {{-- Right Column: Sidebar (4/12) --}}
                 <aside class="lg:col-span-4 space-y-6">
 
+                    {{-- Online Counter --}}
+                    <div class="rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur p-5">
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-xs font-bold uppercase tracking-widest text-emerald-400/70">
+                                {{ __('index.online_players') }}
+                            </span>
+                            <span class="flex items-center gap-1.5">
+                                <span class="relative flex h-2 w-2">
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                                </span>
+                                <span
+                                    class="text-[10px] font-medium text-emerald-400 uppercase tracking-wider">Online</span>
+                            </span>
+                        </div>
+                        <div class="flex items-end gap-2">
+                            <span
+                                class="text-3xl font-bold tabular-nums bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                                @onlineCounter
+                            </span>
+                            @if ($maxPlayers > 0)
+                                <span class="text-sm text-gray-500 mb-0.5">/ {{ number_format($maxPlayers) }}</span>
+                            @endif
+                        </div>
+                        @if ($maxPlayers > 0)
+                            @php
+                                $onlineCount = \App\View\Components\OnlineCounter::getData();
+                                $pct = min(100, round(($onlineCount / $maxPlayers) * 100));
+                                $barColor =
+                                    $pct >= 80
+                                        ? 'from-red-500 to-red-400'
+                                        : ($pct >= 50
+                                            ? 'from-yellow-500 to-amber-400'
+                                            : 'from-emerald-500 to-cyan-400');
+                            @endphp
+                            <div class="mt-3 h-1.5 w-full bg-gray-800 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r {{ $barColor }} h-full rounded-full transition-all duration-700"
+                                    style="width: {{ $pct }}%"></div>
+                            </div>
+                            <p class="mt-1.5 text-[11px] text-gray-500 text-right">{{ $pct }}%
+                                {{ __('index.server_capacity') }}</p>
+                        @endif
+                    </div>
+
                     {{-- Quick Actions --}}
                     <div class="rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur p-5 space-y-3">
                         <h3 class="text-xs font-bold uppercase tracking-widest text-emerald-400/70">
@@ -214,6 +263,9 @@
 
                     {{-- Event Timers --}}
                     <livewire:event-timers-list />
+
+                    {{-- Discord Widget --}}
+                    @discordWidget
 
                     {{-- Server Info --}}
                     <div class="rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur p-5">
