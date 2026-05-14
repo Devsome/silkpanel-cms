@@ -44,6 +44,6 @@ class WebmallPurchase extends Model
 
     public function categoryItem(): BelongsTo
     {
-        return $this->belongsTo(WebmallCategoryItem::class, 'webmall_category_item_id');
+        return $this->belongsTo(WebmallCategoryItem::class, 'webmall_category_item_id')->withTrashed();
     }
 }

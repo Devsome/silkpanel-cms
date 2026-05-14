@@ -7,6 +7,7 @@ use App\Enums\SilkTypeIsroEnum;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use SilkPanel\SilkroadModels\Models\Shard\RefObjCommon;
 
 /**
@@ -28,6 +29,7 @@ use SilkPanel\SilkroadModels\Models\Shard\RefObjCommon;
  */
 class WebmallCategoryItem extends Model
 {
+    use SoftDeletes;
     protected $table = 'webmall_category_items';
 
     protected $fillable = [
