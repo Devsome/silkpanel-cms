@@ -49,7 +49,11 @@
     @endisset
 
     <main class="flex-1 pt-16 @isset($header) pt-0 @endisset">
-        {{ $slot }}
+        @isset($slot)
+            {{ $slot }}
+        @else
+            @yield('content')
+        @endisset
     </main>
 
     @include('layouts.partials.footer')
