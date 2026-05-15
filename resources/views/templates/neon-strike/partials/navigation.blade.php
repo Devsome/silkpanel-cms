@@ -186,6 +186,16 @@
                                     {{ __('navigation.logout') }}
                                 </button>
                             </form>
+                            @if (Auth::user()->isAdmin())
+                                <a href="{{ route('filament.admin.pages.dashboard') }}"
+                                    class="flex items-center gap-2 px-4 py-2 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-violet-400 hover:bg-violet-500/10 transition">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    </svg>
+                                    {{ __('Admin') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @else

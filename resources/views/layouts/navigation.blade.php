@@ -185,6 +185,12 @@
                                     {{ __('navigation.logout') }}
                                 </x-dropdown-link>
                             </form>
+                            @if (Auth::user()->isAdmin())
+                                <div class="border-t border-primary-200 dark:border-primary-600"></div>
+                                <x-dropdown-link :href="route('filament.admin.pages.dashboard')">
+                                    {{ __('Admin') }}
+                                </x-dropdown-link>
+                            @endif
                         </x-slot>
                     </x-dropdown>
                 @else

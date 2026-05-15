@@ -169,6 +169,12 @@
                                     {{ __('navigation.logout') }}
                                 </button>
                             </form>
+                            @if (Auth::user()->isAdmin())
+                                <a href="{{ route('filament.admin.pages.dashboard') }}"
+                                    class="block px-3 py-2 text-sm text-neutral-400 hover:text-yellow-400 hover:bg-yellow-900/10 transition">
+                                    {{ __('Admin') }}
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @else
