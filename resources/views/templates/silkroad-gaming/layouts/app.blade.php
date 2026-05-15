@@ -44,6 +44,7 @@
 
     @livewireScripts
     @stack('scripts')
+    <x-session-modals />
 </body>
 
 </html>

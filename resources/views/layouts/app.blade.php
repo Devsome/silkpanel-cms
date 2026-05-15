@@ -56,6 +56,7 @@
 
     @stack('scripts')
     @livewireScripts
+    <x-session-modals />
 </body>
 
 </html>

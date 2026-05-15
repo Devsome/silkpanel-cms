@@ -1,0 +1,29 @@
+/* Override JS button colors to match the theme */
+#sm-buttons a,
+#sm-buttons button {
+    font-family: inherit;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    font-size: .8rem !important;
+    font-weight: 700 !important;
+}
+
+/* Primary buttons → gold */
+#sm-buttons [data-sm-style="primary"] {
+    background: linear-gradient(135deg, #d4af37, #f2ca50) !important;
+    color: #3c2f00 !important;
+    box-shadow: inset 1px 1px 0 rgba(255, 255, 255, .3), inset -1px -1px 0 rgba(0, 0, 0, .3) !important;
+}
+
+/* Secondary buttons → dark surface */
+#sm-buttons [data-sm-style="secondary"] {
+    background: var(--gp-surface-container-high) !important;
+    color: var(--gp-on-surface) !important;
+    border: 1px solid rgba(212, 175, 55, .2) !important;
+}
+
+/* Danger buttons → keep red, just tweak */
+#sm-buttons [data-sm-style="danger"] {
+    background: #b91c1c !important;
+    color: #fff !important;
+}

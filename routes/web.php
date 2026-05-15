@@ -1,6 +1,8 @@
 <?php
 
 use App\Helpers\SettingHelper;
+use App\Http\Controllers\Admin\SessionModalPreviewController;
+use App\Http\Controllers\Api\SessionModalController;
 use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
@@ -72,9 +74,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('webmall.index');
 });
 
+// Session modal dismissal (works for guests and logged-in users)
+Route::post('/session-modals/dismiss', [SessionModalController::class, 'dismiss'])
+    ->name('session-modals.dismiss');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Session modal preview (admin only)
+    Route::get('/admin/session-modals/{modal}/preview', [SessionModalPreviewController::class, 'show'])
+        ->middleware(\App\Http\Middleware\FilamentAdminMiddleware::class)
+        ->name('admin.session-modals.preview');
 });
 
 require __DIR__ . '/auth.php';

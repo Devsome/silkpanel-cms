@@ -4,6 +4,27 @@ This file documents all necessary conventions, pitfalls, and patterns for creati
 
 ---
 
+## Local Development Environment
+
+The project runs locally via **[ddev](https://ddev.readthedocs.io/)**. All CLI commands must be prefixed with `ddev`:
+
+| Task | Command |
+|---|---|
+| Run Artisan commands | `ddev artisan <command>` |
+| Run Yarn commands | `ddev yarn <command>` |
+
+Examples:
+```bash
+ddev artisan route:list
+ddev artisan migrate
+ddev yarn dev
+ddev yarn build
+```
+
+> Never run `php artisan` or `yarn` directly — always use the `ddev` prefix.
+
+---
+
 ## Architecture Overview
 
 ```
