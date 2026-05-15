@@ -25,6 +25,8 @@ return [
         'button_label' => 'Label',
         'button_url' => 'URL',
         'button_url_helper' => 'Leave empty for a dismiss-only button.',
+        'button_target_blank' => 'Open in new tab',
+        'button_target_blank_helper' => 'If the button has a URL, open it in a new browser tab.',
         'button_style' => 'Style',
         'button_style_primary' => 'Primary',
         'button_style_secondary' => 'Secondary',
@@ -54,6 +56,7 @@ return [
         'allow_backdrop_dismiss' => 'Allow backdrop click to dismiss',
         'sort_order' => 'Sort Order',
         'sort_order_helper' => 'Lower numbers are shown first when multiple modals are active.',
+        'add_button' => 'Add Button',
     ],
 
     'table' => [

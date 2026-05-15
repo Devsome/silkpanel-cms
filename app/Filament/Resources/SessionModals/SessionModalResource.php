@@ -117,11 +117,16 @@ class SessionModalResource extends Resource
                                 ->helperText(__('filament/session-modals.form.button_url_helper'))
                                 ->url()
                                 ->maxLength(500),
+                            Toggle::make('target_blank')
+                                ->label(__('filament/session-modals.form.button_target_blank'))
+                                ->helperText(__('filament/session-modals.form.button_target_blank_helper'))
+                                ->inline(false)
+                                ->default(false),
 
                         ])
                         ->columns(2)
                         ->maxItems(4)
-                        ->addActionLabel('Add Button')
+                        ->addActionLabel(__('filament/session-modals.form.add_button'))
                         ->columnSpanFull(),
                 ])
                 ->columns(2),

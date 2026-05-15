@@ -71,6 +71,10 @@
                         if (btn.url) {
                             el = document.createElement('a');
                             el.href = btn.url;
+                            if (btn.target_blank) {
+                                el.target = '_blank';
+                                el.rel = 'noopener noreferrer';
+                            }
                             el.addEventListener('click', function() {
                                 dismiss(current);
                             });
