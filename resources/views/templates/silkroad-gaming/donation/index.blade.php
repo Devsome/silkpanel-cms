@@ -62,9 +62,12 @@
                     @endforeach
                 </div>
 
-                @if (Route::has('donate.redeem-epin'))
+                @php
+                    $epinProvider = $providers->first(fn($p) => in_array($p->slug->value, ['hipocard', 'maxicard']));
+                @endphp
+                @if ($epinProvider)
                     <div class="mt-8 text-center">
-                        <a href="{{ route('donate.redeem-epin') }}"
+                        <a href="{{ route('donate.redeem-epin.show', $epinProvider) }}"
                             class="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-emerald-400 transition">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
