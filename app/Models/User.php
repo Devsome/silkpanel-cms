@@ -15,6 +15,7 @@ use SilkPanel\SilkroadModels\Models\Portal\AphChangedSilk;
 use SilkPanel\SilkroadModels\Models\Portal\MuUser;
 use App\Models\WebmallPurchase;
 use Spatie\Permission\Traits\HasRoles;
+use App\Enums\UsergroupRoleEnums;
 
 /**
  * @property int $id
