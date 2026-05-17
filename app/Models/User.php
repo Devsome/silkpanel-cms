@@ -152,6 +152,16 @@ class User extends Authenticatable implements MustVerifyEmail
         }
     }
 
+/**
+ * Check if the user has the administrator role.
+ *
+ * @return bool
+ */
+public function isAdmin(): bool
+{
+    return $this->hasRole(UsergroupRoleEnums::ADMIN->value);
+}
+
     #endregion functions
 
 
