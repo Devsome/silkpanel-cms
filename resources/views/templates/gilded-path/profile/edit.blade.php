@@ -12,7 +12,7 @@
             </a>
             <div class="gp-card gp-ornate-border p-6 md:p-8">
                 <h1 class="text-3xl font-headline font-black uppercase tracking-widest gp-text-primary">
-                    {{ __('Profile') }}
+                    Profile
                 </h1>
                 <p class="mt-2 text-sm gp-text-on-surface-variant">{{ __('dashboard.profile_desc') }}</p>
             </div>
