@@ -1,4 +1,4 @@
-@extends('template::layouts.guest')
+@extends('template::layouts.app')
 
 @section('content')
     <div class="min-h-screen flex">
