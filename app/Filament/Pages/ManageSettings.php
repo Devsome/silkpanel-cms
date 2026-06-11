@@ -286,6 +286,10 @@ class ManageSettings extends Page
                                         ->helperText(__('filament/settings.form.features.webmall_enabled_description'))
                                         ->live(),
 
+                                    Toggle::make('custom_procedures_enabled')
+                                        ->label('Enable Custom Procedures')
+                                        ->helperText('Enable execution of custom MSSQL procedures for supported CMS actions.'),
+
                                     Toggle::make('webmall_require_logout')
                                         ->label(__('filament/settings.form.features.webmall_require_logout'))
                                         ->helperText(__('filament/settings.form.features.webmall_require_logout_description'))
@@ -513,6 +517,7 @@ class ManageSettings extends Page
             'is_ticket_system_enabled',
             'webmall_enabled',
             'webmall_require_logout',
+            'custom_procedures_enabled',
         ];
 
         foreach ($settingKeys as $key) {

@@ -245,6 +245,13 @@ class SettingHelper
                 'label' => 'Terms of Service Text',
                 'description' => 'Enter your Terms of Service here...',
             ],
+            [
+                'key' => 'custom_procedures_enabled',
+                'value' => false,
+                'type' => 'toggle',
+                'label' => 'Enable Custom Procedures',
+                'description' => 'Enable custom stored procedure execution for supported CMS actions.',
+            ],
             // Contact
             [
                 'key' => 'contact_email',

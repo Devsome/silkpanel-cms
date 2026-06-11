@@ -15,6 +15,7 @@ class WebmallPurchaseService
 {
     public function __construct(
         private readonly SilkroadItemService $itemService,
+        private readonly ProcedureManager $procedureManager,
     ) {}
 
     /**
@@ -35,9 +36,41 @@ class WebmallPurchaseService
             return ['success' => false, 'error' => 'item_unavailable', 'destination' => null];
         }
 
+        $procedureResult = $this->procedureManager->execute(
+            actionKey: 'webmall.buy_item',
+            params: [
+                'player_id' => config('silkpanel.version') === 'isro' ? (int) $user->pjid : (int) $user->jid,
+                'character_id' => $characterId,
+                'item_id' => $item->ref_item_id,
+                'price_type' => $priceType,
+                'price_amount' => $item->price_value,
+            ],
+            context: [
+                'user_id' => $user->id,
+                'character_name' => $characterName,
+                'webmall_category_item_id' => $item->id,
+            ],
+        );
+
+        if ($procedureResult['handled']) {
+            if ($procedureResult['success']) {
+                $this->persistPurchaseRecord($user, $characterId, $characterName, $item);
+
+                return [
+                    'success' => true,
+                    'error' => null,
+                    'destination' => 'Custom Procedure',
+                ];
+            }
+
+            if (! $procedureResult['fallback']) {
+                return ['success' => false, 'error' => 'custom_procedure_failed', 'destination' => null];
+            }
+        }
+
         // --- Check balance ---
         $balanceCheck = $this->checkBalance($user, $characterId, $priceType, $item->price_value);
-        if (!$balanceCheck) {
+        if (! $balanceCheck) {
             return ['success' => false, 'error' => 'insufficient_balance', 'destination' => null];
         }
 
@@ -56,20 +89,8 @@ class WebmallPurchaseService
                     throw new \RuntimeException('item_delivery_failed:' . $deliveryResult['return_code']);
                 }
 
-                // 3. Increment sold counter
-                $item->increment('sold');
-
-                // 4. Log purchase
-                WebmallPurchase::create([
-                    'user_id'                  => $user->id,
-                    'character_id'             => $characterId,
-                    'character_name'           => $characterName,
-                    'webmall_category_item_id' => $item->id,
-                    'ref_item_id'              => $item->ref_item_id,
-                    'item_name'                => $item->item_name_snapshot ?? $item->ref_item_id,
-                    'price_type'               => $item->price_type,
-                    'price_value'              => $item->price_value,
-                ]);
+                // 3/4. Persist local sold counter and purchase log.
+                $this->persistPurchaseRecord($user, $characterId, $characterName, $item);
             });
 
             return [
@@ -86,6 +107,26 @@ class WebmallPurchaseService
             report($e);
             return ['success' => false, 'error' => 'unexpected_error', 'destination' => null];
         }
+    }
+
+    private function persistPurchaseRecord(
+        User $user,
+        int $characterId,
+        string $characterName,
+        WebmallCategoryItem $item,
+    ): void {
+        $item->increment('sold');
+
+        WebmallPurchase::create([
+            'user_id' => $user->id,
+            'character_id' => $characterId,
+            'character_name' => $characterName,
+            'webmall_category_item_id' => $item->id,
+            'ref_item_id' => $item->ref_item_id,
+            'item_name' => $item->item_name_snapshot ?? $item->ref_item_id,
+            'price_type' => $item->price_type,
+            'price_value' => $item->price_value,
+        ]);
     }
 
     private function checkBalance(User $user, int $characterId, string $priceType, int $amount): bool

@@ -7,5 +7,6 @@ return [
     'social' => 'Soziale Medien',
     'terms' => 'Nutzungsbedingungen',
     'tos' => 'Nutzungsbedingungen',
+    'license_invalid' => 'Dieser Server verwendet eine nicht lizenzierte Version von SilkPanel CMS.',
     'rights' => 'Alle Rechte vorbehalten.',
 ];

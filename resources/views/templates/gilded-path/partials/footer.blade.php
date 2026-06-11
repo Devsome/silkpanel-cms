@@ -8,6 +8,7 @@
     $socialInstagram = \App\Helpers\SettingHelper::get('social_instagram');
     $socialDiscord = \App\Helpers\SettingHelper::get('social_discord');
     $tosEnabled = (bool) \App\Helpers\SettingHelper::get('tos_enabled', false);
+    $licenseValid = \SilkPanel\WidgetsDashboard\Helper\VerifyHelper::verifyLicenseKey(config('silkpanel.api_key'));
 @endphp
 
 <footer class="mt-auto border-t bg-neutral-950" style="border-color: rgba(120,90,0,0.5);">
@@ -94,6 +95,11 @@
                 <p class="text-neutral-600 font-headline italic text-xs">
                     &copy; {{ date('Y') }} @settings('site_title', 'SilkPanel CMS'). {{ __('footer.rights') }}
                 </p>
+                @if (!$licenseValid)
+                    <div class="text-xs text-neutral-600">
+                        <span class="font-semibold">{{ __('footer.license_invalid') }}</span>
+                    </div>
+                @endif
             </div>
 
             {{-- Right: Partners --}}

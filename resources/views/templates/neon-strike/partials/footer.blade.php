@@ -8,6 +8,7 @@
     $socialDiscord = \App\Helpers\SettingHelper::get('social_discord');
     $tosEnabled = (bool) \App\Helpers\SettingHelper::get('tos_enabled', false);
     $currentYear = date('Y');
+    $licenseValid = \SilkPanel\WidgetsDashboard\Helper\VerifyHelper::verifyLicenseKey(config('silkpanel.api_key'));
 @endphp
 
 <footer class="mt-auto border-t border-violet-500/20 bg-zinc-950">
@@ -130,5 +131,10 @@
                 Powered by <span class="text-violet-500/60">SilkPanel</span>
             </p>
         </div>
+        @if (!$licenseValid)
+            <div class="text-center text-xs font-mono text-zinc-600 px-4 py-2">
+                <span class="font-semibold">{{ __('footer.license_invalid') }}</span>
+            </div>
+        @endif
     </div>
 </footer>
