@@ -5,12 +5,15 @@ return [
         'insufficient_balance'            => 'رصيدك غير كافٍ لإتمام هذا الشراء.',
         'item_unavailable'                => 'هذا العنصر لم يعد متاحاً.',
         'item_delivery_failed'            => 'تعذّر تسليم العنصر. يرجى التواصل مع الدعم.',
+        'custom_procedure_failed'         => 'تعذّر إكمال الإجراء المخصص. يرجى التواصل مع الدعم.',
+        'custom_procedure_not_configured' => 'هذا العنصر المخصص غير مُعد بشكل صحيح. يرجى التواصل مع الدعم.',
         'unexpected'                      => 'حدث خطأ غير متوقع. حاول مرة أخرى.',
         'character_must_be_offline'       => 'يجب أن تكون شخصيتك خارج اللعبة قبل الشراء من المتجر.',
         'character_must_be_offline_short' => 'سجّل الخروج أولاً',
     ],
     'success' => [
         'purchase' => 'تم شراء :item بنجاح. تم الإرسال إلى :destination.',
+        'purchase_custom' => 'تم شراء :item بنجاح.',
     ],
     'ui' => [
         'page_title'            => 'Webmall',

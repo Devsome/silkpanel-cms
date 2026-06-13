@@ -71,7 +71,7 @@ class ProcedureManager
     /**
      * @param array<string, mixed> $params
      * @param array<string, mixed> $context
-     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>}
+     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>, log_id: int|null}
      */
     public function execute(string $actionKey, array $params, array $context = []): array
     {
@@ -82,6 +82,7 @@ class ProcedureManager
                 'fallback' => true,
                 'message' => 'custom_procedures_disabled',
                 'result_rows' => [],
+                'log_id' => null,
             ];
         }
 
@@ -97,6 +98,7 @@ class ProcedureManager
                 'fallback' => true,
                 'message' => 'procedure_mapping_inactive',
                 'result_rows' => [],
+                'log_id' => null,
             ];
         }
 
@@ -111,7 +113,45 @@ class ProcedureManager
 
     /**
      * @param array<string, mixed> $params
-     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>}
+     * @param array<string, mixed> $context
+     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>, log_id: int|null}
+     */
+    public function executeMapping(ProcedureMapping $mapping, array $params, array $context = [], bool $fallbackOnFailure = false): array
+    {
+        if (! (bool) SettingHelper::get('custom_procedures_enabled', false)) {
+            return [
+                'handled' => false,
+                'success' => false,
+                'fallback' => true,
+                'message' => 'custom_procedures_disabled',
+                'result_rows' => [],
+                'log_id' => null,
+            ];
+        }
+
+        if (! $mapping->is_active || blank($mapping->procedure_name)) {
+            return [
+                'handled' => false,
+                'success' => false,
+                'fallback' => $fallbackOnFailure,
+                'message' => 'procedure_mapping_inactive',
+                'result_rows' => [],
+                'log_id' => null,
+            ];
+        }
+
+        return $this->executeMappedProcedure(
+            mapping: $mapping,
+            params: $params,
+            context: $context,
+            fallbackOnFailure: $fallbackOnFailure,
+            collectResultRows: false,
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $params
+     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>, log_id: int|null}
      */
     public function test(string $actionKey, array $params): array
     {
@@ -124,6 +164,7 @@ class ProcedureManager
                 'fallback' => false,
                 'message' => 'procedure_name_missing',
                 'result_rows' => [],
+                'log_id' => null,
             ];
         }
 
@@ -139,7 +180,7 @@ class ProcedureManager
     /**
      * @param array<int, array{laravel_key: string, procedure_param: string, position: int}> $parameterMap
      * @param array<string, mixed> $params
-     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>}
+     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>, log_id: int|null}
      */
     public function testWithConfig(
         string $actionKey,
@@ -157,6 +198,7 @@ class ProcedureManager
                 'fallback' => false,
                 'message' => 'procedure_name_missing',
                 'result_rows' => [],
+                'log_id' => null,
             ];
         }
 
@@ -235,9 +277,163 @@ class ProcedureManager
     }
 
     /**
+     * @return array<int, string>
+     */
+    public function listProcedureParameters(string $connection, string $procedureName): array
+    {
+        if ($connection === '' || $procedureName === '') {
+            return [];
+        }
+
+        try {
+            $driver = DB::connection($connection)->getDriverName();
+
+            if ($driver === 'sqlsrv') {
+                $normalized = str_replace(['[', ']'], '', $procedureName);
+                $parts = explode('.', $normalized);
+                $proc = end($parts) ?: $normalized;
+
+                $rows = DB::connection($connection)->select(
+                    'SELECT p.name AS parameter_name
+                     FROM sys.parameters p
+                     INNER JOIN sys.procedures sp ON sp.object_id = p.object_id
+                     WHERE sp.name = ?
+                     ORDER BY p.parameter_id',
+                    [$proc]
+                );
+
+                return collect($rows)
+                    ->pluck('parameter_name')
+                    ->filter(fn($name) => is_string($name) && $name !== '')
+                    ->map(fn(string $name) => str_starts_with($name, '@') ? $name : ('@' . $name))
+                    ->values()
+                    ->all();
+            }
+
+            if ($driver === 'mysql') {
+                $rows = DB::connection($connection)->select(
+                    'SELECT PARAMETER_NAME AS parameter_name
+                     FROM information_schema.parameters
+                     WHERE SPECIFIC_SCHEMA = DATABASE()
+                       AND SPECIFIC_NAME = ?
+                       AND PARAMETER_MODE IN (?, ?)
+                     ORDER BY ORDINAL_POSITION',
+                    [$procedureName, 'IN', 'INOUT']
+                );
+
+                return collect($rows)
+                    ->pluck('parameter_name')
+                    ->filter(fn($name) => is_string($name) && $name !== '')
+                    ->map(fn(string $name) => str_starts_with($name, '@') ? $name : ('@' . $name))
+                    ->values()
+                    ->all();
+            }
+        } catch (Throwable) {
+            return [];
+        }
+
+        return [];
+    }
+
+    /**
+     * @param array<string, mixed> $namedParams
+     * @param array<string, mixed> $context
+     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>, log_id: int|null}
+     */
+    public function executeDirect(
+        string $action,
+        string $procedureName,
+        string $databaseConnection,
+        array $namedParams,
+        array $context = [],
+    ): array {
+        if (! (bool) SettingHelper::get('custom_procedures_enabled', false)) {
+            return [
+                'handled' => false,
+                'success' => false,
+                'fallback' => true,
+                'message' => 'custom_procedures_disabled',
+                'result_rows' => [],
+                'log_id' => null,
+            ];
+        }
+
+        try {
+            $connection = $databaseConnection !== '' ? $databaseConnection : DatabaseNameEnums::SRO_SHARD->value;
+            $resolvedProcedureName = $this->resolveProcedureName($connection, trim($procedureName));
+
+            $segments = [];
+            $bindings = [];
+            $mappedPayload = [];
+
+            foreach ($namedParams as $param => $value) {
+                if (! is_string($param) || trim($param) === '') {
+                    continue;
+                }
+
+                $paramName = str_starts_with($param, '@') ? $param : ('@' . $param);
+                $segments[] = sprintf('%s = ?', $paramName);
+                $bindings[] = $value;
+                $mappedPayload[$paramName] = $value;
+            }
+
+            if ($segments === []) {
+                throw new InvalidArgumentException('No procedure parameters provided for direct execution.');
+            }
+
+            $sql = sprintf('EXEC %s %s', $resolvedProcedureName, implode(', ', $segments));
+            DB::connection($connection)->statement($sql, $bindings);
+
+            $logId = $this->logCall(
+                action: $action,
+                procedureName: $procedureName,
+                databaseConnection: $connection,
+                inputPayload: $namedParams,
+                mappedPayload: $mappedPayload,
+                context: $context,
+                success: true,
+                fallbackUsed: false,
+                errorMessage: null,
+            );
+
+            return [
+                'handled' => true,
+                'success' => true,
+                'fallback' => false,
+                'message' => null,
+                'result_rows' => [],
+                'log_id' => $logId,
+            ];
+        } catch (Throwable $exception) {
+            report($exception);
+
+            $logId = $this->logCall(
+                action: $action,
+                procedureName: $procedureName,
+                databaseConnection: $databaseConnection,
+                inputPayload: $namedParams,
+                mappedPayload: null,
+                context: $context,
+                success: false,
+                fallbackUsed: false,
+                errorMessage: $exception->getMessage(),
+            );
+
+            return [
+                'handled' => true,
+                'success' => false,
+                'fallback' => false,
+                'message' => $exception->getMessage(),
+                'result_rows' => [],
+                'log_id' => $logId,
+            ];
+        }
+    }
+
+    /**
      * @param array<string, mixed> $params
      * @param array<string, mixed> $context
-     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>}
+     * @return array{handled: bool, success: bool, fallback: bool, message: string|null, result_rows: array<int, mixed>, log_id: int|null}
      */
     private function executeMappedProcedure(
         ProcedureMapping $mapping,
@@ -262,7 +458,7 @@ class ProcedureManager
                 DB::connection($connection)->statement($sql, $bindings);
             }
 
-            $this->logCall(
+            $logId = $this->logCall(
                 action: $mapping->action,
                 procedureName: $mapping->procedure_name,
                 databaseConnection: $connection,
@@ -280,11 +476,12 @@ class ProcedureManager
                 'fallback' => false,
                 'message' => null,
                 'result_rows' => $resultRows,
+                'log_id' => $logId,
             ];
         } catch (Throwable $exception) {
             report($exception);
 
-            $this->logCall(
+            $logId = $this->logCall(
                 action: $mapping->action,
                 procedureName: $mapping->procedure_name,
                 databaseConnection: $mapping->database_connection,
@@ -302,6 +499,7 @@ class ProcedureManager
                 'fallback' => $fallbackOnFailure,
                 'message' => $exception->getMessage(),
                 'result_rows' => [],
+                'log_id' => $logId,
             ];
         }
     }
@@ -363,6 +561,20 @@ class ProcedureManager
 
         $normalizedInput = str_replace(['[', ']'], '', $input);
 
+        // If schema is explicitly provided (e.g. dbo.Proc or [dbo].[Proc]),
+        // use it directly to avoid false negatives from metadata lookups.
+        if (str_contains($normalizedInput, '.')) {
+            $parts = array_values(array_filter(explode('.', $normalizedInput), fn(string $part) => trim($part) !== ''));
+            $name = (string) end($parts);
+            $schema = count($parts) >= 2 ? (string) $parts[count($parts) - 2] : 'dbo';
+
+            if ($name === '') {
+                throw new InvalidArgumentException(sprintf('Procedure "%s" was not found on connection "%s".', $input, $connection));
+            }
+
+            return sprintf('[%s].[%s]', $schema, $name);
+        }
+
         $rows = DB::connection($connection)->select(
             'SELECT TOP 1 s.name AS schema_name, p.name AS procedure_name
              FROM sys.procedures p
@@ -402,8 +614,8 @@ class ProcedureManager
         bool $success,
         bool $fallbackUsed,
         ?string $errorMessage,
-    ): void {
-        ProcedureLog::query()->create([
+    ): ?int {
+        $log = ProcedureLog::query()->create([
             'action' => $action,
             'procedure_name' => $procedureName,
             'database_connection' => $databaseConnection,
@@ -414,6 +626,8 @@ class ProcedureManager
             'fallback_used' => $fallbackUsed,
             'error_message' => $errorMessage,
         ]);
+
+        return $log->id;
     }
 
     /**

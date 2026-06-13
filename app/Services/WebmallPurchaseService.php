@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Enums\WebmallItemTypeEnum;
 use App\Enums\SilkTypeEnum;
 use App\Enums\SilkTypeIsroEnum;
 use App\Helpers\SilkHelper;
+use App\Models\ProcedureMapping;
 use App\Models\User;
 use App\Models\WebmallCategoryItem;
 use App\Models\WebmallPurchase;
@@ -34,6 +36,10 @@ class WebmallPurchaseService
         // --- Validate availability ---
         if (!$item->isAvailable()) {
             return ['success' => false, 'error' => 'item_unavailable', 'destination' => null];
+        }
+
+        if ($item->isCustomItem()) {
+            return $this->purchaseCustomItem($user, $characterId, $characterName, $item);
         }
 
         $procedureResult = $this->procedureManager->execute(
@@ -109,23 +115,181 @@ class WebmallPurchaseService
         }
     }
 
+    /**
+     * @return array{success: bool, error: string|null, destination: string|null}
+     */
+    private function purchaseCustomItem(
+        User $user,
+        int $characterId,
+        string $characterName,
+        WebmallCategoryItem $item,
+    ): array {
+        $procedureName = trim((string) ($item->custom_procedure_name ?? ''));
+        $databaseConnection = trim((string) ($item->custom_database_connection ?? ''));
+
+        if ($procedureName === '' || $databaseConnection === '') {
+            return ['success' => false, 'error' => 'custom_procedure_not_configured', 'destination' => null];
+        }
+
+        $priceType = $item->price_type;
+        $balanceCheck = $this->checkBalance($user, $characterId, $priceType, $item->price_value);
+        if (! $balanceCheck) {
+            return ['success' => false, 'error' => 'insufficient_balance', 'destination' => null];
+        }
+
+        try {
+            $purchase = DB::transaction(function () use ($user, $characterId, $characterName, $item, $priceType) {
+                $this->deductPayment($user, $characterId, $priceType, $item->price_value);
+
+                return $this->persistPurchaseRecord(
+                    user: $user,
+                    characterId: $characterId,
+                    characterName: $characterName,
+                    item: $item,
+                    status: 'pending',
+                    procedureMapping: null,
+                );
+            });
+
+            $isIsro = config('silkpanel.version') === 'isro';
+            $amount = (string) $item->price_value;
+            $codename = (string) ($item->item_name_snapshot ?? ('Custom Item #' . $item->id));
+
+            $procedureParameters = $this->procedureManager->listProcedureParameters($databaseConnection, $procedureName);
+            $parameterLookup = collect($procedureParameters)
+                ->mapWithKeys(fn(string $param) => [mb_strtolower($param) => $param])
+                ->all();
+
+            $optionalParameters = [];
+            if (is_array($item->custom_parameters ?? null)) {
+                foreach ($item->custom_parameters as $key => $value) {
+                    if (! is_string($key) || trim($key) === '') {
+                        continue;
+                    }
+
+                    $normalizedKey = str_starts_with($key, '@') ? $key : ('@' . $key);
+                    $optionalParameters[mb_strtolower($normalizedKey)] = $this->resolveCustomParameterValue(
+                        value: $value,
+                        user: $user,
+                        characterName: $characterName,
+                        item: $item,
+                        amount: $amount,
+                        isIsro: $isIsro,
+                    );
+                }
+            }
+
+            $namedParams = [];
+
+            if ($parameterLookup !== []) {
+                foreach ($parameterLookup as $lookupKey => $originalParam) {
+                    $value = $optionalParameters[$lookupKey] ?? null;
+
+                    if ($value === null) {
+                        continue;
+                    }
+
+                    $namedParams[$originalParam] = $value;
+                }
+            } else {
+                $namedParams = $optionalParameters;
+            }
+
+            $procedureResult = $this->procedureManager->executeDirect(
+                action: 'webmall.buy_custom_item',
+                procedureName: $procedureName,
+                databaseConnection: $databaseConnection,
+                namedParams: $namedParams,
+                context: [
+                    'user_id' => $user->id,
+                    'player_id' => $isIsro ? (int) $user->pjid : (int) $user->jid,
+                    'character_id' => $characterId,
+                    'character_name' => $characterName,
+                    'webmall_category_item_id' => $item->id,
+                    'webmall_purchase_id' => $purchase->id,
+                    'item_type' => WebmallItemTypeEnum::CUSTOM_ITEM->value,
+                ],
+            );
+
+            if (! $procedureResult['handled'] || ! $procedureResult['success']) {
+                $purchase->forceFill([
+                    'status' => 'failed',
+                    'procedure_name_snapshot' => $procedureName,
+                    'procedure_log_id' => $procedureResult['log_id'] ?? null,
+                    'procedure_error_message' => (string) ($procedureResult['message'] ?? 'custom_procedure_failed'),
+                ])->save();
+
+                return ['success' => false, 'error' => 'custom_procedure_failed', 'destination' => null];
+            }
+
+            $purchase->forceFill([
+                'status' => 'completed',
+                'procedure_name_snapshot' => $procedureName,
+                'procedure_log_id' => $procedureResult['log_id'] ?? null,
+                'procedure_error_message' => null,
+            ])->save();
+
+            return [
+                'success' => true,
+                'error' => null,
+                'destination' => $procedureName,
+            ];
+        } catch (Throwable $e) {
+            report($e);
+
+            return ['success' => false, 'error' => 'unexpected_error', 'destination' => null];
+        }
+    }
+
+    private function resolveCustomParameterValue(
+        mixed $value,
+        User $user,
+        string $characterName,
+        WebmallCategoryItem $item,
+        string $amount,
+        bool $isIsro,
+    ): mixed {
+        if (! is_string($value)) {
+            return $value;
+        }
+
+        return match (trim($value)) {
+            '{user_id}' => (string) $user->id,
+            '{jid}' => (string) $user->jid,
+            '{pjid}' => (string) ($user->pjid ?? ''),
+            '{username}' => (string) ($user->silkroad_id ?? $user->name ?? ''),
+            '{account_name}' => (string) ($user->silkroad_id ?? $user->name ?? ''),
+            '{jid_or_pjid}' => (string) ($isIsro ? ($user->pjid ?? '') : $user->jid),
+            '{charname}' => $characterName,
+            '{codename}' => (string) ($item->item_name_snapshot ?? ('Custom Item #' . $item->id)),
+            '{amount}' => $amount,
+            default => $value,
+        };
+    }
+
     private function persistPurchaseRecord(
         User $user,
         int $characterId,
         string $characterName,
         WebmallCategoryItem $item,
-    ): void {
+        string $status = 'completed',
+        ?ProcedureMapping $procedureMapping = null,
+    ): WebmallPurchase {
         $item->increment('sold');
 
-        WebmallPurchase::create([
+        return WebmallPurchase::create([
             'user_id' => $user->id,
             'character_id' => $characterId,
             'character_name' => $characterName,
             'webmall_category_item_id' => $item->id,
+            'item_type' => $item->item_type,
             'ref_item_id' => $item->ref_item_id,
             'item_name' => $item->item_name_snapshot ?? $item->ref_item_id,
             'price_type' => $item->price_type,
             'price_value' => $item->price_value,
+            'status' => $status,
+            'procedure_mapping_id' => $procedureMapping?->id,
+            'procedure_name_snapshot' => $procedureMapping?->procedure_name,
         ]);
     }
 

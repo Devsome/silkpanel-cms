@@ -5,12 +5,15 @@ return [
         'insufficient_balance'            => 'Nicht genug Guthaben, um diesen Kauf abzuschließen.',
         'item_unavailable'                => 'Dieses Item ist nicht mehr verfügbar.',
         'item_delivery_failed'            => 'Das Item konnte nicht geliefert werden. Bitte kontaktiere den Support.',
+        'custom_procedure_failed'         => 'Die benutzerdefinierte Aktion konnte nicht abgeschlossen werden. Bitte kontaktiere den Support.',
+        'custom_procedure_not_configured' => 'Dieses benutzerdefinierte Item ist nicht korrekt konfiguriert. Bitte kontaktiere den Support.',
         'unexpected'                      => 'Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es erneut.',
         'character_must_be_offline'       => 'Dein Charakter muss aus dem Spiel ausgeloggt sein, bevor du im Webmall kaufen kannst.',
         'character_must_be_offline_short' => 'Zuerst ausloggen',
     ],
     'success' => [
         'purchase' => ':item wurde erfolgreich gekauft. Es wurde an :destination gesendet.',
+        'purchase_custom' => ':item wurde erfolgreich gekauft.',
     ],
     'ui' => [
         'page_title'            => 'Webmall',

@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Webmall;
 
 use App\Enums\SilkTypeEnum;
 use App\Enums\SilkTypeIsroEnum;
+use App\Enums\WebmallItemTypeEnum;
 use App\Filament\Resources\Webmall\Pages\ListWebmallPurchases;
 use App\Models\WebmallPurchase;
 use BackedEnum;
@@ -62,6 +63,31 @@ class WebmallPurchasesResource extends Resource
                 TextColumn::make('item_name')
                     ->label(__('filament/webmall.col_item'))
                     ->searchable(),
+                TextColumn::make('item_type')
+                    ->label(__('filament/webmall.col_item_type'))
+                    ->badge()
+                    ->formatStateUsing(function ($state): string {
+                        $type = $state instanceof WebmallItemTypeEnum
+                            ? $state
+                            : (is_string($state) ? WebmallItemTypeEnum::tryFrom($state) : null);
+
+                        if ($type instanceof WebmallItemTypeEnum) {
+                            return $type->getLabel();
+                        }
+
+                        return is_scalar($state) ? (string) $state : '—';
+                    })
+                    ->color(function ($state): string {
+                        $type = $state instanceof WebmallItemTypeEnum
+                            ? $state
+                            : (is_string($state) ? WebmallItemTypeEnum::tryFrom($state) : null);
+
+                        return $type?->getColor() ?? 'gray';
+                    }),
+                TextColumn::make('procedure_name_snapshot')
+                    ->label(__('filament/webmall.col_custom_procedure'))
+                    ->placeholder('—')
+                    ->toggleable(),
                 TextColumn::make('price_type')
                     ->label(__('filament/webmall.col_price_type'))
                     ->badge()
@@ -88,6 +114,18 @@ class WebmallPurchasesResource extends Resource
                     ->label(__('filament/webmall.col_price_paid'))
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('status')
+                    ->label(__('filament/webmall.col_status'))
+                    ->badge()
+                    ->color(fn(string $state): string => match ($state) {
+                        'completed' => 'success',
+                        'failed' => 'danger',
+                        default => 'warning',
+                    }),
+                TextColumn::make('procedure_error_message')
+                    ->label(__('filament/webmall.col_procedure_error'))
+                    ->placeholder('—')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('filament/webmall.col_date'))
                     ->dateTime()

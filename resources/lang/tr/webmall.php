@@ -5,12 +5,15 @@ return [
         'insufficient_balance'            => 'Bu satın almayı tamamlamak için yeterli bakiyeniz yok.',
         'item_unavailable'                => 'Bu eşya artık mevcut değil.',
         'item_delivery_failed'            => 'Eşya teslim edilemedi. Lütfen destek ile iletişime geçin.',
+        'custom_procedure_failed'         => 'Özel işlem tamamlanamadı. Lütfen destek ile iletişime geçin.',
+        'custom_procedure_not_configured' => 'Bu özel öğe doğru yapılandırılmamış. Lütfen destek ile iletişime geçin.',
         'unexpected'                      => 'Beklenmedik bir hata oluştu. Lütfen tekrar deneyin.',
         'character_must_be_offline'       => 'Webmall\'dan satın almadan önce karakterinizin oyun dışında olması gerekir.',
         'character_must_be_offline_short' => 'Önce çıkış yapın',
     ],
     'success' => [
         'purchase' => ':item başarıyla satın alındı. :destination adresine gönderildi.',
+        'purchase_custom' => ':item başarıyla satın alındı.',
     ],
     'ui' => [
         'page_title'            => 'Webmall',

@@ -106,8 +106,12 @@ class Webmall extends Component
         $this->cancelConfirm();
 
         if ($result['success']) {
-            session()->flash('webmall_success', __('webmall.success.purchase', [
-                'item'        => $item->item_name_snapshot ?? $item->ref_item_id,
+            $successKey = $item->isCustomItem()
+                ? 'webmall.success.purchase_custom'
+                : 'webmall.success.purchase';
+
+            session()->flash('webmall_success', __($successKey, [
+                'item' => $item->item_name_snapshot ?? $item->ref_item_id,
                 'destination' => $result['destination'] ?? '—',
             ]));
         } else {
@@ -115,6 +119,8 @@ class Webmall extends Component
                 'insufficient_balance' => 'webmall.error.insufficient_balance',
                 'item_delivery_failed' => 'webmall.error.item_delivery_failed',
                 'item_unavailable'     => 'webmall.error.item_unavailable',
+                'custom_procedure_failed' => 'webmall.error.custom_procedure_failed',
+                'custom_procedure_not_configured' => 'webmall.error.custom_procedure_not_configured',
                 default                => 'webmall.error.unexpected',
             };
             session()->flash('webmall_error', __($errorKey));

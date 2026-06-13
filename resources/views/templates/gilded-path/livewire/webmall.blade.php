@@ -77,6 +77,9 @@
                             $refObj = $refObjs[$item->ref_item_id] ?? null;
                             $iconPath = \App\Helpers\WebmallItemIconHelper::resolveIcon($refObj?->AssocFileIcon128);
                             $isSeal = $refObj && \App\Helpers\WebmallItemIconHelper::isSeal($refObj);
+                            $itemImageUrl = filled($item->custom_image_path)
+                                ? asset('storage/' . $item->custom_image_path)
+                                : asset('images/silkroad/' . $iconPath);
                         @endphp
                         <div
                             class="relative gp-card gp-ornate-border p-4 flex flex-col gap-2 transition-all hover:-translate-y-0.5 hover:shadow-2xl {{ $soldOut ? 'opacity-50' : '' }}">
@@ -96,8 +99,7 @@
                                         <img class="pointer-events-none absolute inset-0 size-12"
                                             src="{{ asset('images/silkroad/item/seal.gif') }}" />
                                     @endif
-                                    <img src="{{ asset('images/silkroad/' . $iconPath) }}"
-                                        alt="{{ $item->item_name_snapshot ?? 'Item' }}"
+                                    <img src="{{ $itemImageUrl }}" alt="{{ $item->item_name_snapshot ?? 'Item' }}"
                                         class="size-12 object-contain rounded border border-yellow-900/40 bg-black/40 p-0.5"
                                         loading="lazy">
                                 </div>
@@ -206,14 +208,16 @@
                             $confirmRefObj?->AssocFileIcon128,
                         );
                         $confirmIsSeal = $confirmRefObj && \App\Helpers\WebmallItemIconHelper::isSeal($confirmRefObj);
+                        $confirmImageUrl = filled($confirmItem->custom_image_path)
+                            ? asset('storage/' . $confirmItem->custom_image_path)
+                            : asset('images/silkroad/' . $confirmIcon);
                     @endphp
                     <div class="relative inline-flex shrink-0">
                         @if ($confirmIsSeal)
                             <img class="pointer-events-none absolute inset-0 size-12"
                                 src="{{ asset('images/silkroad/item/seal.gif') }}" />
                         @endif
-                        <img src="{{ asset('images/silkroad/' . $confirmIcon) }}"
-                            alt="{{ $confirmItem->item_name_snapshot ?? 'Item' }}"
+                        <img src="{{ $confirmImageUrl }}" alt="{{ $confirmItem->item_name_snapshot ?? 'Item' }}"
                             class="size-12 object-contain rounded border border-yellow-900/40 bg-black/40 p-0.5">
                     </div>
                     <span class="text-sm font-medium gp-text-on-surface">

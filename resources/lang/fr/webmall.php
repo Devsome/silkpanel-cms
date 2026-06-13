@@ -5,12 +5,15 @@ return [
         'insufficient_balance'            => 'Solde insuffisant pour effectuer cet achat.',
         'item_unavailable'                => 'Cet objet n\'est plus disponible.',
         'item_delivery_failed'            => 'L\'objet n\'a pas pu être livré. Contactez le support.',
+        'custom_procedure_failed'         => 'L\'action personnalisée n\'a pas pu être exécutée. Contactez le support.',
+        'custom_procedure_not_configured' => 'Cet élément personnalisé n\'est pas correctement configuré. Contactez le support.',
         'unexpected'                      => 'Une erreur inattendue s\'est produite. Réessayez.',
         'character_must_be_offline'       => 'Votre personnage doit être déconnecté du jeu avant d\'acheter dans le Webmall.',
         'character_must_be_offline_short' => 'Déconnectez-vous d\'abord',
     ],
     'success' => [
         'purchase' => ':item acheté avec succès. Il a été envoyé à :destination.',
+        'purchase_custom' => ':item acheté avec succès.',
     ],
     'ui' => [
         'page_title'            => 'Webmall',
