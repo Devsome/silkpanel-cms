@@ -110,6 +110,10 @@
                             class="block px-4 py-2 text-xs text-zinc-400 hover:text-violet-400 hover:bg-violet-500/10 transition font-mono uppercase tracking-wider">
                             {{ __('navigation.ranking_uniques') }}
                         </a>
+                        <a href="{{ route('ranking.custom') }}"
+                            class="block px-4 py-2 text-xs text-zinc-400 hover:text-violet-400 hover:bg-violet-500/10 transition font-mono uppercase tracking-wider">
+                            {{ __('navigation.ranking_custom') }}
+                        </a>
                     </div>
                 </div>
             </div>

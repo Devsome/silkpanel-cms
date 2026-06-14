@@ -6,6 +6,7 @@ return [
     'search_unique_placeholder' => 'Ara...',
     'no_data' => 'Sıralama verisi bulunmamaktadır.',
     'unique_not_configured' => 'Unique sıralaması henüz yapılandırılmamıştır.',
+    'custom_not_configured' => 'Custom ranking has not been configured yet.',
 
     // Karakter detayı
     'back_to_characters' => 'Karakter Sıralamasına Dön',

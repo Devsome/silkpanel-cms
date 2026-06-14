@@ -18,6 +18,7 @@ return [
     'ranking_characters' => 'الشخصيات',
     'ranking_guilds' => 'النقابات',
     'ranking_uniques' => 'الوحوش الفريدة',
+    'ranking_custom' => 'Custom',
     'voting' => 'التصويت',
     'donate' => 'التبرع',
     'webmall' => 'المتجر',

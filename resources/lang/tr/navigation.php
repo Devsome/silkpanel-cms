@@ -18,6 +18,7 @@ return [
     'ranking_characters' => 'Karakterler',
     'ranking_guilds' => 'Loncalar',
     'ranking_uniques' => 'Uniqueler',
+    'ranking_custom' => 'Custom',
     'voting' => 'Oylama',
     'donate' => 'Bağış',
     'webmall' => 'Webmall',

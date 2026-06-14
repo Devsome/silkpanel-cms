@@ -105,6 +105,10 @@
                             class="block px-3 py-2 text-sm text-neutral-400 hover:text-yellow-400 hover:bg-yellow-900/10 transition">
                             {{ __('navigation.ranking_uniques') }}
                         </a>
+                        <a href="{{ route('ranking.custom') }}"
+                            class="block px-3 py-2 text-sm text-neutral-400 hover:text-yellow-400 hover:bg-yellow-900/10 transition">
+                            {{ __('navigation.ranking_custom') }}
+                        </a>
                     </div>
                 </div>
             </div>
@@ -245,6 +249,10 @@
             <a href="{{ route('ranking.uniques') }}"
                 class="block px-3 py-2 text-sm {{ request()->routeIs('ranking.uniques') ? 'text-yellow-400 bg-yellow-900/20' : 'text-neutral-400 hover:text-yellow-200 hover:bg-white/5' }} transition">
                 {{ __('navigation.ranking_uniques') }}
+            </a>
+            <a href="{{ route('ranking.custom') }}"
+                class="block px-3 py-2 text-sm {{ request()->routeIs('ranking.custom') ? 'text-yellow-400 bg-yellow-900/20' : 'text-neutral-400 hover:text-yellow-200 hover:bg-white/5' }} transition">
+                {{ __('navigation.ranking_custom') }}
             </a>
 
             @if ($showLanguageSwitch)

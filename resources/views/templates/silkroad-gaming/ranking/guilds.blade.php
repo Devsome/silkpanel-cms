@@ -1,6 +1,11 @@
 @extends('template::layouts.app')
 
 @section('content')
+    @php
+        $customRankings = collect(\App\Models\Setting::get('ranking_custom_rankings', []))
+            ->filter(fn($row) => is_array($row) && ($row['enabled'] ?? true) && filled($row['key'] ?? '') && filled($row['title'] ?? ''))
+            ->values();
+    @endphp
     <div class="py-8">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             {{-- Ranking Pill Navigation --}}
@@ -38,6 +43,13 @@
                         {{ __('navigation.ranking_uniques') }}
                     </span>
                 </a>
+                @foreach ($customRankings as $customRanking)
+                    <a href="{{ route('ranking.custom', ['key' => $customRanking['key']]) }}"
+                        class="flex-1 sm:flex-none px-5 py-2 text-center text-sm font-semibold rounded-xl transition
+                            {{ request()->routeIs('ranking.custom') && request()->query('key') === $customRanking['key'] ? 'bg-linear-to-r from-emerald-500 to-cyan-500 text-gray-950 shadow-lg shadow-emerald-500/20' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                        <span class="inline-flex items-center gap-1.5">{{ e($customRanking['title']) }}</span>
+                    </a>
+                @endforeach
             </div>
 
             <livewire:rankings.guild-ranking />

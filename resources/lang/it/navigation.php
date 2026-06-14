@@ -18,6 +18,7 @@ return [
     'ranking_characters' => 'Personaggi',
     'ranking_guilds' => 'Gilde',
     'ranking_uniques' => 'Uniques',
+    'ranking_custom' => 'Custom',
     'voting' => 'Voto',
     'donate' => 'Donazione',
     'webmall' => 'Webmall',

@@ -4,11 +4,14 @@ namespace App\Filament\Pages;
 
 use App\Helpers\CrestHelper;
 use App\Models\Setting;
+use App\Services\ProcedureManager;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Repeater\TableColumn;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
@@ -18,6 +21,7 @@ use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Database\Query\Builder;
@@ -561,6 +565,188 @@ class RankingSettings extends Page
                                             ->action(fn() => $this->testUniqueRankingQuery()),
                                     ]),
                                 ]),
+
+                            Tab::make(__('filament/rankings.tabs.custom'))
+                                ->icon('heroicon-o-command-line')
+                                ->schema([
+                                    Section::make(__('filament/rankings.sections.custom_rankings'))
+                                        ->description(__('filament/rankings.sections.custom_rankings_description'))
+                                        ->schema([
+                                            Repeater::make('ranking_custom_rankings')
+                                                ->itemLabel(function (array $state): string {
+                                                    $title = trim((string) ($state['title'] ?? ''));
+                                                    $key = trim((string) ($state['key'] ?? ''));
+
+                                                    return $title !== ''
+                                                        ? $title . ($key !== '' ? " ({$key})" : '')
+                                                        : ($key !== '' ? $key : __('filament/rankings.fields.custom_item_default_label'));
+                                                })
+                                                ->schema([
+                                                    TextInput::make('key')
+                                                        ->label(__('filament/rankings.fields.custom_key'))
+                                                        ->helperText(__('filament/rankings.fields.custom_key_description'))
+                                                        ->required()
+                                                        ->live(onBlur: true)
+                                                        ->alphaDash()
+                                                        ->maxLength(60),
+
+                                                    TextInput::make('title')
+                                                        ->label(__('filament/rankings.fields.custom_title'))
+                                                        ->required()
+                                                        ->live(onBlur: true)
+                                                        ->maxLength(100),
+
+                                                    Toggle::make('enabled')
+                                                        ->label(__('filament/rankings.fields.custom_enabled'))
+                                                        ->default(true),
+
+                                                    Select::make('source_type')
+                                                        ->label(__('filament/rankings.fields.custom_source_type'))
+                                                        ->options([
+                                                            'query' => __('filament/rankings.fields.custom_source_type_query'),
+                                                            'procedure' => __('filament/rankings.fields.custom_source_type_procedure'),
+                                                        ])
+                                                        ->default('query')
+                                                        ->live()
+                                                        ->required(),
+
+                                                    Select::make('connection')
+                                                        ->label(__('filament/rankings.fields.database_connection'))
+                                                        ->options(fn(): array => $this->getCustomRankingConnectionOptions())
+                                                        ->searchable()
+                                                        ->preload()
+                                                        ->live()
+                                                        ->required(),
+
+                                                    Textarea::make('query')
+                                                        ->label(__('filament/rankings.fields.custom_query'))
+                                                        ->helperText(__('filament/rankings.fields.custom_query_description'))
+                                                        ->rows(8)
+                                                        ->required(fn(callable $get): bool => ($get('source_type') ?? 'query') === 'query')
+                                                        ->visible(fn(callable $get): bool => ($get('source_type') ?? 'query') === 'query')
+                                                        ->columnSpanFull(),
+
+                                                    Select::make('procedure_name')
+                                                        ->label(__('filament/rankings.fields.custom_procedure_name'))
+                                                        ->helperText(__('filament/rankings.fields.custom_procedure_name_description'))
+                                                        ->options(function (Get $get): array {
+                                                            $connection = (string) ($get('connection') ?? '');
+
+                                                            if ($connection === '') {
+                                                                return [];
+                                                            }
+
+                                                            return app(ProcedureManager::class)->listProcedureNames($connection);
+                                                        })
+                                                        ->searchable()
+                                                        ->preload()
+                                                        ->required(fn(callable $get): bool => ($get('source_type') ?? 'query') === 'procedure')
+                                                        ->live()
+                                                        ->visible(fn(callable $get): bool => ($get('source_type') ?? 'query') === 'procedure'),
+
+                                                    Textarea::make('procedure_params')
+                                                        ->label(__('filament/rankings.fields.custom_procedure_params'))
+                                                        ->helperText(__('filament/rankings.fields.custom_procedure_params_description'))
+                                                        ->rows(4)
+                                                        ->visible(fn(callable $get): bool => ($get('source_type') ?? 'query') === 'procedure')
+                                                        ->columnSpanFull(),
+
+                                                    Placeholder::make('procedure_detected_parameters')
+                                                        ->label(__('filament/rankings.fields.custom_procedure_detected_parameters'))
+                                                        ->content(function (Get $get): string {
+                                                            $connection = (string) ($get('connection') ?? '');
+                                                            $procedure = (string) ($get('procedure_name') ?? '');
+
+                                                            if ($connection === '' || $procedure === '') {
+                                                                return __('filament/rankings.fields.custom_procedure_detected_parameters_empty');
+                                                            }
+
+                                                            $parameters = app(ProcedureManager::class)->listProcedureParameters($connection, $procedure);
+
+                                                            if ($parameters === []) {
+                                                                return __('filament/rankings.fields.custom_procedure_detected_parameters_unknown');
+                                                            }
+
+                                                            return implode(', ', $parameters);
+                                                        })
+                                                        ->visible(fn(callable $get): bool => ($get('source_type') ?? 'query') === 'procedure')
+                                                        ->columnSpanFull(),
+
+                                                    Toggle::make('sorting_enabled')
+                                                        ->label(__('filament/rankings.fields.custom_sorting_enabled'))
+                                                        ->default(true)
+                                                        ->live(),
+
+                                                    TextInput::make('default_sort_column')
+                                                        ->label(__('filament/rankings.fields.custom_default_sort_column'))
+                                                        ->helperText(__('filament/rankings.fields.custom_default_sort_column_description'))
+                                                        ->visible(fn(callable $get): bool => (bool) $get('sorting_enabled')),
+
+                                                    Select::make('default_sort_direction')
+                                                        ->label(__('filament/rankings.fields.order_direction'))
+                                                        ->options([
+                                                            'desc' => __('filament/rankings.fields.order_desc'),
+                                                            'asc' => __('filament/rankings.fields.order_asc'),
+                                                        ])
+                                                        ->default('desc')
+                                                        ->visible(fn(callable $get): bool => (bool) $get('sorting_enabled')),
+
+                                                    Toggle::make('pagination_enabled')
+                                                        ->label(__('filament/rankings.fields.custom_pagination_enabled'))
+                                                        ->default(true)
+                                                        ->live(),
+
+                                                    TextInput::make('per_page')
+                                                        ->label(__('filament/rankings.fields.custom_per_page'))
+                                                        ->numeric()
+                                                        ->minValue(1)
+                                                        ->maxValue(200)
+                                                        ->default(25)
+                                                        ->visible(fn(callable $get): bool => (bool) $get('pagination_enabled')),
+
+                                                    TextInput::make('limit')
+                                                        ->label(__('filament/rankings.fields.limit'))
+                                                        ->helperText(__('filament/rankings.fields.custom_limit_description'))
+                                                        ->numeric()
+                                                        ->minValue(0)
+                                                        ->maxValue(10000)
+                                                        ->default(100)
+                                                        ->suffix('#')
+                                                        ->visible(fn(callable $get): bool => ! (bool) $get('pagination_enabled')),
+
+                                                    TextInput::make('cache_ttl_hours')
+                                                        ->label(__('filament/rankings.fields.custom_cache_ttl_hours'))
+                                                        ->helperText(__('filament/rankings.fields.custom_cache_ttl_hours_description'))
+                                                        ->numeric()
+                                                        ->minValue(0)
+                                                        ->maxValue(720)
+                                                        ->default(1)
+                                                        ->suffix('h'),
+                                                ])
+                                                ->columns(3)
+                                                ->addActionLabel(__('filament/rankings.fields.custom_add'))
+                                                ->defaultItems(0)
+                                                ->cloneable()
+                                                ->reorderableWithButtons()
+                                                ->reorderableWithDragAndDrop(false)
+                                                ->collapsible(),
+                                        ])
+                                        ->secondary(),
+
+                                    ActionsComponent::make([
+                                        Action::make('testCustomRanking')
+                                            ->label(__('filament/rankings.actions.test_custom'))
+                                            ->icon('heroicon-o-beaker')
+                                            ->color('gray')
+                                            ->form([
+                                                Select::make('ranking_key')
+                                                    ->label(__('filament/rankings.fields.custom_select_for_test'))
+                                                    ->options(fn(): array => $this->getCustomRankingOptions())
+                                                    ->required(),
+                                            ])
+                                            ->action(fn(array $data) => $this->testCustomRankingQuery((string) ($data['ranking_key'] ?? ''))),
+                                    ]),
+                                ]),
                         ]),
                 ])
                     ->livewireSubmitHandler('save')
@@ -579,6 +765,50 @@ class RankingSettings extends Page
     public function save(): void
     {
         $data = $this->form->getState();
+
+        if (isset($data['ranking_custom_rankings']) && is_array($data['ranking_custom_rankings'])) {
+            $usedKeys = [];
+            $normalizedRows = [];
+
+            foreach ($data['ranking_custom_rankings'] as $row) {
+                if (! is_array($row)) {
+                    continue;
+                }
+
+                $key = Str::slug((string) ($row['key'] ?? ''));
+                if ($key === '') {
+                    continue;
+                }
+
+                $originalKey = $key;
+                $index = 2;
+                while (isset($usedKeys[$key])) {
+                    $key = $originalKey . '-' . $index;
+                    $index++;
+                }
+                $usedKeys[$key] = true;
+
+                $normalizedRows[] = [
+                    'key' => $key,
+                    'title' => trim((string) ($row['title'] ?? '')),
+                    'enabled' => (bool) ($row['enabled'] ?? true),
+                    'source_type' => in_array(($row['source_type'] ?? 'query'), ['query', 'procedure'], true) ? (string) $row['source_type'] : 'query',
+                    'connection' => trim((string) ($row['connection'] ?? '')),
+                    'query' => trim((string) ($row['query'] ?? '')),
+                    'procedure_name' => trim((string) ($row['procedure_name'] ?? '')),
+                    'procedure_params' => trim((string) ($row['procedure_params'] ?? '')),
+                    'sorting_enabled' => (bool) ($row['sorting_enabled'] ?? true),
+                    'default_sort_column' => trim((string) ($row['default_sort_column'] ?? '')),
+                    'default_sort_direction' => strtolower((string) ($row['default_sort_direction'] ?? 'desc')) === 'asc' ? 'asc' : 'desc',
+                    'pagination_enabled' => (bool) ($row['pagination_enabled'] ?? true),
+                    'per_page' => max(1, min(200, (int) ($row['per_page'] ?? 25))),
+                    'limit' => max(0, (int) ($row['limit'] ?? 100)),
+                    'cache_ttl_hours' => max(0, (int) ($row['cache_ttl_hours'] ?? 1)),
+                ];
+            }
+
+            $data['ranking_custom_rankings'] = $normalizedRows;
+        }
 
         $keys = [
             'ranking_chars_title',
@@ -610,6 +840,7 @@ class RankingSettings extends Page
             'ranking_unique_points_source_column',
             'ranking_unique_points_player_column',
             'ranking_unique_points_map',
+            'ranking_custom_rankings',
         ];
 
         foreach ($keys as $key) {
@@ -671,6 +902,72 @@ class RankingSettings extends Page
 
             $this->previewData    = $rows->map(fn($row) => (array) $row)->all();
             $this->previewColumns = $this->data['ranking_unique_columns'] ?? [];
+        } catch (Throwable $e) {
+            $this->previewError = $e->getMessage();
+        }
+    }
+
+    public function testCustomRankingQuery(string $rankingKey): void
+    {
+        $this->previewError   = null;
+        $this->previewData    = [];
+        $this->previewColumns = [];
+        $this->previewTab     = 'custom';
+
+        try {
+            $rankings = collect($this->data['ranking_custom_rankings'] ?? [])
+                ->filter(fn(mixed $row): bool => is_array($row))
+                ->values();
+
+            $ranking = $rankings->first(fn(array $row): bool => trim((string) ($row['key'] ?? '')) === $rankingKey);
+            if (! is_array($ranking)) {
+                throw new RuntimeException('Please select a valid custom ranking.');
+            }
+
+            $connection = trim((string) ($ranking['connection'] ?? ''));
+            $sourceType = in_array(($ranking['source_type'] ?? 'query'), ['query', 'procedure'], true) ? (string) $ranking['source_type'] : 'query';
+            $query = trim((string) ($ranking['query'] ?? ''));
+            $procedureName = trim((string) ($ranking['procedure_name'] ?? ''));
+            $procedureParams = trim((string) ($ranking['procedure_params'] ?? ''));
+
+            if ($connection === '') {
+                throw new RuntimeException('Please configure a database connection for this custom ranking.');
+            }
+
+            if ($sourceType === 'procedure') {
+                if ($procedureName === '') {
+                    throw new RuntimeException('Please configure a stored procedure for this custom ranking.');
+                }
+
+                $previewSql = 'EXEC ' . $procedureName;
+                if ($procedureParams !== '') {
+                    $previewSql .= ' ' . $procedureParams;
+                }
+
+                $rows = DB::connection($connection)->select($previewSql);
+            } else {
+                if ($query === '') {
+                    throw new RuntimeException('Please configure a SQL query for this custom ranking.');
+                }
+
+                $previewSql = "SELECT TOP 10 * FROM ({$query}) AS ranking_custom_preview";
+                $rows = DB::connection($connection)->select($previewSql);
+            }
+
+            $mappedRows = collect($rows)
+                ->map(fn(object $row): array => (array) $row)
+                ->values();
+
+            $firstRow = $mappedRows->first() ?? [];
+            $this->previewColumns = collect(array_keys($firstRow))
+                ->map(fn(string $column): array => [
+                    'column' => $column,
+                    'label' => Str::of($column)->replace('_', ' ')->headline()->toString(),
+                ])
+                ->values()
+                ->all();
+
+            $this->previewData = $mappedRows->all();
         } catch (Throwable $e) {
             $this->previewError = $e->getMessage();
         }
@@ -1312,7 +1609,72 @@ class RankingSettings extends Page
             'ranking_unique_points_source_column' => Setting::get('ranking_unique_points_source_column', 'MobID'),
             'ranking_unique_points_player_column' => Setting::get('ranking_unique_points_player_column', 'CharID'),
             'ranking_unique_points_map'           => $this->getHydratedUniquePointsMap(),
+            'ranking_custom_rankings'             => collect(Setting::get('ranking_custom_rankings', []))
+                ->map(function (mixed $row): mixed {
+                    if (! is_array($row)) {
+                        return $row;
+                    }
+
+                    $row['source_type'] ??= 'query';
+                    $row['procedure_name'] ??= '';
+                    $row['procedure_params'] ??= '';
+
+                    return $row;
+                })
+                ->all(),
         ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getCustomRankingOptions(): array
+    {
+        $rows = collect($this->data['ranking_custom_rankings'] ?? [])
+            ->filter(fn(mixed $row): bool => is_array($row))
+            ->values();
+
+        $options = [];
+        foreach ($rows as $row) {
+            $key = trim((string) ($row['key'] ?? ''));
+            if ($key === '') {
+                continue;
+            }
+
+            $title = trim((string) ($row['title'] ?? ''));
+            $options[$key] = $title !== '' ? "{$title} ({$key})" : $key;
+        }
+
+        return $options;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    private function getCustomRankingConnectionOptions(): array
+    {
+        $connections = config('database.connections', []);
+        if (! is_array($connections)) {
+            return [];
+        }
+
+        $options = [];
+        foreach ($connections as $connectionName => $connectionConfig) {
+            if (! is_string($connectionName) || $connectionName === '' || ! is_array($connectionConfig)) {
+                continue;
+            }
+
+            $driver = strtolower((string) ($connectionConfig['driver'] ?? ''));
+            $databaseName = strtolower((string) ($connectionConfig['database'] ?? ''));
+
+            if ($driver === 'sqlsrv' || Str::startsWith($connectionName, 'sro_') || Str::startsWith($databaseName, 'sro_')) {
+                $options[$connectionName] = $connectionName;
+            }
+        }
+
+        asort($options);
+
+        return $options;
     }
 
     /**

@@ -6,6 +6,7 @@ return [
     'search_unique_placeholder' => 'Search...',
     'no_data' => 'No ranking data available.',
     'unique_not_configured' => 'Unique ranking has not been configured yet.',
+    'custom_not_configured' => 'Custom ranking has not been configured yet.',
 
     // Character detail
     'back_to_characters' => 'Back to Character Ranking',

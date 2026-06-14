@@ -6,6 +6,7 @@ return [
     'search_unique_placeholder' => 'بحث...',
     'no_data' => 'لا توجد بيانات تصنيف متاحة.',
     'unique_not_configured' => 'لم يتم تكوين تصنيف الوحوش الفريدة بعد.',
+    'custom_not_configured' => 'Custom ranking has not been configured yet.',
 
     // تفاصيل الشخصية
     'back_to_characters' => 'العودة إلى تصنيف الشخصيات',

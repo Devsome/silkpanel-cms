@@ -6,6 +6,7 @@ return [
     'search_unique_placeholder' => 'Cerca...',
     'no_data' => 'Nessun dato di classifica disponibile.',
     'unique_not_configured' => 'La classifica Unique non è ancora stata configurata.',
+    'custom_not_configured' => 'Custom ranking has not been configured yet.',
 
     // Dettaglio personaggio
     'back_to_characters' => 'Torna alla classifica dei personaggi',

@@ -56,6 +56,9 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
     Route::get('/guilds', fn() => view('template::ranking.guilds'))->name('guilds');
     Route::get('/guilds/{id}', [RankingController::class, 'showGuild'])->name('guilds.show')->where('id', '[0-9]+');
     Route::get('/uniques', fn() => view('template::ranking.uniques'))->name('uniques');
+    Route::get('/custom/{key?}', fn(?string $key = null) => view('template::ranking.custom', [
+        'rankingKey' => $key,
+    ]))->name('custom');
 });
 
 // Authenticated routes
