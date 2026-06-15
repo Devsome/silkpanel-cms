@@ -5,6 +5,8 @@ use Illuminate\Support\Str;
 return [
     'api_key' => env('SILKPANEL_API_KEY'),
 
+    'saas_url' => env('SILKPANEL_SAAS_URL', 'https://devso.me'),
+
     'version' => Str::lower(env('SILKPANEL_SERVER_VERSION', 'vsro')),
 
     'uniques' => [
