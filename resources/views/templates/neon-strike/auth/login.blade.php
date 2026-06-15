@@ -10,7 +10,7 @@
             <div class="absolute inset-0 bg-linear-to-br from-violet-900/20 via-transparent to-fuchsia-900/15"></div>
             <div class="relative z-10 text-center p-12">
                 <p class="text-xs font-mono uppercase tracking-[0.4em] text-violet-400/60 mb-4">
-                    {{ __('auth/login.title', ['app_name' => '']) }}</p>
+                    {{ __('auth/login.title', ['app_name' => config('app.name')]) }}</p>
                 <h2
                     class="text-4xl font-black uppercase tracking-[0.1em] bg-linear-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent">
                     @settings('site_title', 'SilkPanel')

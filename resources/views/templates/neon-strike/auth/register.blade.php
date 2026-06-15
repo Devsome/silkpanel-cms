@@ -10,9 +10,19 @@
                         ← {{ __('auth/register.back') }}
                     </a>
                     <p class="text-xs font-mono uppercase tracking-[0.3em] text-violet-400/70 mb-2">
-                        {{ __('auth/register.title') }}</p>
+                        {{ __('auth/register.title', ['app_name' => config('app.name')]) }}</p>
                     <div class="h-px bg-linear-to-r from-violet-500/50 to-transparent"></div>
                 </div>
+
+                @if ($errors->any())
+                    <div class="mb-4 border border-red-500/30 bg-red-500/10 p-3">
+                        <ul class="space-y-1">
+                            @foreach ($errors->all() as $error)
+                                <li class="text-xs font-mono text-red-400">— {{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 
                 <form method="POST" action="{{ route('register') }}" class="space-y-4">
                     @csrf
@@ -21,9 +31,20 @@
                         <label for="name"
                             class="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-1.5">{{ __('auth/register.form.name') }}</label>
                         <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
-                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600"
+                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600 @error('name') border-red-500/60 @enderror"
                             placeholder="{{ __('auth/register.form.name') }}">
                         @error('name')
+                            <p class="mt-1 text-xs font-mono text-red-400">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="silkroad_id"
+                            class="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-1.5">{{ __('auth/register.form.silkroad_id') }}</label>
+                        <input id="silkroad_id" type="text" name="silkroad_id" value="{{ old('silkroad_id') }}" required
+                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600 @error('silkroad_id') border-red-500/60 @enderror"
+                            placeholder="{{ __('auth/register.form.silkroad_id') }}">
+                        @error('silkroad_id')
                             <p class="mt-1 text-xs font-mono text-red-400">{{ $message }}</p>
                         @enderror
                     </div>
@@ -32,7 +53,7 @@
                         <label for="email"
                             class="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-1.5">{{ __('auth/register.form.email') }}</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" required
-                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600"
+                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600 @error('email') border-red-500/60 @enderror"
                             placeholder="you@example.com">
                         @error('email')
                             <p class="mt-1 text-xs font-mono text-red-400">{{ $message }}</p>
@@ -43,7 +64,7 @@
                         <label for="password"
                             class="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-1.5">{{ __('auth/register.form.password') }}</label>
                         <input id="password" type="password" name="password" required
-                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600"
+                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600 @error('password') border-red-500/60 @enderror"
                             placeholder="••••••••">
                         @error('password')
                             <p class="mt-1 text-xs font-mono text-red-400">{{ $message }}</p>
@@ -54,7 +75,7 @@
                         <label for="password_confirmation"
                             class="block text-xs font-mono uppercase tracking-wider text-zinc-500 mb-1.5">{{ __('auth/register.form.password_confirmation') }}</label>
                         <input id="password_confirmation" type="password" name="password_confirmation" required
-                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600"
+                            class="w-full bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition placeholder-zinc-600 @error('password_confirmation') border-red-500/60 @enderror"
                             placeholder="••••••••">
                         @error('password_confirmation')
                             <p class="mt-1 text-xs font-mono text-red-400">{{ $message }}</p>
