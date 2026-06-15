@@ -182,7 +182,7 @@ class TemplateValidator
 
         $dangerousPatterns = [
             '/\b(eval|exec|system|passthru|shell_exec|popen|proc_open)\s*\(/i',
-            '/(?<!=")[`][^`]*[`](?!")/',  // Backtick shell execution (not Alpine.js :attr="`...`" template literals)
+            '/@php[^@]*`[^`\n]{1,100}`[^@]*@endphp/s',  // PHP backtick operator inside @php blocks
             '/\bfile_put_contents\s*\(/i',
             '/\bfile_get_contents\s*\(\s*[\'"]https?:\/\//i', // Remote file inclusion
             '/\binclude\s*\(\s*\$/',  // Variable includes
