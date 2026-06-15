@@ -39,3 +39,5 @@ resources/views/templates/*
 !resources/views/templates/gilded-path/**
 !resources/views/templates/neon-strike/
 !resources/views/templates/neon-strike/**
+!resources/views/templates/aether-gate/
+!resources/views/templates/aether-gate/**
