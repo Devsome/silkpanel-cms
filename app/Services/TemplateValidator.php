@@ -160,7 +160,12 @@ class TemplateValidator
                 continue;
             }
 
-            // Block plain .php files
+            // Allow plain .php files inside lang/ directories (translation files)
+            if ($extension === 'php' && Str::startsWith(str_replace('\\', '/', $file->getRelativePath()), 'lang/')) {
+                continue;
+            }
+
+            // Block all other plain .php files
             if ($extension === 'php') {
                 $this->errors[] = "Executable PHP file detected: {$file->getRelativePathname()}. Only .blade.php files are allowed.";
             }
@@ -177,7 +182,7 @@ class TemplateValidator
 
         $dangerousPatterns = [
             '/\b(eval|exec|system|passthru|shell_exec|popen|proc_open)\s*\(/i',
-            '/`[^`]*`/',  // Backtick execution
+            '/(?<!=")[`][^`]*[`](?!")/',  // Backtick shell execution (not Alpine.js :attr="`...`" template literals)
             '/\bfile_put_contents\s*\(/i',
             '/\bfile_get_contents\s*\(\s*[\'"]https?:\/\//i', // Remote file inclusion
             '/\binclude\s*\(\s*\$/',  // Variable includes
