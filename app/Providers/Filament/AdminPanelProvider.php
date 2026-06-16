@@ -91,6 +91,11 @@ class AdminPanelProvider extends PanelProvider
             $panel->plugin($votingPluginClass::make());
         }
 
+        $discordPluginClass = 'SilkPanel\\Discord\\DiscordPlugin';
+        if (class_exists($discordPluginClass)) {
+            $panel->plugin($discordPluginClass::make());
+        }
+
         return $panel;
     }
 }

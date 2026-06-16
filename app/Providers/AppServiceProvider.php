@@ -11,17 +11,11 @@ use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         if (app()->environment('production')) {
@@ -43,11 +37,6 @@ class AppServiceProvider extends ServiceProvider
         $this->registerBladeDirectives();
     }
 
-    /**
-     * Register custom Blade directives for settings.
-     *
-     * @return void
-     */
     private function registerBladeDirectives(): void
     {
         Blade::directive('settings', function (string $expression): string {
