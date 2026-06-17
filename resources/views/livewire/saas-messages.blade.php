@@ -42,14 +42,13 @@
                 x-transition:enter="transition ease-out duration-200"
                 x-transition:enter-start="opacity-0 translate-y-2 scale-95"
                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                class="w-full max-w-md rounded-xl shadow-2xl overflow-hidden"
-                style="background: var(--fi-bg, white);"
+                class="w-full max-w-md rounded-xl shadow-2xl overflow-hidden bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800"
                 @click.outside=""
             >
                 {{-- Modal Header --}}
-                <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100 dark:border-gray-800">
-                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-warning-100 dark:bg-warning-900/40">
-                        <x-heroicon-o-clipboard-document-list class="w-4 h-4 text-warning-600 dark:text-warning-400" />
+                <div class="flex items-center gap-3 px-5 py-4 border-b border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900">
+                    <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800">
+                        <x-heroicon-o-clipboard-document-list class="w-4 h-4 text-gray-500 dark:text-gray-400" />
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">{{ $activeSurvey['title'] }}</p>
@@ -58,24 +57,24 @@
                 </div>
 
                 {{-- Modal Body --}}
-                <div class="px-5 py-4">
-                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
+                <div class="px-5 py-4 bg-white dark:bg-gray-900">
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
                         {{ $activeSurvey['body'] }}
                     </p>
 
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1.5">
+                    <label class="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
                         {{ $activeSurvey['input_label'] ?? 'Your answer' }}
                     </label>
                     <textarea
                         wire:model="surveyResponse"
                         rows="4"
-                        class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/60 text-sm text-gray-900 dark:text-white px-3 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none resize-none transition"
+                        class="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-sm text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 px-3 py-2.5 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none resize-none transition"
                         placeholder="Type your answer…"
                     ></textarea>
                 </div>
 
                 {{-- Modal Footer --}}
-                <div class="flex justify-end gap-2 px-5 py-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/30">
+                <div class="flex justify-end gap-2 px-5 py-3 border-t border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-gray-800/50">
                     <button
                         wire:click="submitSurvey"
                         wire:loading.attr="disabled"

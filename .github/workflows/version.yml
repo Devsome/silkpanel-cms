@@ -1,25 +1,21 @@
-name: Write version file
+name: Validate version file
 
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
 
 jobs:
-  version:
+  validate:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
       - uses: actions/checkout@v4
 
-      - name: Write storage/app/version.json
+      - name: Validate storage/app/version.json
         run: |
-          mkdir -p storage/app
-          echo '{"commit":"${{ github.sha }}"}' > storage/app/version.json
-
-      - name: Commit version file
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: update version.json [skip ci]"
-          file_pattern: storage/app/version.json
+          if [ ! -f storage/app/version.json ]; then
+            echo "ERROR: storage/app/version.json is missing. Add and commit it manually."
+            exit 1
+          fi
+          python3 -m json.tool storage/app/version.json > /dev/null && echo "version.json is valid JSON"

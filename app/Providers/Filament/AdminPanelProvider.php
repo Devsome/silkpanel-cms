@@ -81,6 +81,11 @@ class AdminPanelProvider extends PanelProvider
             fn() => view('livewire.saas-messages-hook'),
         );
 
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_START,
+            fn() => auth()->check() ? "<livewire:version-check />" : '',
+        );
+
         $ticketSystemPluginClass = 'SilkPanel\\TicketSystem\\TicketSystemPlugin';
         if (class_exists($ticketSystemPluginClass)) {
             $panel->plugin($ticketSystemPluginClass::make());

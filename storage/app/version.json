@@ -1,0 +1,91 @@
+{
+    "current": "3.0.0",
+    "changelog": {
+        "3.0.0": {
+            "title": "World Map, Tickets & Referrals",
+            "description": "Major release with interactive world map, support ticket system, referral rewards, and a revamped dashboard.",
+            "released_at": "2026-05-04",
+            "features": [
+                {
+                    "icon": "heroicon-o-map",
+                    "title": "Interactive World Map",
+                    "description": "Displays online player positions in real time."
+                },
+                {
+                    "icon": "heroicon-o-ticket",
+                    "title": "Support Ticket System",
+                    "description": "Categories, priority levels, and admin replies."
+                },
+                {
+                    "icon": "heroicon-o-users",
+                    "title": "Referral System",
+                    "description": "Configurable validation and automatic Silk distribution."
+                },
+                {
+                    "icon": "heroicon-o-squares-2x2",
+                    "title": "Revamped Dashboard",
+                    "description": "Silk balance, character info, and event timers."
+                },
+                {
+                    "icon": "heroicon-o-paint-brush",
+                    "title": "Silkroad Gaming Theme",
+                    "description": "New theme with light/dark toggle and BBCode editor."
+                }
+            ]
+        },
+        "2.0.0": {
+            "title": "Templates, Payments & Localization",
+            "description": "Complete template architecture, 8-language support, and multiple payment provider integrations.",
+            "released_at": "2026-04-08",
+            "features": [
+                {
+                    "icon": "heroicon-o-swatch",
+                    "title": "Template System",
+                    "description": "Modular theme architecture with a bundled basic theme."
+                },
+                {
+                    "icon": "heroicon-o-language",
+                    "title": "8 Languages",
+                    "description": "Arabic, German, English, Spanish, French, Italian, Portuguese, Turkish."
+                },
+                {
+                    "icon": "heroicon-o-credit-card",
+                    "title": "Donations & Payments",
+                    "description": "Fawaterk, Maxicard, and other payment providers."
+                },
+                {
+                    "icon": "heroicon-o-trophy",
+                    "title": "Voting Plugin",
+                    "description": "Integrated voting with reward distribution."
+                },
+                {
+                    "icon": "heroicon-o-document-text",
+                    "title": "Page Management",
+                    "description": "Translatable pages and guild & inventory features."
+                }
+            ]
+        },
+        "1.0.0": {
+            "title": "Initial Release",
+            "description": "Modern foundation for managing Silkroad web projects with a clean, modular architecture.",
+            "released_at": "2026-03-10",
+            "features": [
+                {
+                    "icon": "heroicon-o-rocket-launch",
+                    "title": "Web Installer",
+                    "description": "Streamlined setup wizard for new installations."
+                },
+                {
+                    "icon": "heroicon-o-puzzle-piece",
+                    "title": "Modular Package System",
+                    "description": "Extend functionality via installable packages."
+                },
+                {
+                    "icon": "heroicon-o-code-bracket",
+                    "title": "Developer-Friendly",
+                    "description": "Clean, maintainable codebase built on Laravel."
+                }
+            ]
+        }
+    }
+}
