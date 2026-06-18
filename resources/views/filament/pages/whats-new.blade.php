@@ -77,7 +77,7 @@
                     <div
                         class="flex items-center gap-2 font-mono text-xs text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2">
                         <span class="text-gray-400 select-none">$</span>
-                        <span>git pull origin master --no-edit</span>
+                        <span>git pull origin master --no-edit && composer install --no-interaction</span>
                     </div>
                     <div
                         class="flex items-center gap-2 font-mono text-xs text-gray-600 dark:text-gray-400 bg-white dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 rounded-lg px-3 py-2">

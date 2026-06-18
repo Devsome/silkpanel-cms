@@ -1,6 +1,11 @@
 {
-    "current": "3.0.2",
+    "current": "3.0.3",
     "changelog": {
+        "3.0.3": {
+            "title": "updated composer.lock and added version numbers to package composer.json files",
+            "description": "Updated composer.lock with latest package versions and added explicit version numbers to each package's composer.json for better clarity and dependency management.",
+            "released_at": "2026-06-19"
+        },
         "3.0.2": {
             "title": "VSRO Compatibility & Item Name Translation",
             "description": "Full VSRO server support for Monster Drops — no more SQL errors, item names now resolved via _ItemNameDesc just like the Items page.",
