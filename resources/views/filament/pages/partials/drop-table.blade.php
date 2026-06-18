@@ -22,7 +22,7 @@
                 @php
                     $itemName = ($drop->ItemNameENG && $drop->ItemNameENG !== '0')
                         ? $drop->ItemNameENG
-                        : $drop->ItemNameRaw;
+                        : $drop->ItemCode;
                     $ratio = $drop->{$ratioField} ?? 0;
                     $pct = round($ratio * 100, 4);
                     $isDisabled = ($showDisabled ?? false) && isset($drop->CanDrop) && $drop->CanDrop === 0;

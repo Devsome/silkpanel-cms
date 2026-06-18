@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Enums\DatabaseNameEnums;
+use App\Filament\Concerns\HasNameTranslation;
 use BackedEnum;
 use Filament\Pages\Page;
 use Filament\Support\Icons\Heroicon;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class MonsterDrops extends Page
 {
+    use HasNameTranslation;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCubeTransparent;
 
     protected static string|\UnitEnum|null $navigationGroup = 'Silkroad';
@@ -75,29 +77,39 @@ class MonsterDrops extends Page
             return collect();
         }
 
-        $trans = 'SILKROAD_R_ACCOUNT.dbo._Rigid_ItemNameDesc';
+        $search = $this->search;
+        $isro   = static::transTable() !== null;
 
-        return DB::connection(DatabaseNameEnums::SRO_SHARD->value)
+        $q = DB::connection(DatabaseNameEnums::SRO_SHARD->value)
             ->table('_RefObjCommon as m')
             ->join('_RefObjChar as c', 'c.ID', '=', 'm.Link')
-            ->leftJoin("{$trans} as mn", 'mn.StrID', '=', 'm.NameStrID128')
-            ->where('m.TypeID1', 1) // TypeID1=1 = Monster/NPC/Char objects
-            ->where(function ($q) {
-                $q->where('m.CodeName128', 'like', "%{$this->search}%")
-                  ->orWhere('m.ObjName128', 'like', "%{$this->search}%")
-                  ->orWhere('mn.ENG', 'like', "%{$this->search}%");
-            })
-            ->select(
+            ->where('m.TypeID1', 1); // TypeID1=1 = Monster/NPC/Char objects
+
+        static::joinTranslation($q, 'mn', 'm.NameStrID128');
+
+        $q->where(function ($inner) use ($search, $isro) {
+            $inner->where('m.CodeName128', 'like', "%{$search}%")
+                  ->orWhere('m.ObjName128', 'like', "%{$search}%");
+            if ($isro) {
+                $inner->orWhere('mn.ENG', 'like', "%{$search}%");
+            }
+        });
+
+        $nameCol = $isro ? 'mn.ENG as NameENG' : DB::raw('NULL as NameENG');
+
+        $rows = $q->select(
                 'm.ID',
                 'm.CodeName128',
-                'm.ObjName128',
+                'm.NameStrID128',
                 'm.Rarity',
-                'mn.ENG as NameENG',
+                $nameCol,
                 'c.Lvl',
             )
             ->orderBy('c.Lvl')
             ->limit(50)
             ->get();
+
+        return static::resolveNames($rows, 'NameStrID128', 'NameENG');
     }
 
     public static function getDetailUrl(string $code): string

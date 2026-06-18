@@ -162,7 +162,7 @@
                             @php
                                 $name = ($monster->NameENG && $monster->NameENG !== '0')
                                     ? $monster->NameENG
-                                    : $monster->ObjName128;
+                                    : $monster->CodeName128;
                                 $rarityLabel = \App\Filament\Pages\MonsterDrops::rarityLabel((int)$monster->Rarity);
                                 $rarityColor = \App\Filament\Pages\MonsterDrops::rarityColor((int)$monster->Rarity);
                             @endphp
@@ -179,9 +179,6 @@
                                             <x-filament::badge color="{{ $rarityColor }}" size="sm">{{ $rarityLabel }}</x-filament::badge>
                                         @endif
                                     </div>
-                                    @if($monster->ObjName128 && $monster->ObjName128 !== $name)
-                                        <span class="text-xs text-gray-400">({{ $monster->ObjName128 }})</span>
-                                    @endif
                                     <div class="mt-0.5 font-mono text-xs text-gray-400 dark:text-gray-500">
                                         {{ $monster->CodeName128 }}
                                     </div>

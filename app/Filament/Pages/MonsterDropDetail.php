@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Enums\DatabaseNameEnums;
+use App\Filament\Concerns\HasNameTranslation;
 use BackedEnum;
 use Filament\Pages\Page;
 use Illuminate\Support\Collection;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\Support\Htmlable;
 
 class MonsterDropDetail extends Page
 {
+    use HasNameTranslation;
     protected static bool $shouldRegisterNavigation = false;
 
     protected string $view = 'filament.pages.monster-drop-detail';
@@ -68,45 +70,54 @@ class MonsterDropDetail extends Page
         $monster = $this->getMonster();
         if (!$monster) return 'Monster not found';
 
-        $name = ($monster->NameENG && $monster->NameENG !== '0') ? $monster->NameENG : $monster->ObjName128;
+        $name = ($monster->NameENG && $monster->NameENG !== '0') ? $monster->NameENG : $monster->CodeName128;
         return "Drops: {$name}";
     }
 
     public function getMonster(): ?object
     {
-        $trans = 'SILKROAD_R_ACCOUNT.dbo._Rigid_ItemNameDesc';
-
-        return DB::connection(DatabaseNameEnums::SRO_SHARD->value)
+        $q = DB::connection(DatabaseNameEnums::SRO_SHARD->value)
             ->table('_RefObjCommon as m')
             ->join('_RefObjChar as c', 'c.ID', '=', 'm.Link')
-            ->leftJoin("{$trans} as mn", 'mn.StrID', '=', 'm.NameStrID128')
-            ->where('m.CodeName128', $this->code)
-            ->select('m.ID', 'm.CodeName128', 'm.ObjName128', 'm.Rarity', 'mn.ENG as NameENG', 'c.Lvl', 'c.MaxHP', 'c.ExpToGive')
+            ->where('m.CodeName128', $this->code);
+
+        static::joinTranslation($q, 'mn', 'm.NameStrID128');
+
+        $row = $q->select('m.ID', 'm.CodeName128', 'm.ObjName128', 'm.Rarity', 'm.NameStrID128', static::engSelect('mn', 'NameENG'), 'c.Lvl', 'c.MaxHP', 'c.ExpToGive')
             ->first();
+
+        if ($row) {
+            static::resolveNames(collect([$row]), 'NameStrID128', 'NameENG');
+        }
+
+        return $row;
     }
 
     /** Direct assigned drops (special/unique materials) */
     public function getAssignedDrops(): Collection
     {
-        $trans = 'SILKROAD_R_ACCOUNT.dbo._Rigid_ItemNameDesc';
         $monster = $this->getMonster();
         if (!$monster) return collect();
 
-        return DB::connection(DatabaseNameEnums::SRO_SHARD->value)
+        $q = DB::connection(DatabaseNameEnums::SRO_SHARD->value)
             ->table('_RefMonster_AssignedItemDrop as d')
             ->join('_RefObjCommon as i', 'i.ID', '=', 'd.RefItemID')
-            ->leftJoin("{$trans} as itn", 'itn.StrID', '=', 'i.NameStrID128')
-            ->where('d.RefMonsterID', $monster->ID)
-            ->select(
+            ->where('d.RefMonsterID', $monster->ID);
+
+        static::joinTranslation($q, 'itn', 'i.NameStrID128');
+
+        $rows = $q->select(
                 'i.CodeName128 as ItemCode',
-                'i.ObjName128 as ItemNameRaw',
-                'itn.ENG as ItemNameENG',
+                'i.NameStrID128 as NameStrID128',
+                static::engSelect('itn', 'ItemNameENG'),
                 'd.DropRatio',
                 'd.DropAmountMin',
                 'd.DropAmountMax',
             )
             ->orderByDesc('d.DropRatio')
             ->get();
+
+        return static::resolveNames($rows, 'NameStrID128', 'ItemNameENG');
     }
 
     /**
@@ -118,7 +129,6 @@ class MonsterDropDetail extends Page
         $monster = $this->getMonster();
         if (!$monster) return [];
 
-        $trans = 'SILKROAD_R_ACCOUNT.dbo._Rigid_ItemNameDesc';
         $db = DB::connection(DatabaseNameEnums::SRO_SHARD->value);
 
         $assignments = $db->table('_RefMonster_AssignedItemRndDrop')
@@ -130,20 +140,25 @@ class MonsterDropDetail extends Page
         $result = [];
 
         foreach ($assignments as $assignment) {
-            $items = $db->table('_RefDropItemGroup as dg')
+            $q = $db->table('_RefDropItemGroup as dg')
                 ->join('_RefObjCommon as i', 'i.ID', '=', 'dg.RefItemID')
-                ->leftJoin("{$trans} as itn", 'itn.StrID', '=', 'i.NameStrID128')
-                ->where('dg.RefItemGroupID', $assignment->RefItemGroupID)
+                ->where('dg.RefItemGroupID', $assignment->RefItemGroupID);
+
+            static::joinTranslation($q, 'itn', 'i.NameStrID128');
+
+            $items = $q
                 ->select(
                     'dg.CodeName128 as GroupCode',
                     'i.CodeName128 as ItemCode',
-                    'i.ObjName128 as ItemNameRaw',
-                    'itn.ENG as ItemNameENG',
+                    'i.NameStrID128 as NameStrID128',
+                    static::engSelect('itn', 'ItemNameENG'),
                     'dg.SelectRatio',
                     'i.CanDrop',
                 )
                 ->orderByDesc('dg.SelectRatio')
                 ->get();
+
+            static::resolveNames($items, 'NameStrID128', 'ItemNameENG');
 
             if ($items->isEmpty()) continue;
 
@@ -205,7 +220,6 @@ class MonsterDropDetail extends Page
         $monster = $this->getMonster();
         if (!$monster) return [];
 
-        $trans = 'SILKROAD_R_ACCOUNT.dbo._Rigid_ItemNameDesc';
         $db    = DB::connection(DatabaseNameEnums::SRO_SHARD->value);
 
         // Collect [ groupId => maxProb ] per pool type
@@ -237,13 +251,17 @@ class MonsterDropDetail extends Page
 
         // --- _RefDropItemGroup pools ---
         foreach ($itemGroupProbs as $groupId => $prob) {
-            $items = $db->table('_RefDropItemGroup as dg')
+            $q = $db->table('_RefDropItemGroup as dg')
                 ->join('_RefObjCommon as i', 'i.ID', '=', 'dg.RefItemID')
-                ->leftJoin("{$trans} as itn", 'itn.StrID', '=', 'i.NameStrID128')
-                ->where('dg.RefItemGroupID', $groupId)
-                ->select('dg.CodeName128 as GroupCode', 'i.CodeName128 as ItemCode', 'i.ObjName128 as ItemNameRaw', 'itn.ENG as ItemNameENG', 'dg.SelectRatio', 'i.CanDrop')
+                ->where('dg.RefItemGroupID', $groupId);
+
+            static::joinTranslation($q, 'itn', 'i.NameStrID128');
+
+            $items = $q->select('dg.CodeName128 as GroupCode', 'i.CodeName128 as ItemCode', 'i.NameStrID128 as NameStrID128', static::engSelect('itn', 'ItemNameENG'), 'dg.SelectRatio', 'i.CanDrop')
                 ->orderByDesc('dg.SelectRatio')
                 ->get();
+
+            static::resolveNames($items, 'NameStrID128', 'ItemNameENG');
 
             if ($items->isEmpty()) continue;
 
@@ -266,13 +284,17 @@ class MonsterDropDetail extends Page
 
         // --- _RefDropItemAssign pools ---
         foreach ($itemAssignProbs as $assignGroup => $prob) {
-            $items = $db->table('_RefDropItemAssign as a')
+            $q = $db->table('_RefDropItemAssign as a')
                 ->join('_RefObjCommon as i', 'i.ID', '=', 'a.RefItemID')
-                ->leftJoin("{$trans} as itn", 'itn.StrID', '=', 'i.NameStrID128')
-                ->where('a.AssignedGroup', $assignGroup)
-                ->select('i.CodeName128 as ItemCode', 'i.ObjName128 as ItemNameRaw', 'itn.ENG as ItemNameENG', 'a.Prob_Relative as SelectRatio', 'a.DropCount', 'i.CanDrop')
+                ->where('a.AssignedGroup', $assignGroup);
+
+            static::joinTranslation($q, 'itn', 'i.NameStrID128');
+
+            $items = $q->select('i.CodeName128 as ItemCode', 'i.NameStrID128 as NameStrID128', static::engSelect('itn', 'ItemNameENG'), 'a.Prob_Relative as SelectRatio', 'a.DropCount', 'i.CanDrop')
                 ->orderByDesc('a.Prob_Relative')
                 ->get();
+
+            static::resolveNames($items, 'NameStrID128', 'ItemNameENG');
 
             if ($items->isEmpty()) continue;
 

@@ -1,6 +1,25 @@
 {
-    "current": "3.0.1",
+    "current": "3.0.2",
     "changelog": {
+        "3.0.2": {
+            "title": "VSRO Compatibility & Item Name Translation",
+            "description": "Full VSRO server support for Monster Drops — no more SQL errors, item names now resolved via _ItemNameDesc just like the Items page.",
+            "released_at": "2026-06-18",
+            "features": [
+                {
+                    "title": "VSRO SQL Fix",
+                    "description": "Removed cross-database join to SILKROAD_R_ACCOUNT.dbo._Rigid_ItemNameDesc which does not exist on VSRO servers."
+                },
+                {
+                    "title": "Item Name Translation on VSRO",
+                    "description": "Drop table item names are now resolved via _ItemNameDesc (same source as the Items page), showing real English names instead of CodeName128."
+                },
+                {
+                    "title": "Monster Name Fallback",
+                    "description": "Monster display names fall back to CodeName128 on VSRO since _ItemNameDesc does not contain monster name entries."
+                }
+            ]
+        },
         "3.0.1": {
             "title": "Monster Drops & Item Detail Fixes",
             "description": "Drop system overhaul with correct tiered pool support, improved monster drop statistics, and fixed gender display on item detail pages.",

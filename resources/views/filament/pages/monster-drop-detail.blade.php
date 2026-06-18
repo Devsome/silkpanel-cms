@@ -2,7 +2,7 @@
     @php
         $monster = $this->getMonster();
         $monsterName = $monster
-            ? (($monster->NameENG && $monster->NameENG !== '0') ? $monster->NameENG : $monster->ObjName128)
+            ? (($monster->NameENG && $monster->NameENG !== '0') ? $monster->NameENG : $monster->CodeName128)
             : null;
     @endphp
 
@@ -38,9 +38,6 @@
                             @endif
                         @endif
                     </div>
-                    @if($monster->ObjName128 && $monster->ObjName128 !== $monsterName)
-                        <div class="text-sm text-gray-500 mt-0.5">{{ $monster->ObjName128 }}</div>
-                    @endif
                     <div class="mt-1 font-mono text-xs text-gray-400">{{ $monster->CodeName128 }}</div>
                 </div>
                 <div class="flex items-center gap-2 shrink-0">
