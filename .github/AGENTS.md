@@ -30,7 +30,8 @@ ddev yarn build
 ```
 resources/views/
 ├── templates/
-│   ├── neon-strike/          ← normal template (Tailwind CSS v4, dark neon)
+│   ├── aether-gate/          ← dark-cosmic MMORPG template (Tailwind CSS v4, CSS custom properties)
+│   ├── neon-strike/          ← dark neon template (Tailwind CSS v4)
 │   ├── gilded-path/          ← reference template (well documented)
 │   └── silkroad-gaming/      ← additional reference template
 └── dashboard/                ← fallback views (no template namespace)
@@ -272,6 +273,29 @@ $package->is_featured
 
 ---
 
+## Silkroad Online Models (package)
+
+All Silkroad Online database models live in the **`packages/silkroad-models`** package, not in `app/Models/`. Before creating a new model for a Silkroad table, always check whether it already exists there.
+
+```
+packages/silkroad-models/src/Models/
+├── Account/          ← sro_account connection (e.g. ItemNameDesc, ISRO/VSRO variants)
+├── Shard/            ← sro_shard connection (e.g. RefObjCommon, RefObjItem, …)
+├── Log/              ← sro_log connection
+├── Custom/           ← sro_custom connection
+└── Portal/           ← sro_portal connection
+```
+
+**Rules:**
+- New Silkroad models must be created inside the appropriate subdirectory of `packages/silkroad-models/src/Models/`.
+- Use `App\Enums\DatabaseNameEnums` for the `$connection` property (e.g. `DatabaseNameEnums::SRO_SHARD->value`).
+- All tables use the `dbo.` schema prefix (e.g. `protected $table = 'dbo._RefObjCommon'`).
+- `public $timestamps = false;` on all Silkroad models.
+- For cross-database joins (e.g. shard → account for name translations), use the fully-qualified MSSQL syntax: `SILKROAD_R_ACCOUNT.dbo._Rigid_ItemNameDesc`.
+- Item/monster name translations: `SILKROAD_R_ACCOUNT.dbo._Rigid_ItemNameDesc`, join on `NameStrID128 = StrID`, English name is in the `ENG` column. Filter out placeholder values (`ENG = '0'`).
+
+---
+
 ## Enums – Conventions
 
 All enums expose `->value` (string) and `->getLabel()` (localised string).
@@ -434,17 +458,26 @@ These are used when `template::tickets.{name}` does not exist. Use these as the 
 
 ## Checklist for New Templates
 
+> **See the full guide at the bottom of this file: [Building a Complete New Template – Full Guide](#building-a-complete-new-template--full-guide)**
+> The checklist below covers general CMS conventions; the full guide adds template-specific pitfalls discovered while building aether-gate.
+
 - [ ] All form field names match the controller validation exactly
 - [ ] `enctype="multipart/form-data"` present on file upload forms
 - [ ] Enum values always compared via `->value`
 - [ ] `->getLabel()` used instead of `__('prefix.' . $enum)` for enum display text
-- [ ] Route names verified before use (`php artisan route:list`)
+- [ ] Route names verified before use (`ddev artisan route:list`)
 - [ ] Translations added for all 8 languages
 - [ ] No apostrophes inside single-quoted PHP strings
 - [ ] Map template uses Leaflet + API — no static `$mapUrl` / `$mapEmbedCode` variables
 - [ ] Voting: `$sites` is a Collection of `['site' => VotingSite, 'can_vote' => bool, 'next_vote' => Carbon|null]`
 - [ ] Ticket fields: `title` / `text` (not `subject` / `message`), `category_id` (not `category`)
 - [ ] No code left after `@endsection` — it will be silently ignored
+- [ ] `auth/register.blade.php` includes `silkroad_id` field + global `@if ($errors->any())` block
+- [ ] `app_name` passed to auth translation keys: `['app_name' => config('app.name')]`
+- [ ] All 4 Livewire ranking views overridden in `livewire/rankings/` (base views use white Tailwind classes)
+- [ ] Both event timer files created: `event-timers.blade.php` (sidebar) + `event-timers-list.blade.php`
+- [ ] Tooltips in equipment/avatar: use `x-teleport="body"` — never `overflow-hidden` on parent card
+- [ ] No `<livewire:rankings.homepage-preview />` — use direct `DB::connection('shard')` query instead
 
 
 ---
@@ -454,7 +487,8 @@ These are used when `template::tickets.{name}` does not exist. Use these as the 
 ```
 resources/views/
 ├── templates/
-│   ├── neon-strike/          ← aktives Template (Tailwind CSS v4, dark neon)
+│   ├── aether-gate/          ← dark-cosmic MMORPG Template (Tailwind CSS v4, CSS Custom Properties)
+│   ├── neon-strike/          ← dark neon Template (Tailwind CSS v4)
 │   ├── gilded-path/          ← Referenz-Template (gut dokumentiert)
 │   └── silkroad-gaming/      ← weiteres Referenz-Template
 └── dashboard/                ← Fallback-Views (kein Template-Namespace)
@@ -510,26 +544,6 @@ Jede Template-Seite verwendet:
     {{-- Seiten-spezifische JS --}}
 @endpush
 ```
-
----
-
-## Design Tokens – neon-strike
-
-| Element | Klassen |
-|---|---|
-| Card | `bg-zinc-900 border border-violet-500/20` |
-| Card hover | `hover:border-violet-500/35` |
-| Primärer Button | `bg-linear-to-r from-violet-600 to-fuchsia-600 text-white shadow-[0_0_20px_rgba(139,92,246,0.4)]` |
-| Button hover | `hover:from-violet-500 hover:to-fuchsia-500` |
-| Section-Label | `text-xs font-mono uppercase tracking-[0.3em] text-violet-400/70` |
-| Gradient-Heading | `bg-gradient-to-r from-violet-400 via-fuchsia-400 to-cyan-400 bg-clip-text text-transparent` |
-| Divider | `h-px bg-linear-to-r from-violet-500/40 to-transparent` |
-| Input | `bg-zinc-950 border border-zinc-700 text-zinc-100 px-3 py-2.5 focus:outline-none focus:border-violet-500 focus:ring-1 focus:ring-violet-500/30 font-mono text-sm transition` |
-| Deaktiviert/Cooldown | `text-zinc-600 border-zinc-800 cursor-not-allowed` |
-| Staff-Farbe | `text-fuchsia-400 border-fuchsia-500/25 bg-fuchsia-500/5` |
-| Fehler | `border-red-500/30 bg-red-500/10 text-red-400` |
-| Erfolg | `border-violet-500/40 bg-violet-500/10 text-violet-300` |
-| Info/Cyan | `text-cyan-400 border-cyan-500/40 bg-cyan-500/10` |
 
 ---
 
@@ -877,14 +891,316 @@ Diese werden verwendet wenn `template::tickets.{name}` nicht existiert. Beim Bau
 
 ## Häufige Fehlerquellen (Checkliste beim neuen Template)
 
+> **Die vollständige Anleitung steht am Ende der Datei (englisch): [Building a Complete New Template – Full Guide](#building-a-complete-new-template--full-guide)**
+
 - [ ] Alle Formularfelder exakt nach Controller-Validierung benennen
 - [ ] `enctype="multipart/form-data"` bei Datei-Uploads
 - [ ] Enum-Werte immer mit `->value` vergleichen
 - [ ] `->getLabel()` statt `__('prefix.' . $enum)` für Enum-Texte
-- [ ] Route-Namen vor Verwendung prüfen (`php artisan route:list`)
+- [ ] Route-Namen vor Verwendung prüfen (`ddev artisan route:list`)
 - [ ] Translations in alle 8 Sprachen hinzufügen
 - [ ] Apostrophe in PHP-Strings: Keine einfachen Hochkommas in Single-Quoted Strings
 - [ ] Map-Template: kein `$mapUrl`/`$mapEmbedCode` — das CMS hat Leaflet + API, keine statische Bild-URL
 - [ ] Voting: `$sites` ist eine Collection von `['site' => VotingSite, 'can_vote' => bool, 'next_vote' => Carbon|null]`
 - [ ] Ticket-Felder: `title`/`text` (nicht `subject`/`message`), `category_id` (nicht `category`)
 - [ ] Kein `@endsection` vergessen — nachfolgender Code außerhalb von `@section` wird ignoriert
+- [ ] `auth/register.blade.php`: `silkroad_id`-Feld + globaler `@if ($errors->any())`-Block vorhanden
+- [ ] `app_name` an Auth-Translation-Keys übergeben: `['app_name' => config('app.name')]`
+- [ ] Alle 4 Livewire-Ranking-Views überschrieben in `livewire/rankings/` (Base-Views nutzen weiße Tailwind-Klassen)
+- [ ] Beide Event-Timer-Dateien angelegt: `event-timers.blade.php` (Sidebar) + `event-timers-list.blade.php`
+- [ ] Tooltips in Equipment/Avatar: `x-teleport="body"` verwenden — kein `overflow-hidden` auf übergeordneten Cards
+- [ ] Kein `<livewire:rankings.homepage-preview />` — stattdessen direkter `DB::connection('shard')`-Query
+
+---
+
+## Building a Complete New Template – Full Guide
+
+This section documents everything learned from building the **aether-gate** template. Follow this to create any new template from scratch.
+
+### 1. Directory Structure
+
+```
+resources/views/templates/{slug}/
+├── template.json                    ← required metadata
+├── layouts/
+│   └── app.blade.php                ← master layout with CSS design system
+├── partials/
+│   ├── navigation.blade.php
+│   └── footer.blade.php
+├── lang/
+│   └── en/                          ← template-specific translations (optional)
+│       ├── index.php
+│       ├── navigation.php
+│       ├── footer.php
+│       ├── ranking.php
+│       └── dashboard.php
+├── livewire/                        ← Livewire component view overrides
+│   ├── event-timers.blade.php       ← sidebar widget (NOT event-timers-list)
+│   ├── event-timers-list.blade.php  ← full list page
+│   └── rankings/
+│       ├── character-ranking.blade.php
+│       ├── guild-ranking.blade.php
+│       ├── unique-ranking.blade.php
+│       └── custom-ranking.blade.php
+├── welcome.blade.php
+├── dashboard.blade.php
+├── news/
+│   ├── index.blade.php
+│   └── show.blade.php
+├── ranking/
+│   ├── characters.blade.php
+│   ├── guilds.blade.php
+│   ├── character-detail.blade.php
+│   └── partials/
+│       ├── equipment.blade.php
+│       └── avatar.blade.php
+├── auth/
+│   ├── login.blade.php
+│   ├── register.blade.php
+│   ├── forgot-password.blade.php
+│   └── reset-password.blade.php
+├── errors/
+│   ├── 404.blade.php
+│   └── ... (401, 403, 419, 429, 500, 503)
+└── ... (webmall, donation, tickets, voting, downloads, terms)
+```
+
+### 2. template.json
+
+```json
+{
+    "name": "My Template Name",
+    "slug": "my-template-slug",
+    "version": "1.0.0"
+}
+```
+
+### 3. Template-Specific Language Files
+
+`TemplateServiceProvider` **automatically** loads `resources/views/templates/{slug}/lang/` if it exists. No registration needed. Use this for keys that differ from global lang files or are template-exclusive.
+
+```php
+// resources/views/templates/my-template/lang/en/index.php
+return [
+    'players_online'  => 'Players Online',
+    'live'            => 'Live',
+    'featured'        => 'Featured',
+    'read_more'       => 'Read More',
+    // ...
+];
+```
+
+Template lang keys override global keys of the same name within the template. Global keys still work — only add keys that are missing or need different wording.
+
+**Keys frequently missing from global lang that templates need:**
+- `index.players_online`, `index.live`, `index.featured`, `index.read_more`, `index.max_capacity`
+- `index.server_rates`, `index.download_client`, `index.download_now`, `index.get_started`
+- `navigation.donation`
+- `footer.all_rights_reserved`, `footer.account`, `footer.navigation`
+- `ranking.slots_equipped`, `ranking.rank`
+- `dashboard.level`, `dashboard.recent_purchases`
+
+### 4. Livewire Component View Resolution
+
+Livewire components resolve their views via `template::livewire.*`. The base views in `resources/views/livewire/` use hardcoded Tailwind light/dark classes (`bg-white dark:bg-gray-900` etc.) — they will look broken in dark custom templates.
+
+**Always create overrides for all ranking components:**
+
+```
+livewire/rankings/character-ranking.blade.php
+livewire/rankings/guild-ranking.blade.php
+livewire/rankings/unique-ranking.blade.php
+livewire/rankings/custom-ranking.blade.php
+```
+
+**Event timers — two separate components:**
+- `EventTimers` → renders `template::livewire.event-timers` (sidebar widget, compact)
+- `EventTimersList` → renders `template::livewire.event-timers-list` (full list page)
+
+Both need separate template override files.
+
+### 5. News Model Field Names
+
+```php
+// CORRECT                          // WRONG
+$news->name                         $news->title
+$news->content                      $news->body / $news->excerpt
+$news->published_at                 // raw string — NOT cast to Carbon!
+$news->slug
+$news->thumbnail                    // path only, use asset('storage/' . $news->thumbnail)
+
+// Always wrap published_at in Carbon::parse():
+\Carbon\Carbon::parse($news->published_at)->diffForHumans()
+\Carbon\Carbon::parse($news->published_at)->format('d M Y')
+
+// For excerpts:
+\Illuminate\Support\Str::limit(strip_tags($news->content), 160)
+```
+
+### 6. Guild Ranking – Crest Images
+
+The `_Guild` table has a `CrestIcon` binary column. Do NOT render it directly — it will output cryptic strings. The Livewire component exposes a computed `CrestDataUri` property (base64 data URI):
+
+```blade
+{{-- In guild-ranking.blade.php override: --}}
+@if ($col['column'] === 'CrestIcon' && !empty($row->CrestDataUri))
+    <img src="{{ $row->CrestDataUri }}" alt="Crest" class="w-8 h-8">
+@else
+    {{ e((string) $value) }}
+@endif
+```
+
+### 7. Tooltip / Popover Overflow Fix
+
+Item tooltips in equipment/avatar partials use absolute positioning and get clipped by `overflow-hidden` on parent cards. Fix: use Alpine.js `x-teleport="body"` with `position: fixed` coordinates from `getBoundingClientRect()`.
+
+```blade
+<div x-data="{ show: false, tx: 0, ty: 0 }"
+     @mouseenter="show = true; let r = $el.getBoundingClientRect(); tx = r.right + 10; ty = r.top"
+     @mouseleave="show = false">
+
+    <button>...</button>
+
+    <template x-teleport="body">
+        <div x-show="show" x-cloak
+             :style="`position:fixed;left:${tx}px;top:${ty}px;z-index:9999;pointer-events:none;`">
+            <x-characters.inventory-tooltip :item="$info" :inline="true" />
+        </div>
+    </template>
+</div>
+```
+
+For right-side slots (tooltip should appear to the left):
+```blade
+:style="`position:fixed;right:${window.innerWidth - tx}px;top:${ty}px;z-index:9999;pointer-events:none;`"
+```
+where `tx = r.left - 10`.
+
+**Never use `overflow-hidden` on cards that contain absolute-positioned tooltips.**
+
+### 8. Homepage Rankings (welcome.blade.php)
+
+There is **no** `<livewire:rankings.homepage-preview />` component. Query the shard DB directly and cache the result:
+
+```php
+$topChars = \Illuminate\Support\Facades\Cache::remember('homepage.ranking.chars', 300, function () {
+    try {
+        return \Illuminate\Support\Facades\DB::connection('shard')
+            ->table('_Char as chars')
+            ->leftJoin('_Guild as g', 'chars.GuildID', '=', 'g.ID')
+            ->where('chars.DeletedDate', '=', '0001-01-01 00:00:00.000')
+            ->where('chars.CharType', 0)
+            ->orderByDesc('chars.CurLevel')
+            ->orderByDesc('chars.Exp')
+            ->limit(5)
+            ->select(['chars.CharName16', 'chars.CurLevel', 'g.Name as GuildName'])
+            ->get();
+    } catch (\Exception $e) {
+        return collect();
+    }
+});
+```
+
+### 9. Register Form – Required Fields
+
+The `RegisteredUserController` validates these fields — all must be present in the form:
+
+```
+name          → display name
+silkroad_id   → game account username (validated by usernameRules())
+email
+password
+password_confirmation
+terms         → only if tos_enabled setting is true
+referral      → optional
+```
+
+Always add a global error block at the top of auth forms:
+
+```blade
+@if ($errors->any())
+    <div class="...error styles...">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+```
+
+Always pass `app_name` to auth translation keys:
+```blade
+{{ __('auth/login.title', ['app_name' => config('app.name')]) }}
+{{ __('auth/register.title', ['app_name' => config('app.name')]) }}
+```
+
+### 10. CSS Design System Pattern (layouts/app.blade.php)
+
+Define all design tokens as CSS custom properties in `:root`, then build utility classes on top. This makes theming consistent and avoids Tailwind class conflicts.
+
+```css
+:root {
+    --{prefix}-primary: #22d3ee;
+    --{prefix}-secondary: #fbbf24;
+    --{prefix}-background: #06080f;
+    --{prefix}-surface-container: #0d1224;
+    --{prefix}-surface-container-low: #080c1a;
+    --{prefix}-outline: rgba(255,255,255,0.07);
+    --{prefix}-outline-variant: rgba(255,255,255,0.04);
+    --{prefix}-on-surface: #e2e8f0;
+    --{prefix}-muted: #64748b;
+}
+
+/* Then utility classes: */
+.{prefix}-card { background: var(--{prefix}-surface-container); border: 1px solid var(--{prefix}-outline); }
+.{prefix}-btn-primary { background: var(--{prefix}-primary); ... }
+.{prefix}-text-primary { color: var(--{prefix}-primary); }
+.{prefix}-text-muted { color: var(--{prefix}-muted); }
+.{prefix}-divider { border-color: var(--{prefix}-outline); }
+.{prefix}-font-display { font-family: 'YourDisplayFont', sans-serif; }
+.{prefix}-font-mono { font-family: 'YourMonoFont', monospace; }
+.{prefix}-stat-number { font-family: 'YourMonoFont'; color: var(--{prefix}-primary); }
+.{prefix}-section-eyebrow { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--{prefix}-primary); }
+.{prefix}-section-title { font-size: 1.5rem; font-weight: 700; color: var(--{prefix}-on-surface); }
+.{prefix}-badge { display: inline-flex; align-items: center; padding: 2px 8px; font-size: 0.65rem; }
+.{prefix}-input { background: var(--{prefix}-surface-container-low); border: 1px solid var(--{prefix}-outline); color: var(--{prefix}-on-surface); }
+.{prefix}-table th { ... }
+.{prefix}-table td { ... }
+.{prefix}-rank-1 { color: #fbbf24; }  /* gold */
+.{prefix}-rank-2 { color: #94a3b8; }  /* silver */
+.{prefix}-rank-3 { color: #b45309; }  /* bronze */
+```
+
+Use `@templateStyles` (provided by the layout system) and `@stack('styles')` / `@stack('scripts')` in the layout.
+
+### 11. Page-Specific CSS Animations
+
+Add per-page CSS inside `@push('styles')` blocks, not in the layout:
+
+```blade
+@push('styles')
+<style>
+    @keyframes my-animation { from { opacity: 0; } to { opacity: 1; } }
+    .my-element { animation: my-animation 0.4s ease both; }
+</style>
+@endpush
+```
+
+### 12. Complete Template Checklist
+
+- [ ] `template.json` created with correct slug
+- [ ] `layouts/app.blade.php` defines full CSS design system with prefixed CSS variables
+- [ ] Google Fonts loaded in layout (choose distinctive fonts — NOT Inter/Roboto/Arial)
+- [ ] `partials/navigation.blade.php` and `partials/footer.blade.php` created
+- [ ] All 4 Livewire ranking overrides created (`livewire/rankings/*.blade.php`)
+- [ ] Both event timer overrides created (`livewire/event-timers.blade.php` + `event-timers-list.blade.php`)
+- [ ] Template-specific lang files created for missing global keys
+- [ ] `auth/register.blade.php` includes `silkroad_id` field + global error block + `app_name` in translation
+- [ ] `auth/login.blade.php` passes `app_name` to translation
+- [ ] Equipment/avatar partials use `x-teleport="body"` for tooltips — no `overflow-hidden` on parent cards
+- [ ] Guild ranking partial handles `CrestDataUri` (not `CrestIcon` raw binary)
+- [ ] `News` model: use `->name`, `->content`, `Carbon::parse($news->published_at)`
+- [ ] Homepage rankings: direct `DB::connection('shard')` query with `Cache::remember()` — no livewire component
+- [ ] No hardcoded percentage values in progress bars — always compute from real data or omit
+- [ ] `@push('styles')` used for page-specific CSS, not inline `<style>` in layout
