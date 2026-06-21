@@ -82,6 +82,11 @@ class AdminPanelProvider extends PanelProvider
         );
 
         FilamentView::registerRenderHook(
+            PanelsRenderHook::GLOBAL_SEARCH_BEFORE,
+            fn() => auth()->check() ? \Illuminate\Support\Facades\Blade::render('<livewire:clear-cache-button />') : '',
+        );
+
+        FilamentView::registerRenderHook(
             PanelsRenderHook::BODY_START,
             fn() => auth()->check() ? "<livewire:version-check />" : '',
         );

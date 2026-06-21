@@ -1,6 +1,25 @@
 <?php
 
 return [
+    'widget_job_distribution' => [
+        'heading'     => 'Job Distribution',
+        'description' => 'Primary job of each character',
+        'hunter'      => 'Hunter',
+        'trader'      => 'Trader',
+        'thief'       => 'Thief',
+        'jobless'     => 'Jobless',
+        'no_data'     => 'No job data yet',
+    ],
+
+    'widget_level_distribution' => [
+        'heading'       => 'Player Level Distribution',
+        'description'   => 'Number of characters per level range',
+        'dataset_label' => 'Characters',
+        'x_label'       => 'Level Range',
+        'y_label'       => 'Players',
+        'players'       => 'players',
+    ],
+
     'navigation' => 'Characters',
     'navigation_parent' => 'Settings',
 

@@ -1,6 +1,25 @@
 {
-    "current": "3.0.3",
+    "current": "3.0.4",
     "changelog": {
+        "3.0.4": {
+            "title": "Cache Management Widget",
+            "description": "Added a quick cache-clear and optimize button to the admin topbar, plus a new player level distribution chart on the dashboard.",
+            "released_at": "2026-06-22",
+            "features": [
+                {
+                    "title": "Clear Cache Button",
+                    "description": "Topbar button with confirmation modal to clear application, config, view, and route caches without leaving the page."
+                },
+                {
+                    "title": "Optimize Button",
+                    "description": "Runs php artisan optimize directly from the same modal to cache the app for production."
+                },
+                {
+                    "title": "Player Level Distribution Widget",
+                    "description": "Dashboard bar chart showing character counts grouped by 10-level ranges, using the configured level cap or the highest character level."
+                }
+            ]
+        },
         "3.0.3": {
             "title": "updated composer.lock and added version numbers to package composer.json files",
             "description": "Updated composer.lock with latest package versions and added explicit version numbers to each package's composer.json for better clarity and dependency management.",

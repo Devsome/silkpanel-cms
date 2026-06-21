@@ -34,6 +34,7 @@ class Dashboard extends BaseDashboard
             \SilkPanel\WidgetsDashboard\Widgets\StatsOverviewWidget::class,
             \SilkPanel\WidgetsDashboard\Widgets\PackageUpdateWidget::class,
             \SilkPanel\WidgetsDashboard\Widgets\LicenseOverviewWidget::class,
+            \App\Filament\Widgets\PlayerLevelDistributionWidget::class,
         ];
     }
 }
