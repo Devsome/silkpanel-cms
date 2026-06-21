@@ -1,6 +1,25 @@
 {
-    "current": "3.0.4",
+    "current": "3.0.5",
     "changelog": {
+        "3.0.5": {
+            "title": ".env Editor",
+            "description": "Added a secure, permission-gated .env editor to the admin topbar so server configuration can be changed without SSH or FTP access.",
+            "released_at": "2026-06-22",
+            "features": [
+                {
+                    "title": "Edit .env Button",
+                    "description": "New topbar icon visible only to Administrators, opening a password-confirmed editor for the application's .env file."
+                },
+                {
+                    "title": "Password Re-Confirmation",
+                    "description": "Requires re-entering the account password before the editor opens, reusing Laravel's standard password-confirmation session window."
+                },
+                {
+                    "title": "Direct File Read/Write",
+                    "description": "Loads the current .env contents on open and writes changes straight back to disk, with clear error handling if the file isn't writable."
+                }
+            ]
+        },
         "3.0.4": {
             "title": "Cache Management Widget",
             "description": "Added a quick cache-clear and optimize button to the admin topbar, plus a new player level distribution chart on the dashboard.",

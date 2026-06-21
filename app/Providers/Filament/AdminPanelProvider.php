@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Enums\UsergroupRoleEnums;
 use App\Filament\Pages\Dashboard;
 use App\Http\Middleware\FilamentAdminMiddleware;
 use Filament\Enums\GlobalSearchPosition;
@@ -89,6 +90,13 @@ class AdminPanelProvider extends PanelProvider
         FilamentView::registerRenderHook(
             PanelsRenderHook::BODY_START,
             fn() => auth()->check() ? "<livewire:version-check />" : '',
+        );
+
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::TOPBAR_END,
+            fn() => (auth()->check() && auth()->user()->hasRole(UsergroupRoleEnums::ADMIN->value))
+                ? \Illuminate\Support\Facades\Blade::render('<livewire:env-editor />')
+                : '',
         );
 
         $ticketSystemPluginClass = 'SilkPanel\\TicketSystem\\TicketSystemPlugin';
