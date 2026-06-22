@@ -76,7 +76,7 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-sm">
-                                            <a href="{{ route('ranking.characters.show', $member->CharID) }}"
+                                            <a href="{{ route('ranking.characters.show', $member->slug) }}"
                                                 class="inline-flex items-center gap-1.5 font-medium gp-text-primary hover:text-yellow-300 transition">
                                                 @if ((int) $member->MemberClass === 0)
                                                     <x-filament::icon icon="heroicon-m-star"

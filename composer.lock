@@ -5225,11 +5225,11 @@
         },
         {
             "name": "silkpanel/silkroad-models",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.devso.me/dist/silkpanel/silkroad-models/silkpanel-silkroad-models-61a81a49a18f28cc080171b6c149829a452b0865-path.zip",
-                "shasum": "df6d10bf735852be3b42aab5f3de16255d0dee6d"
+                "url": "https://composer.devso.me/dist/silkpanel/silkroad-models/silkpanel-silkroad-models-f7dc5351342fc9c112d8bd4e393b0eb716a854b4-path.zip",
+                "shasum": "fe501748596033a54673de2a440283a7850e8be8"
             },
             "require": {
                 "laravel/framework": "^12.0",

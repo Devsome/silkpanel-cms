@@ -52,9 +52,9 @@ Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show')
 // Rankings (public)
 Route::prefix('ranking')->name('ranking.')->group(function () {
     Route::get('/characters', fn() => view('template::ranking.characters'))->name('characters');
-    Route::get('/characters/{id}', [RankingController::class, 'showCharacter'])->name('characters.show')->where('id', '[0-9]+');
+    Route::get('/characters/{idOrSlug}', [RankingController::class, 'showCharacter'])->name('characters.show');
     Route::get('/guilds', fn() => view('template::ranking.guilds'))->name('guilds');
-    Route::get('/guilds/{id}', [RankingController::class, 'showGuild'])->name('guilds.show')->where('id', '[0-9]+');
+    Route::get('/guilds/{idOrSlug}', [RankingController::class, 'showGuild'])->name('guilds.show');
     Route::get('/uniques', fn() => view('template::ranking.uniques'))->name('uniques');
     Route::get('/custom/{key?}', fn(?string $key = null) => view('template::ranking.custom', [
         'rankingKey' => $key,

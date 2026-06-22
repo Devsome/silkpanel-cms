@@ -56,7 +56,7 @@
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                     @php $value = $row->{$col['column']} ?? '—'; @endphp
                                     @if ($col['column'] === 'Name')
-                                        <a href="{{ route('ranking.guilds.show', $row->ID) }}"
+                                        <a href="{{ route('ranking.guilds.show', Str::slug($row->Name ?? '') ?: $row->ID) }}"
                                             class="font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
                                             {{ e((string) $value) }}
                                         </a>

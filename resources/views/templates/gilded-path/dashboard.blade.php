@@ -171,7 +171,7 @@
                 @else
                     <div class="divide-y" style="border-color:rgba(242,202,80,0.1);">
                         @foreach ($characters as $char)
-                            <a href="{{ route('ranking.characters.show', $char->CharID) }}"
+                            <a href="{{ route('ranking.characters.show', $char->slug) }}"
                                 class="flex items-center gap-4 py-3 -mx-6 px-6 hover:gp-card-lowest transition">
                                 <img src="{{ $char->avatar_url }}" alt="{{ $char->CharName16 }}"
                                     class="w-10 h-10 rounded-full object-cover gp-card-lowest" loading="lazy">

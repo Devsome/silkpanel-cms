@@ -55,12 +55,12 @@
                                 <td class="px-4 py-3 whitespace-nowrap text-sm gp-text-on-surface">
                                     @php $value = $row->{$col['column']} ?? '—'; @endphp
                                     @if ($col['column'] === 'CharName16')
-                                        <a href="{{ route('ranking.characters.show', $row->CharID) }}"
+                                        <a href="{{ route('ranking.characters.show', Str::slug($row->CharName16 ?? '') ?: $row->CharID) }}"
                                             class="font-medium gp-text-primary hover:text-yellow-300 hover:underline transition-colors">
                                             {{ e((string) $value) }}
                                         </a>
                                     @elseif ($col['column'] === 'GuildName' && !empty($row->GuildID))
-                                        <a href="{{ route('ranking.guilds.show', $row->GuildID) }}"
+                                        <a href="{{ route('ranking.guilds.show', Str::slug($row->GuildName ?? '') ?: $row->GuildID) }}"
                                             class="gp-text-primary hover:text-yellow-300 hover:underline transition-colors">
                                             {{ e((string) $value) }}
                                         </a>

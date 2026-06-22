@@ -66,7 +66,7 @@
                                     <tr class="{{ (int) $member->MemberClass === 0 ? 'bg-cyan-900/10' : '' }}">
                                         <td class="ag-text-muted">{{ $loop->iteration }}</td>
                                         <td>
-                                            <a href="{{ route('ranking.characters.show', $member->CharID) }}"
+                                            <a href="{{ route('ranking.characters.show', $member->slug) }}"
                                                 class="inline-flex items-center gap-1.5 font-medium ag-text-primary hover:opacity-80 transition">
                                                 @if ((int) $member->MemberClass === 0)
                                                     <svg class="h-4 w-4 ag-stat-amber" fill="currentColor" viewBox="0 0 24 24">

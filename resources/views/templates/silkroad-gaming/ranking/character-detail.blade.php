@@ -23,7 +23,7 @@
                             {{ e($character->CharName16) }}
                         </h1>
                         @if ($character->guild && $character->guild->ID !== 0)
-                            <a href="{{ route('ranking.guilds.show', $character->guild->ID) }}"
+                            <a href="{{ route('ranking.guilds.show', $character->guild->slug) }}"
                                 class="mt-2 inline-flex items-center gap-1 text-sm text-emerald-400 hover:text-emerald-300 transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

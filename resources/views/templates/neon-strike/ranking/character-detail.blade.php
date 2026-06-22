@@ -29,7 +29,7 @@
                             class="bg-linear-to-r from-violet-300 via-fuchsia-300 to-cyan-300 bg-clip-text text-transparent">{{ e($character->CharName16) }}</span>
                     </h1>
                     @if ($character->guild && $character->guild->ID !== 0)
-                        <a href="{{ route('ranking.guilds.show', $character->guild->ID) }}"
+                        <a href="{{ route('ranking.guilds.show', $character->guild->slug) }}"
                             class="inline-flex items-center gap-2 px-3 py-1.5 border border-fuchsia-500/30 bg-fuchsia-500/10 text-fuchsia-300 text-xs font-mono uppercase tracking-wider hover:border-fuchsia-500/60 transition mb-4">
                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

@@ -190,7 +190,7 @@
                     @if ($character->guild && $character->guild->ID !== 0)
                         <div class="h-4 w-px" style="background: var(--ag-outline);"></div>
                         {{-- Guild --}}
-                        <a href="{{ route('ranking.guilds.show', $character->guild->ID) }}"
+                        <a href="{{ route('ranking.guilds.show', $character->guild->slug) }}"
                             class="flex items-center gap-2 hover:opacity-80 transition-opacity">
                             <svg class="w-4 h-4 ag-text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

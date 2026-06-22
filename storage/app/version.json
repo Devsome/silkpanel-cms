@@ -1,6 +1,25 @@
 {
-    "current": "3.0.5",
+    "current": "3.0.6",
     "changelog": {
+        "3.0.6": {
+            "title": "Readable Ranking URLs",
+            "description": "Character and guild ranking pages now use name-based slugs in the URL instead of raw database IDs, with old numeric links still working.",
+            "released_at": "2026-06-22",
+            "features": [
+                {
+                    "title": "Character Slug URLs",
+                    "description": "/ranking/characters/{id} links now use the character name as a slug, e.g. /ranking/characters/devsome, falling back to the numeric ID when needed."
+                },
+                {
+                    "title": "Guild Slug URLs",
+                    "description": "/ranking/guilds/{id} links now use the guild name as a slug, e.g. /ranking/guilds/devguild, falling back to the numeric ID when needed."
+                },
+                {
+                    "title": "Backwards Compatible",
+                    "description": "Existing bookmarked or shared links using the numeric character/guild ID continue to resolve correctly."
+                }
+            ]
+        },
         "3.0.5": {
             "title": ".env Editor",
             "description": "Added a secure, permission-gated .env editor to the admin topbar so server configuration can be changed without SSH or FTP access.",

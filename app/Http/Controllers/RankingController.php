@@ -12,15 +12,33 @@ class RankingController extends Controller
     private const EQUIPMENT_MIN_SLOTS = 0;
     private const EQUIPMENT_NOT_SLOTS = [8];
 
-    public function showCharacter(int $id)
+    public function showCharacter(string $idOrSlug)
     {
         /** @var AbstractChar $charModel */
         $charModel = app(AbstractChar::class);
 
-        $character = $charModel::query()
-            ->where('CharID', $id)
-            ->where('deleted', 0)
-            ->firstOrFail();
+        $character = null;
+
+        if (ctype_digit($idOrSlug)) {
+            $character = $charModel::query()
+                ->where('CharID', $idOrSlug)
+                ->where('deleted', 0)
+                ->first();
+        }
+
+        if (!$character) {
+            $charId = $charModel::query()
+                ->where('deleted', 0)
+                ->get(['CharID', 'CharName16'])
+                ->first(fn (AbstractChar $char) => $char->slug === $idOrSlug)
+                ?->CharID;
+
+            $character = $charId
+                ? $charModel::query()->where('CharID', $charId)->where('deleted', 0)->first()
+                : null;
+        }
+
+        abort_unless($character, 404);
 
         $character->load('guild');
 
@@ -43,11 +61,24 @@ class RankingController extends Controller
         ]);
     }
 
-    public function showGuild(int $id)
+    public function showGuild(string $idOrSlug)
     {
-        $guild = Guild::query()
-            ->where('ID', $id)
-            ->firstOrFail();
+        $guild = null;
+
+        if (ctype_digit($idOrSlug)) {
+            $guild = Guild::query()->where('ID', $idOrSlug)->first();
+        }
+
+        if (!$guild) {
+            $guildId = Guild::query()
+                ->get(['ID', 'Name'])
+                ->first(fn (Guild $g) => $g->slug === $idOrSlug)
+                ?->ID;
+
+            $guild = $guildId ? Guild::query()->where('ID', $guildId)->first() : null;
+        }
+
+        abort_unless($guild, 404);
 
         $members = $guild->guildMembers()
             ->orderBy('JoinDate', 'asc')

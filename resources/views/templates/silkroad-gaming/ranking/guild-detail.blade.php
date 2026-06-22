@@ -90,7 +90,7 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class="px-4 py-3 whitespace-nowrap text-sm">
-                                            <a href="{{ route('ranking.characters.show', $member->CharID) }}"
+                                            <a href="{{ route('ranking.characters.show', $member->slug) }}"
                                                 class="inline-flex items-center gap-1.5 font-medium text-emerald-400 hover:text-emerald-300 transition">
                                                 @if ((int) $member->MemberClass === 0)
                                                     <svg class="w-4 h-4 text-amber-400" fill="currentColor"

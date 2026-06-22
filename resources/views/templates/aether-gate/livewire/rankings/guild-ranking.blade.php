@@ -38,7 +38,7 @@
                                 <td>
                                     @php $value = $row->{$col['column']} ?? '—'; @endphp
                                     @if ($col['column'] === 'Name')
-                                        <a href="{{ route('ranking.guilds.show', $row->ID) }}"
+                                        <a href="{{ route('ranking.guilds.show', Str::slug($row->Name ?? '') ?: $row->ID) }}"
                                             class="font-semibold ag-text-surface hover:ag-text-primary transition-colors">
                                             {{ e((string) $value) }}
                                         </a>

@@ -39,12 +39,12 @@
                                 <td>
                                     @php $value = $row->{$col['column']} ?? '—'; @endphp
                                     @if ($col['column'] === 'CharName16')
-                                        <a href="{{ route('ranking.characters.show', $row->CharID) }}"
+                                        <a href="{{ route('ranking.characters.show', Str::slug($row->CharName16 ?? '') ?: $row->CharID) }}"
                                             class="font-semibold ag-text-surface hover:ag-text-primary transition-colors">
                                             {{ e((string) $value) }}
                                         </a>
                                     @elseif ($col['column'] === 'GuildName' && !empty($row->GuildID))
-                                        <a href="{{ route('ranking.guilds.show', $row->GuildID) }}"
+                                        <a href="{{ route('ranking.guilds.show', Str::slug($row->GuildName ?? '') ?: $row->GuildID) }}"
                                             class="ag-text-muted hover:ag-text-primary transition-colors">
                                             {{ e((string) $value) }}
                                         </a>

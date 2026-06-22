@@ -180,7 +180,7 @@
                 @else
                     <div class="divide-y divide-gray-100 dark:divide-gray-700">
                         @foreach ($characters as $char)
-                            <a href="{{ route('ranking.characters.show', $char->CharID) }}"
+                            <a href="{{ route('ranking.characters.show', $char->slug) }}"
                                 class="flex items-center gap-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/40 -mx-6 px-6 transition">
                                 <img src="{{ $char->avatar_url }}" alt="{{ $char->CharName16 }}"
                                     class="w-10 h-10 rounded-full object-cover bg-gray-100 dark:bg-gray-700"

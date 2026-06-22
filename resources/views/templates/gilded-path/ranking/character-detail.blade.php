@@ -21,7 +21,7 @@
                             {{ e($character->CharName16) }}
                         </h1>
                         @if ($character->guild && $character->guild->ID !== 0)
-                            <a href="{{ route('ranking.guilds.show', $character->guild->ID) }}"
+                            <a href="{{ route('ranking.guilds.show', $character->guild->slug) }}"
                                 class="mt-2 inline-flex items-center gap-1 text-sm gp-text-primary hover:text-yellow-300 transition">
                                 {{ e($character->guild->Name) }}
                             </a>

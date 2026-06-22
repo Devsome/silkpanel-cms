@@ -58,7 +58,7 @@
                             <tr
                                 class="hover:bg-violet-500/5 transition {{ (int) $member->MemberClass === 0 ? 'bg-amber-500/5' : '' }}">
                                 <td class="px-5 py-3">
-                                    <a href="{{ route('ranking.characters.show', $member->CharID) }}"
+                                    <a href="{{ route('ranking.characters.show', $member->slug) }}"
                                         class="inline-flex items-center gap-1.5 font-medium text-zinc-200 hover:text-violet-300 transition font-mono text-xs uppercase tracking-wide">
                                         @if ((int) $member->MemberClass === 0)
                                             <svg class="w-3.5 h-3.5 text-amber-400 shrink-0" fill="currentColor"
