@@ -1,6 +1,11 @@
 {
-    "current": "3.0.6",
+    "current": "3.0.7",
     "changelog": {
+        "3.0.7": {
+            "title": "HipoPay Payment Gateway",
+            "description": "added a minor fix to the redirect url",
+            "released_at": "2026-06-29"
+        },
         "3.0.6": {
             "title": "Readable Ranking URLs",
             "description": "Character and guild ranking pages now use name-based slugs in the URL instead of raw database IDs, with old numeric links still working.",

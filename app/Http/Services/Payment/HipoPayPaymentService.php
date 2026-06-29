@@ -72,7 +72,12 @@ class HipoPayPaymentService implements PaymentServiceInterface
             'payment_data' => $data,
         ]);
 
-        $redirectUrl = $data['url'] ?? $data['redirect_url'] ?? null;
+        $redirectUrl =
+            $data['url']
+            ?? $data['redirect_url']
+            ?? $data['payment_url']
+            ?? $data['data']['payment_url']
+            ?? null;
 
         if (!$redirectUrl) {
             throw new \RuntimeException('HipoPay redirect URL not found in response.');
