@@ -1,6 +1,11 @@
 {
-    "current": "3.0.7",
+    "current": "3.0.8",
     "changelog": {
+        "3.0.8": {
+            "title": "Composer packages upgraded",
+            "description": "upgraded composer packages to latest versions",
+            "released_at": "2026-07-03"
+        },
         "3.0.7": {
             "title": "HipoPay Payment Gateway",
             "description": "added a minor fix to the redirect url",
