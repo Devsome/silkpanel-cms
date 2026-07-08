@@ -93,9 +93,7 @@ class HipoPayPaymentService implements PaymentServiceInterface
 
     public function handleWebhook(array $payload, array $headers): ?string
     {
-        $status = $payload['status'] ?? '';
-
-        if ($status !== 'completed' && $status !== 'COMPLETED') {
+        if (($payload['status'] ?? '') !== 'success') {
             return null;
         }
 
