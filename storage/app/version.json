@@ -1,6 +1,11 @@
 {
-    "current": "3.0.8",
+    "current": "3.0.9",
     "changelog": {
+        "3.0.9": {
+            "title": "HipoPayPayment Service",
+            "description": "Update webhook status check to 'success'",
+            "released_at": "2026-07-08"
+        },
         "3.0.8": {
             "title": "Composer packages upgraded",
             "description": "upgraded composer packages to latest versions",
