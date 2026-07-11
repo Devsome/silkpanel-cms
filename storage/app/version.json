@@ -1,6 +1,21 @@
 {
-    "current": "3.0.9",
+    "current": "3.1.0",
     "changelog": {
+        "3.1.0": {
+            "title": "trustProxies & CVE",
+            "description": "Changed trustProxies to wildcard and fixed some CVEs",
+            "released_at": "2026-07-11",
+            "features": [
+                {
+                    "title": "Cloudflare",
+                    "description": "Closed Ticket #27"
+                },
+                {
+                    "title": "CVE Fixes",
+                    "description": "CVE-2026-48505, CVE-2026-45075, CVE-2026-45067 and more"
+                }
+            ]
+        },
         "3.0.9": {
             "title": "HipoPayPayment Service",
             "description": "Update webhook status check to 'success'",
