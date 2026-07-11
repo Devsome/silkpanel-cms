@@ -14,6 +14,7 @@ return [
         'tabs' => [
             'general' => 'General',
             'silkroad_online' => 'Silkroad Online',
+            'fake_players' => 'Fake Players',
             'page_info' => 'Page Info',
             'design' => 'Design',
             'features' => 'Features',
@@ -56,6 +57,28 @@ return [
             'ip_limit' => 'IP Limit',
             'ip_limit_description' => 'Maximum accounts per IP',
             'fortress_war' => 'Fortress War',
+        ],
+
+        'fake_players' => [
+            'enabled' => 'Enable fake player count',
+            'enabled_description' => 'Adds a stable, randomised offset on top of the real online player count shown publicly. The real count stored on the server is never changed.',
+            'interval' => 'Refresh interval',
+            'interval_description' => 'How long a generated fake value stays stable before a new one is picked.',
+            'interval_suffix' => 'minutes',
+            'rules' => 'Range rules',
+            'rules_description' => 'Map real player count ranges to a fake offset range. Rules are evaluated top to bottom and the first matching range is used. Real ranges must not overlap.',
+            'real_min' => 'Real min',
+            'real_max' => 'Real max',
+            'fake_min' => 'Fake min',
+            'fake_max' => 'Fake max',
+            'rule_label' => 'Real :min–:max',
+            'validation' => [
+                'title' => 'Invalid fake player rules',
+                'invalid_number' => 'Row :row: all values must be positive whole numbers.',
+                'real_order' => 'Row :row: the real minimum must be less than or equal to the real maximum.',
+                'fake_order' => 'Row :row: the fake minimum must be less than or equal to the fake maximum.',
+                'overlap' => 'Row :row: the real range overlaps with row :other. Ranges must not overlap.',
+            ],
         ],
 
         'design' => [
