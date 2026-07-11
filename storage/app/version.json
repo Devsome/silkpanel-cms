@@ -1,6 +1,21 @@
 {
-    "current": "3.1.0",
+    "current": "3.1.1",
     "changelog": {
+        "3.1.1": {
+            "title": "Fake Player Count",
+            "description": "Licensed users can add a stable, randomised offset to the public online player count via new range rules in Page Settings.",
+            "released_at": "2026-07-11",
+            "features": [
+                {
+                    "title": "Fake Player Settings",
+                    "description": "New license-gated tab in Page Settings to define real-to-fake player count range rules with a global toggle."
+                },
+                {
+                    "title": "Stable Offset",
+                    "description": "The fake offset stays consistent within a configurable time window (default 10 minutes) and never changes the real server count."
+                }
+            ]
+        },
         "3.1.0": {
             "title": "trustProxies & CVE",
             "description": "Changed trustProxies to wildcard and fixed some CVEs",

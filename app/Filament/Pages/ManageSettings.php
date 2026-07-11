@@ -5,8 +5,9 @@ namespace App\Filament\Pages;
 use App\Enums\Languages;
 use App\Enums\SilkTypeEnum;
 use App\Enums\SilkTypeIsroEnum;
+use App\Helpers\LicenseHelper;
 use App\Models\Setting;
-use SilkPanel\SilkroadModels\Models\Shard\AbstractChar;
+use App\Services\FakePlayerService;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
@@ -18,15 +19,16 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Pages\Page;
 use Filament\Schemas\Components\Actions as ActionsComponent;
 use Filament\Schemas\Components\Form;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use SilkPanel\SilkroadModels\Models\Shard\AbstractChar;
 
 /**
  * @property-read Schema $form
@@ -215,6 +217,64 @@ class ManageSettings extends Page
                                         ])->columns(2)
                                         ->columnSpan(2)
                                         ->secondary(),
+                                ])->columns(2),
+
+                            Tab::make(__('filament/settings.form.tabs.fake_players'))
+                                ->icon('heroicon-o-user-group')
+                                ->visible(fn(): bool => LicenseHelper::isValid())
+                                ->schema([
+                                    Toggle::make('fake_players_enabled')
+                                        ->label(__('filament/settings.form.fake_players.enabled'))
+                                        ->helperText(__('filament/settings.form.fake_players.enabled_description'))
+                                        ->live()
+                                        ->columnSpanFull(),
+
+                                    TextInput::make('fake_players_interval')
+                                        ->label(__('filament/settings.form.fake_players.interval'))
+                                        ->helperText(__('filament/settings.form.fake_players.interval_description'))
+                                        ->numeric()
+                                        ->minValue(1)
+                                        ->maxValue(1440)
+                                        ->default(FakePlayerService::DEFAULT_INTERVAL)
+                                        ->suffix(__('filament/settings.form.fake_players.interval_suffix'))
+                                        ->visible(fn(Get $get) => (bool) $get('fake_players_enabled')),
+
+                                    Repeater::make('fake_player_rules')
+                                        ->label(__('filament/settings.form.fake_players.rules'))
+                                        ->helperText(__('filament/settings.form.fake_players.rules_description'))
+                                        ->schema([
+                                            TextInput::make('real_min')
+                                                ->label(__('filament/settings.form.fake_players.real_min'))
+                                                ->numeric()
+                                                ->minValue(0)
+                                                ->required(),
+                                            TextInput::make('real_max')
+                                                ->label(__('filament/settings.form.fake_players.real_max'))
+                                                ->numeric()
+                                                ->minValue(0)
+                                                ->required(),
+                                            TextInput::make('fake_min')
+                                                ->label(__('filament/settings.form.fake_players.fake_min'))
+                                                ->numeric()
+                                                ->minValue(0)
+                                                ->required(),
+                                            TextInput::make('fake_max')
+                                                ->label(__('filament/settings.form.fake_players.fake_max'))
+                                                ->numeric()
+                                                ->minValue(0)
+                                                ->required(),
+                                        ])
+                                        ->columns(4)
+                                        ->reorderable()
+                                        ->collapsible()
+                                        ->itemLabel(fn(array $state): ?string => isset($state['real_min'], $state['real_max'])
+                                            ? __('filament/settings.form.fake_players.rule_label', [
+                                                'min' => $state['real_min'],
+                                                'max' => $state['real_max'],
+                                            ])
+                                            : null)
+                                        ->columnSpanFull()
+                                        ->visible(fn(Get $get) => (bool) $get('fake_players_enabled')),
                                 ])->columns(2),
 
                             Tab::make(__('filament/settings.form.tabs.design'))
@@ -448,7 +508,7 @@ class ManageSettings extends Page
                                     Toggle::make('is_ticket_system_enabled')
                                         ->label(__('filament/settings.form.ticket_system.enabled'))
                                         ->helperText(__('filament/settings.form.ticket_system.enabled_description')),
-                                ])->columns(2)
+                                ])->columns(2),
                         ]),
                 ])
                     ->livewireSubmitHandler('save')
@@ -518,7 +578,14 @@ class ManageSettings extends Page
             'webmall_enabled',
             'webmall_require_logout',
             'custom_procedures_enabled',
+            'fake_players_enabled',
+            'fake_players_interval',
+            'fake_player_rules',
         ];
+
+        if (! $this->validateFakePlayerRules($data['fake_player_rules'] ?? [])) {
+            return;
+        }
 
         foreach ($settingKeys as $key) {
             if (isset($data[$key]) && $data[$key] !== null) {
@@ -535,6 +602,82 @@ class ManageSettings extends Page
             ->title(__('filament/settings.notifications.updated_title'))
             ->body(__('filament/settings.notifications.updated_message'))
             ->send();
+    }
+
+    /**
+     * Validate the fake player range rules before persisting.
+     *
+     * Ensures every rule has real min ≤ max, fake min ≤ max, non-negative
+     * integers, and that no two real ranges overlap. On failure a danger
+     * notification is shown and the save is aborted.
+     *
+     * @param  mixed  $rules
+     */
+    private function validateFakePlayerRules($rules): bool
+    {
+        if (! is_array($rules) || $rules === []) {
+            return true;
+        }
+
+        $ranges = [];
+
+        foreach (array_values($rules) as $position => $rule) {
+            $row = $position + 1;
+
+            foreach (['real_min', 'real_max', 'fake_min', 'fake_max'] as $field) {
+                if (! isset($rule[$field]) || ! is_numeric($rule[$field]) || (int) $rule[$field] < 0) {
+                    return $this->failFakePlayerValidation(
+                        __('filament/settings.form.fake_players.validation.invalid_number', ['row' => $row])
+                    );
+                }
+            }
+
+            $realMin = (int) $rule['real_min'];
+            $realMax = (int) $rule['real_max'];
+            $fakeMin = (int) $rule['fake_min'];
+            $fakeMax = (int) $rule['fake_max'];
+
+            if ($realMin > $realMax) {
+                return $this->failFakePlayerValidation(
+                    __('filament/settings.form.fake_players.validation.real_order', ['row' => $row])
+                );
+            }
+
+            if ($fakeMin > $fakeMax) {
+                return $this->failFakePlayerValidation(
+                    __('filament/settings.form.fake_players.validation.fake_order', ['row' => $row])
+                );
+            }
+
+            foreach ($ranges as $existing) {
+                if ($realMin <= $existing['max'] && $realMax >= $existing['min']) {
+                    return $this->failFakePlayerValidation(
+                        __('filament/settings.form.fake_players.validation.overlap', [
+                            'row' => $row,
+                            'other' => $existing['row'],
+                        ])
+                    );
+                }
+            }
+
+            $ranges[] = ['min' => $realMin, 'max' => $realMax, 'row' => $row];
+        }
+
+        return true;
+    }
+
+    /**
+     * Emit a danger notification for a fake player validation failure.
+     */
+    private function failFakePlayerValidation(string $message): bool
+    {
+        Notification::make()
+            ->danger()
+            ->title(__('filament/settings.form.fake_players.validation.title'))
+            ->body($message)
+            ->send();
+
+        return false;
     }
 
     /**
