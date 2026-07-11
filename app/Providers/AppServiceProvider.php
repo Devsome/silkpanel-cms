@@ -2,12 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\WebMarket\ListingCreated;
 use App\Helpers\SettingHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use SilkPanel\Discord\Listeners\DispatchDiscordNotifications;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -35,6 +38,12 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->registerBladeDirectives();
+        $this->registerEventListeners();
+    }
+
+    private function registerEventListeners(): void
+    {
+        Event::listen(ListingCreated::class, DispatchDiscordNotifications::class);
     }
 
     private function registerBladeDirectives(): void

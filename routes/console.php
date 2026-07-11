@@ -1,9 +1,12 @@
 <?php
 
 use App\Console\Commands\ProcessReferrals;
+use App\Jobs\ProcessExpiredMarketListingsJob;
 use Illuminate\Support\Facades\Schedule;
 
 Schedule::command(ProcessReferrals::class)->hourly();
+
+Schedule::job(ProcessExpiredMarketListingsJob::class)->everyFiveMinutes()->withoutOverlapping();
 
 // Processes queued jobs (e.g. Discord webhooks) every minute and exits when the queue is empty.
 // This is an alternative to running a persistent queue:work daemon.

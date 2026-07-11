@@ -75,6 +75,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         abort_unless((bool) Setting::get('webmall_enabled', false), 404);
         return view('template::webmall.index');
     })->name('webmall.index');
+
+    Route::get('/dashboard/web-market', function () {
+        abort_unless((bool) Setting::get('web_market_enabled', false), 404);
+        return view('template::web-market.index');
+    })->name('web-market.index');
 });
 
 // Session modal dismissal (works for guests and logged-in users)

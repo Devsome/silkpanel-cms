@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Actions\WebMarket\TransferFromWebStorageAction;
+use App\Actions\WebMarket\TransferToWebStorageAction;
 use App\Actions\WebmallPurchaseAction;
 use App\Contracts\ProcedurableAction;
 use App\Enums\DatabaseNameEnums;
@@ -637,6 +639,8 @@ class ProcedureManager
     {
         return [
             app(WebmallPurchaseAction::class),
+            app(TransferToWebStorageAction::class),
+            app(TransferFromWebStorageAction::class),
         ];
     }
 }

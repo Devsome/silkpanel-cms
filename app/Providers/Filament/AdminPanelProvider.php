@@ -10,6 +10,7 @@ use Filament\Enums\UserMenuPosition;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -58,6 +59,15 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->userMenu(position: UserMenuPosition::Sidebar)
+            ->navigationGroups([
+                NavigationGroup::make('Administration'),
+                NavigationGroup::make('Silkroad'),
+                NavigationGroup::make('Player Web Market'),
+                NavigationGroup::make('Webmall'),
+                NavigationGroup::make('Donation'),
+                NavigationGroup::make('Configuration'),
+                NavigationGroup::make('Integrations'),
+            ])
             ->collapsibleNavigationGroups(true)
             ->sidebarCollapsibleOnDesktop()
             ->globalSearch(position: GlobalSearchPosition::Sidebar)
