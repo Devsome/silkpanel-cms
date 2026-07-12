@@ -1,6 +1,21 @@
 {
-    "current": "3.1.2",
+    "current": "3.1.3",
     "changelog": {
+        "3.1.3": {
+            "title": "Gold Stats & Adding / Removing Update",
+            "description": "In the Dashboard widget, the average gold stat now shows the maximum gold value as well. Also, the Add/Remove Gold buttons on the character view page now update the displayed gold amount immediately after submission.",
+            "released_at": "2026-07-12",
+            "features": [
+                {
+                    "title": "Average Gold Stat",
+                    "description": "The average character gold stat in the Dashboard widget now shows the maximum gold value as well."
+                },
+                {
+                    "title": "Add/Remove Gold Update",
+                    "description": "The Add/Remove Gold buttons on the character view page now update the displayed gold amount immediately after submission."
+                }
+            ]
+        },
         "3.1.2": {
             "title": "Unique Tracker",
             "description": "New public History page showing the latest unique monster kills and spawns. iSRO only, toggleable in Page Settings and themed for every template.",
