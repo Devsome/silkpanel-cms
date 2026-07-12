@@ -357,6 +357,12 @@ class ManageSettings extends Page
                                         ->default(true)
                                         ->visible(fn() => config('silkpanel.version') === 'isro'),
 
+                                    Toggle::make('history_global_enabled')
+                                        ->label(__('filament/settings.form.features.history_global_enabled'))
+                                        ->helperText(__('filament/settings.form.features.history_global_enabled_description'))
+                                        ->default(true)
+                                        ->visible(fn() => config('silkpanel.version') === 'isro'),
+
                                     Toggle::make('webmall_require_logout')
                                         ->label(__('filament/settings.form.features.webmall_require_logout'))
                                         ->helperText(__('filament/settings.form.features.webmall_require_logout_description'))
@@ -586,6 +592,7 @@ class ManageSettings extends Page
             'webmall_require_logout',
             'custom_procedures_enabled',
             'history_unique_enabled',
+            'history_global_enabled',
             'fake_players_enabled',
             'fake_players_interval',
             'fake_player_rules',

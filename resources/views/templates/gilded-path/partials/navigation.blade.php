@@ -112,11 +112,38 @@
                     </div>
                 </div>
 
-                @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
-                    <a href="{{ route('history.uniques') }}"
-                        class="font-headline tracking-widest uppercase text-sm transition-all {{ request()->routeIs('history.*') ? 'text-yellow-400 border-b-2 border-yellow-500 pb-1' : 'text-neutral-400 hover:text-yellow-200' }}">
-                        {{ __('navigation.history') }}
-                    </a>
+                @php
+                    $historyUniqueEnabled = config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true);
+                    $historyGlobalEnabled = config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_global_enabled', true);
+                @endphp
+                @if ($historyUniqueEnabled || $historyGlobalEnabled)
+                    <div class="relative" x-data="{ historyDrop: false }" @click.outside="historyDrop = false">
+                        <button @click="historyDrop = !historyDrop"
+                            class="inline-flex items-center gap-1 font-headline tracking-widest uppercase text-sm transition-all {{ request()->routeIs('history.*') ? 'text-yellow-400 border-b-2 border-yellow-500 pb-1' : 'text-neutral-400 hover:text-yellow-200' }}">
+                            {{ __('navigation.history') }}
+                            <svg class="w-3 h-3 transition-transform" :class="historyDrop ? 'rotate-180' : ''"
+                                fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div x-show="historyDrop" x-transition class="absolute left-0 mt-2 w-48 gp-card p-1.5 shadow-2xl"
+                            style="display: none;">
+                            @if ($historyUniqueEnabled)
+                                <a href="{{ route('history.uniques') }}"
+                                    class="block px-3 py-2 text-sm text-neutral-400 hover:text-yellow-400 hover:bg-yellow-900/10 transition">
+                                    {{ __('history.nav_unique') }}
+                                </a>
+                            @endif
+                            @if ($historyGlobalEnabled)
+                                <a href="{{ route('history.globals') }}"
+                                    class="block px-3 py-2 text-sm text-neutral-400 hover:text-yellow-400 hover:bg-yellow-900/10 transition">
+                                    {{ __('history.nav_globals') }}
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                 @endif
             </div>
         </div>
@@ -262,11 +289,20 @@
                 {{ __('navigation.ranking_custom') }}
             </a>
 
-            @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
-                <a href="{{ route('history.uniques') }}"
-                    class="block px-3 py-2 text-sm {{ request()->routeIs('history.*') ? 'text-yellow-400 bg-yellow-900/20' : 'text-neutral-400 hover:text-yellow-200 hover:bg-white/5' }} transition">
-                    {{ __('navigation.history') }}
-                </a>
+            @if ($historyUniqueEnabled || $historyGlobalEnabled)
+                <div class="pt-2 pb-1 px-3 text-xs uppercase tracking-wider text-yellow-700">{{ __('navigation.history') }}</div>
+                @if ($historyUniqueEnabled)
+                    <a href="{{ route('history.uniques') }}"
+                        class="block px-3 py-2 text-sm {{ request()->routeIs('history.uniques') ? 'text-yellow-400 bg-yellow-900/20' : 'text-neutral-400 hover:text-yellow-200 hover:bg-white/5' }} transition">
+                        {{ __('history.nav_unique') }}
+                    </a>
+                @endif
+                @if ($historyGlobalEnabled)
+                    <a href="{{ route('history.globals') }}"
+                        class="block px-3 py-2 text-sm {{ request()->routeIs('history.globals') ? 'text-yellow-400 bg-yellow-900/20' : 'text-neutral-400 hover:text-yellow-200 hover:bg-white/5' }} transition">
+                        {{ __('history.nav_globals') }}
+                    </a>
+                @endif
             @endif
 
             @if ($showLanguageSwitch)

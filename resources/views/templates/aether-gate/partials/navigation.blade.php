@@ -98,12 +98,40 @@
                     </div>
                 @endif
 
-                @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
-                    <a href="{{ route('history.uniques') }}"
-                        class="px-3 py-2 ag-font-display text-xs font-semibold tracking-wider uppercase transition-colors duration-200
-                            {{ request()->routeIs('history.*') ? 'ag-text-primary' : 'ag-text-muted hover:ag-text-surface' }}">
-                        {{ __('navigation.history') }}
-                    </a>
+                @php
+                    $historyUniqueEnabled = config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true);
+                    $historyGlobalEnabled = config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_global_enabled', true);
+                @endphp
+                @if ($historyUniqueEnabled || $historyGlobalEnabled)
+                    <div class="relative" x-data="{ historyDrop: false }" @click.outside="historyDrop = false">
+                        <button @click="historyDrop = !historyDrop"
+                            class="flex items-center gap-1 px-3 py-2 ag-font-display text-xs font-semibold tracking-wider uppercase transition-colors duration-200
+                                {{ request()->routeIs('history.*') ? 'ag-text-primary' : 'ag-text-muted hover:ag-text-surface' }}">
+                            {{ __('navigation.history') }}
+                            <svg class="w-3 h-3 transition-transform duration-200" :class="historyDrop ? 'rotate-180' : ''" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div x-show="historyDrop" x-transition:enter="transition ease-out duration-150"
+                            x-transition:enter-start="opacity-0 translate-y-1" x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-100"
+                            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+                            class="absolute left-0 mt-2 w-48 py-1 ag-card shadow-2xl"
+                            style="display:none; background: rgba(9,12,23,0.97); border-color: rgba(34,211,238,0.15);">
+                            @if ($historyUniqueEnabled)
+                                <a href="{{ route('history.uniques') }}"
+                                    class="block px-4 py-2.5 text-xs ag-font-display font-semibold tracking-wide uppercase ag-text-muted hover:ag-text-primary hover:bg-cyan-900/10 transition-colors">
+                                    {{ __('history.nav_unique') }}
+                                </a>
+                            @endif
+                            @if ($historyGlobalEnabled)
+                                <a href="{{ route('history.globals') }}"
+                                    class="block px-4 py-2.5 text-xs ag-font-display font-semibold tracking-wide uppercase ag-text-muted hover:ag-text-primary hover:bg-cyan-900/10 transition-colors">
+                                    {{ __('history.nav_globals') }}
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                 @endif
             </div>
         </div>
@@ -206,8 +234,11 @@
             <a href="{{ route('news.index') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('news.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.news') }}</a>
             <a href="{{ route('ranking.characters') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('ranking.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.rankings') }}</a>
             <a href="{{ route('downloads.index') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('downloads.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.downloads') }}</a>
-            @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
-                <a href="{{ route('history.uniques') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('history.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.history') }}</a>
+            @if ($historyUniqueEnabled)
+                <a href="{{ route('history.uniques') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('history.uniques') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.history') }} · {{ __('history.nav_unique') }}</a>
+            @endif
+            @if ($historyGlobalEnabled)
+                <a href="{{ route('history.globals') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('history.globals') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.history') }} · {{ __('history.nav_globals') }}</a>
             @endif
             @foreach ($navPages as $navPage)
                 <a href="{{ route('pages.show', $navPage->slug) }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase ag-text-muted">{{ e($navPage->title) }}</a>

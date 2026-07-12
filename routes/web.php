@@ -64,8 +64,15 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
 
 // History (iSRO only)
 Route::prefix('history')->name('history.')->group(function () {
-    Route::get('/', fn() => redirect()->route('history.uniques'))->name('index');
+    Route::get('/', function () {
+        if ((bool) Setting::get('history_unique_enabled', true)) {
+            return redirect()->route('history.uniques');
+        }
+
+        return redirect()->route('history.globals');
+    })->name('index');
     Route::get('/uniques', [HistoryController::class, 'uniques'])->name('uniques');
+    Route::get('/globals', [HistoryController::class, 'globals'])->name('globals');
 });
 
 // Authenticated routes

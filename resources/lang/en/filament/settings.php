@@ -107,6 +107,8 @@ return [
             'webmall_require_logout_description' => 'If enabled, characters must be offline before they can purchase items from the Webmall. This prevents potential issues when items are delivered to online characters.',
             'history_unique_enabled' => 'Enable Unique Tracker',
             'history_unique_enabled_description' => 'Show the public Unique Tracker history page (/history/uniques) with the latest unique monster kills and spawns. Only available on iSRO.',
+            'history_global_enabled' => 'Enable Global History',
+            'history_global_enabled_description' => 'Show the public Global History page (/history/globals) with the latest global (yell) chat messages. Only available on iSRO.',
         ],
 
         'partners' => [

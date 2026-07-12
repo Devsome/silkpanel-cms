@@ -15,4 +15,19 @@ return [
 
     'status_killed' => 'Getötet',
     'status_spawned' => 'Gespawnt',
+
+    'nav_unique' => 'Unique',
+    'nav_globals' => 'Globals',
+
+    'global_title' => 'Global-Verlauf',
+    'global_subtitle' => 'Aktuelle globale (Yell-)Chatnachrichten auf dem Server.',
+    'global_unavailable' => 'Der Global-Verlauf ist nicht verfügbar.',
+
+    'filter_all' => 'Alle Nachrichten',
+    'filter_wts' => 'WTS (Verkauft)',
+    'filter_wtb' => 'WTB (Kauft)',
+
+    'col_message' => 'Nachricht',
+    'col_character' => 'Charakter',
+    'col_date' => 'Datum',
 ];

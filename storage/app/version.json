@@ -1,6 +1,29 @@
 {
-    "current": "3.1.3",
+    "current": "3.1.4",
     "changelog": {
+        "3.1.4": {
+            "title": "Global History",
+            "description": "New public History page showing the latest global (yell) chat messages. iSRO only, toggleable in Page Settings and themed for every template. The History menu is now a dropdown with Unique and Globals sub-pages.",
+            "released_at": "2026-07-13",
+            "features": [
+                {
+                    "title": "Global History Page",
+                    "description": "New /history/globals page listing recent global chat messages with sender and date, paginated."
+                },
+                {
+                    "title": "History Sub-Menu",
+                    "description": "The History navigation entry is now a dropdown with Unique and Globals, matching the Rankings menu."
+                },
+                {
+                    "title": "Page Settings Toggle",
+                    "description": "Enable or disable the Global History from the Features tab in Page Settings (iSRO only, on by default)."
+                },
+                {
+                    "title": "Template Support",
+                    "description": "Custom styled views for neon-strike, silkroad-gaming, gilded-path and aether-gate, plus the base template."
+                }
+            ]
+        },
         "3.1.3": {
             "title": "Gold Stats & Adding / Removing Update",
             "description": "In the Dashboard widget, the average gold stat now shows the maximum gold value as well. Also, the Add/Remove Gold buttons on the character view page now update the displayed gold amount immediately after submission.",

@@ -15,4 +15,14 @@ class HistoryController extends Controller
 
         return view('template::history.uniques');
     }
+
+    public function globals()
+    {
+        abort_unless(
+            config('silkpanel.version') === 'isro' && (bool) Setting::get('history_global_enabled', true),
+            404
+        );
+
+        return view('template::history.globals');
+    }
 }

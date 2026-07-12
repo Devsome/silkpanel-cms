@@ -15,4 +15,19 @@ return [
 
     'status_killed' => 'Killed',
     'status_spawned' => 'Spawned',
+
+    'nav_unique' => 'Unique',
+    'nav_globals' => 'Globals',
+
+    'global_title' => 'Global History',
+    'global_subtitle' => 'Latest global (yell) chat messages across the server.',
+    'global_unavailable' => 'The global history is not available.',
+
+    'filter_all' => 'All messages',
+    'filter_wts' => 'WTS (Want to Sell)',
+    'filter_wtb' => 'WTB (Want to Buy)',
+
+    'col_message' => 'Message',
+    'col_character' => 'Character',
+    'col_date' => 'Date',
 ];
