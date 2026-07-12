@@ -105,6 +105,8 @@ return [
             'webmall_enabled_description' => 'Enable the Webmall where players can purchase items with Silk or Gold.',
             'webmall_require_logout' => 'Require Characters to be Logged Out',
             'webmall_require_logout_description' => 'If enabled, characters must be offline before they can purchase items from the Webmall. This prevents potential issues when items are delivered to online characters.',
+            'history_unique_enabled' => 'Enable Unique Tracker',
+            'history_unique_enabled_description' => 'Show the public Unique Tracker history page (/history/uniques) with the latest unique monster kills and spawns. Only available on iSRO.',
         ],
 
         'partners' => [

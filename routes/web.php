@@ -4,6 +4,7 @@ use App\Helpers\SettingHelper;
 use App\Http\Controllers\Admin\SessionModalPreviewController;
 use App\Http\Controllers\Api\SessionModalController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\DashboardController;
@@ -59,6 +60,12 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
     Route::get('/custom/{key?}', fn(?string $key = null) => view('template::ranking.custom', [
         'rankingKey' => $key,
     ]))->name('custom');
+});
+
+// History (iSRO only)
+Route::prefix('history')->name('history.')->group(function () {
+    Route::get('/', fn() => redirect()->route('history.uniques'))->name('index');
+    Route::get('/uniques', [HistoryController::class, 'uniques'])->name('uniques');
 });
 
 // Authenticated routes

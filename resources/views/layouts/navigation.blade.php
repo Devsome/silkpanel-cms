@@ -109,6 +109,12 @@
                         </a>
                     </div>
                 </div>
+
+                @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                    <x-nav-link :href="route('history.uniques')" :active="request()->routeIs('history.*')">
+                        {{ __('navigation.history') }}
+                    </x-nav-link>
+                @endif
             </div>
         </div>
 
@@ -275,6 +281,12 @@
             <x-responsive-nav-link :href="route('ranking.uniques')" :active="request()->routeIs('ranking.uniques')">
                 {{ __('navigation.ranking_uniques') }}
             </x-responsive-nav-link>
+
+            @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                <x-responsive-nav-link :href="route('history.uniques')" :active="request()->routeIs('history.*')">
+                    {{ __('navigation.history') }}
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-700">

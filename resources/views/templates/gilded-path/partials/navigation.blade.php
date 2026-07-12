@@ -111,6 +111,13 @@
                         </a>
                     </div>
                 </div>
+
+                @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                    <a href="{{ route('history.uniques') }}"
+                        class="font-headline tracking-widest uppercase text-sm transition-all {{ request()->routeIs('history.*') ? 'text-yellow-400 border-b-2 border-yellow-500 pb-1' : 'text-neutral-400 hover:text-yellow-200' }}">
+                        {{ __('navigation.history') }}
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -254,6 +261,13 @@
                 class="block px-3 py-2 text-sm {{ request()->routeIs('ranking.custom') ? 'text-yellow-400 bg-yellow-900/20' : 'text-neutral-400 hover:text-yellow-200 hover:bg-white/5' }} transition">
                 {{ __('navigation.ranking_custom') }}
             </a>
+
+            @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                <a href="{{ route('history.uniques') }}"
+                    class="block px-3 py-2 text-sm {{ request()->routeIs('history.*') ? 'text-yellow-400 bg-yellow-900/20' : 'text-neutral-400 hover:text-yellow-200 hover:bg-white/5' }} transition">
+                    {{ __('navigation.history') }}
+                </a>
+            @endif
 
             @if ($showLanguageSwitch)
                 <div class="pt-2 pb-1 px-3 text-xs uppercase tracking-wider text-yellow-700">

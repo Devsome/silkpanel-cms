@@ -112,6 +112,13 @@
                         </a>
                     </div>
                 </div>
+
+                @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                    <a href="{{ route('history.uniques') }}"
+                        class="px-3 py-1.5 rounded-lg text-sm font-medium transition {{ request()->routeIs('history.*') ? 'bg-emerald-500/10 text-emerald-400' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                        {{ __('navigation.history') }}
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -258,6 +265,13 @@
                 class="block rounded-lg px-3 py-2 text-sm {{ request()->routeIs('ranking.custom') ? 'bg-emerald-500/10 text-emerald-400' : 'text-gray-400 hover:text-white hover:bg-white/5' }} transition">
                 {{ __('navigation.ranking_custom') }}
             </a>
+
+            @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                <a href="{{ route('history.uniques') }}"
+                    class="block rounded-lg px-3 py-2 text-sm {{ request()->routeIs('history.*') ? 'bg-emerald-500/10 text-emerald-400' : 'text-gray-400 hover:text-white hover:bg-white/5' }} transition">
+                    {{ __('navigation.history') }}
+                </a>
+            @endif
 
             @if ($showLanguageSwitch)
                 <div class="pt-2 pb-1 px-3 text-xs uppercase tracking-wider text-gray-600">

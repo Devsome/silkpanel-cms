@@ -19,6 +19,7 @@ return [
     'ranking_guilds' => 'Guilds',
     'ranking_uniques' => 'Uniques',
     'ranking_custom' => 'Custom',
+    'history' => 'History',
     'voting' => 'Voting',
     'donate' => 'Donate',
     'webmall' => 'Webmall',

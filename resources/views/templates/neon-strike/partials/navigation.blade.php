@@ -116,6 +116,12 @@
                         </a>
                     </div>
                 </div>
+
+                @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                    <a href="{{ route('history.uniques') }}" class="{{ $navLink(request()->routeIs('history.*')) }}">
+                        {{ __('navigation.history') }}
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -242,6 +248,10 @@
                 class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('downloads.*') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.downloads') }}</a>
             <a href="{{ route('ranking.characters') }}"
                 class="block px-3 py-2 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-white transition">{{ __('navigation.rankings') }}</a>
+            @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                <a href="{{ route('history.uniques') }}"
+                    class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('history.*') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.history') }}</a>
+            @endif
             @auth
                 <a href="{{ route('dashboard') }}"
                     class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('dashboard') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.dashboard') }}</a>

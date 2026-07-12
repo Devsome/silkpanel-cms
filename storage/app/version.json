@@ -1,6 +1,29 @@
 {
-    "current": "3.1.1",
+    "current": "3.1.2",
     "changelog": {
+        "3.1.2": {
+            "title": "Unique Tracker",
+            "description": "New public History page showing the latest unique monster kills and spawns. iSRO only, toggleable in Page Settings and themed for every template.",
+            "released_at": "2026-07-12",
+            "features": [
+                {
+                    "title": "Unique History Page",
+                    "description": "New /history/uniques page listing recent unique kills and spawns with killer, area and status, paginated and cached."
+                },
+                {
+                    "title": "Kill/Spawn Filter",
+                    "description": "Live toggle to switch between kills only and kills plus spawns."
+                },
+                {
+                    "title": "Page Settings Toggle",
+                    "description": "Enable or disable the Unique Tracker from the Features tab in Page Settings (iSRO only, on by default)."
+                },
+                {
+                    "title": "Template Support",
+                    "description": "Custom styled views for neon-strike, silkroad-gaming, gilded-path and aether-gate, plus the base template."
+                }
+            ]
+        },
         "3.1.1": {
             "title": "Fake Player Count",
             "description": "Licensed users can add a stable, randomised offset to the public online player count via new range rules in Page Settings.",

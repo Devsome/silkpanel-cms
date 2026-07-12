@@ -97,6 +97,14 @@
                         </div>
                     </div>
                 @endif
+
+                @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                    <a href="{{ route('history.uniques') }}"
+                        class="px-3 py-2 ag-font-display text-xs font-semibold tracking-wider uppercase transition-colors duration-200
+                            {{ request()->routeIs('history.*') ? 'ag-text-primary' : 'ag-text-muted hover:ag-text-surface' }}">
+                        {{ __('navigation.history') }}
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -198,6 +206,9 @@
             <a href="{{ route('news.index') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('news.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.news') }}</a>
             <a href="{{ route('ranking.characters') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('ranking.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.rankings') }}</a>
             <a href="{{ route('downloads.index') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('downloads.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.downloads') }}</a>
+            @if (config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true))
+                <a href="{{ route('history.uniques') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('history.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.history') }}</a>
+            @endif
             @foreach ($navPages as $navPage)
                 <a href="{{ route('pages.show', $navPage->slug) }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase ag-text-muted">{{ e($navPage->title) }}</a>
             @endforeach
