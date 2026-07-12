@@ -191,8 +191,9 @@ class ManageSettings extends Page
                                                     'bandit' => 'Bandit Fortress',
                                                     'hotan' => 'Hotan Fortress',
                                                     'jangan' => 'Jangan Fortress',
+                                                    'constantinople' => 'Constantinople Fortress',
                                                 ])
-                                                ->default(['bandit', 'hotan', 'jangan'])
+                                                ->default(['bandit', 'hotan', 'jangan', 'constantinople'])
                                                 ->columns(3),
                                         ])->columns(2)
                                         ->columnSpan(2)
