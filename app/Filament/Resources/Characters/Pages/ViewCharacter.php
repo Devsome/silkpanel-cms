@@ -21,6 +21,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\IconPosition;
 use Filament\Support\Enums\IconSize;
 use Filament\Support\Enums\Size;
@@ -444,6 +445,57 @@ class ViewCharacter extends ViewRecord
                                     ->label(__('filament/characters.view.lastlogout'))
                                     ->state(fn($record) => Carbon::parse($record->LastLogout)?->isFuture() ? __('filament/characters.view.last_never') : Carbon::parse($record->LastLogout)?->diffForHumans()),
                             ]),
+                        Section::make(__('filament/characters.section.gold_title'))
+                            ->description(__('filament/characters.section.gold_information_description'))
+                            ->schema([
+                                TextEntry::make('RemainGold')
+                                    ->label(__('filament/characters.view.current_gold'))
+                                    ->state(fn($record) => number_format((int) $record->RemainGold, 0, ',', '.'))
+                                    ->weight(FontWeight::Bold)
+                                    ->columnSpanFull(),
+                                TextEntry::make('gold_online_hint')
+                                    ->hiddenLabel()
+                                    ->state(__('filament/characters.view.gold_error_online'))
+                                    ->color('danger')
+                                    ->columnSpanFull()
+                                    ->visible(fn($record) => $record->isOnline),
+                            ])
+                            ->footerActions([
+                                Action::make('addGold')
+                                    ->label(__('filament/characters.view.gold_add'))
+                                    ->icon('heroicon-o-plus')
+                                    ->color('gray')
+                                    ->visible(fn($record) => !$record->isOnline)
+                                    ->modalHeading(__('filament/characters.view.gold_add'))
+                                    ->modalSubmitActionLabel(__('filament/characters.view.gold_add'))
+                                    ->schema([
+                                        TextInput::make('gold_amount')
+                                            ->label(__('filament/characters.view.gold_amount'))
+                                            ->helperText(__('filament/characters.view.gold_amount_helper'))
+                                            ->numeric()
+                                            ->minValue(1)
+                                            ->integer()
+                                            ->required(),
+                                    ])
+                                    ->action(fn($record, array $data) => $this->updateGold($record, (int) $data['gold_amount'], 'add')),
+                                Action::make('removeGold')
+                                    ->label(__('filament/characters.view.gold_remove'))
+                                    ->icon('heroicon-o-minus')
+                                    ->color('gray')
+                                    ->visible(fn($record) => !$record->isOnline)
+                                    ->modalHeading(__('filament/characters.view.gold_remove'))
+                                    ->modalSubmitActionLabel(__('filament/characters.view.gold_remove'))
+                                    ->schema([
+                                        TextInput::make('gold_amount')
+                                            ->label(__('filament/characters.view.gold_amount'))
+                                            ->helperText(__('filament/characters.view.gold_amount_helper'))
+                                            ->numeric()
+                                            ->minValue(1)
+                                            ->integer()
+                                            ->required(),
+                                    ])
+                                    ->action(fn($record, array $data) => $this->updateGold($record, (int) $data['gold_amount'], 'remove')),
+                            ]),
                         Section::make(__('filament/characters.section.position_title'))
                             ->description(__('filament/characters.section.position_information_description'))
                             ->schema([
@@ -518,6 +570,50 @@ class ViewCharacter extends ViewRecord
                             ->columns(2),
                     ])->columnSpan(['lg' => 2]),
             ])->columns(5);
+    }
+
+    private function updateGold($record, int $amount, string $mode): void
+    {
+        if ($amount <= 0) {
+            Notification::make()
+                ->title(__('filament/characters.view.gold_amount_invalid'))
+                ->danger()
+                ->send();
+            return;
+        }
+
+        if ($record->isOnline) {
+            Notification::make()
+                ->title(__('filament/characters.view.gold_error_title'))
+                ->body(__('filament/characters.view.gold_error_online'))
+                ->danger()
+                ->send();
+            return;
+        }
+
+        $current = (int) $record->RemainGold;
+        $new = $mode === 'remove'
+            ? max(0, $current - $amount)
+            : $current + $amount;
+
+        $record->RemainGold = $new;
+        $record->save();
+
+        $this->record = $record->fresh();
+
+        Notification::make()
+            ->title(__('filament/characters.view.gold_success_title'))
+            ->body(__(
+                $mode === 'remove'
+                    ? 'filament/characters.view.gold_removed_message'
+                    : 'filament/characters.view.gold_added_message',
+                [
+                    'amount' => number_format($amount, 0, ',', '.'),
+                    'total' => number_format($new, 0, ',', '.'),
+                ]
+            ))
+            ->success()
+            ->send();
     }
 
     private function getCharacter2dImageUrl(): string
