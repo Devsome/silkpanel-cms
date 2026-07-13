@@ -4,6 +4,8 @@ namespace App\Filament\Pages;
 
 use App\Enums\DatabaseNameEnums;
 use App\Enums\UsergroupRoleEnums;
+use App\Filament\Concerns\InteractsWithLockedState;
+use App\Helpers\LicenseHelper;
 use App\Models\ProcedureLog;
 use App\Models\ProcedureMapping;
 use App\Services\ProcedureManager;
@@ -12,7 +14,6 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\CodeEditor;
 use Filament\Forms\Components\CodeEditor\Enums\Language;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
@@ -37,6 +38,7 @@ use Throwable;
  */
 class CustomProcedures extends Page implements HasTable
 {
+    use InteractsWithLockedState;
     use InteractsWithTable;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedCommandLine;
@@ -65,6 +67,16 @@ class CustomProcedures extends Page implements HasTable
         $user = Auth::user();
 
         return $user?->hasRole(UsergroupRoleEnums::ADMIN->value) ?? false;
+    }
+
+    public function isLocked(): bool
+    {
+        return ! LicenseHelper::isValid();
+    }
+
+    public function getLockedDescription(): string
+    {
+        return __('filament/settings.locked.license_required_custom_procedures');
     }
 
     public function boot(ProcedureManager $procedureManager): void
@@ -280,13 +292,18 @@ class CustomProcedures extends Page implements HasTable
                                 ->deletable(false)
                                 ->reorderable(false),
                         ]),
-                ]),
+                ])
+                    ->disabled($this->isLocked()),
             ])
             ->statePath('data');
     }
 
     public function saveMapping(): void
     {
+        if ($this->isLocked()) {
+            return;
+        }
+
         $data = $this->form->getState();
 
         $selectedAction = (string) ($data['selected_action'] ?? '');
@@ -350,6 +367,10 @@ class CustomProcedures extends Page implements HasTable
 
     public function testProcedure(): void
     {
+        if ($this->isLocked()) {
+            return;
+        }
+
         $data = $this->form->getState();
 
         if (empty($data['selected_action'])) {

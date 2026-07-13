@@ -1,6 +1,11 @@
 {
-    "current": "3.1.4",
+    "current": "3.1.5",
     "changelog": {
+        "3.1.5": {
+            "title": "Page Settings Cluster",
+            "description": "Page Settings moved from one overloaded tabbed page into a cluster — every section (General, Silkroad Online, Fake Players, Design, ...) is now its own sub-page with a dedicated sidebar entry. License-only pages stay visible as a blurred, read-only preview instead of being hidden.",
+            "released_at": "2026-07-13"
+        },
         "3.1.4": {
             "title": "Global History",
             "description": "New public History page showing the latest global (yell) chat messages. iSRO only, toggleable in Page Settings and themed for every template. The History menu is now a dropdown with Unique and Globals sub-pages.",

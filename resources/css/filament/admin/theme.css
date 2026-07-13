@@ -24,3 +24,96 @@
 .fi-sidebar-nav-groups {
     row-gap: calc(var(--spacing) * 1);
 }
+
+/*
+ * Reusable "locked" state for gated features (e.g. license-only pages).
+ * Wrap any content in <x-locked-overlay :locked="true"> to blur it and show
+ * a centered call-out card on top, while keeping the content faintly visible.
+ */
+.sp-locked {
+    position: relative;
+    isolation: isolate;
+}
+
+.sp-locked__content {
+    filter: blur(5px);
+    opacity: 0.55;
+    pointer-events: none;
+    user-select: none;
+}
+
+.sp-locked__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--spacing) * 6);
+}
+
+.sp-locked__card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--spacing) * 3);
+    max-width: 26rem;
+    padding: calc(var(--spacing) * 6);
+    text-align: center;
+    background-color: color-mix(in oklab, var(--color-white) 82%, transparent);
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-2xl, 1rem);
+    box-shadow: var(--shadow-xl, 0 20px 25px -5px rgb(0 0 0 / 0.1));
+    backdrop-filter: blur(2px);
+}
+
+.dark .sp-locked__card {
+    background-color: color-mix(in oklab, var(--color-gray-900) 82%, transparent);
+    border-color: var(--color-gray-700);
+}
+
+.sp-locked__badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--spacing) * 12);
+    height: calc(var(--spacing) * 12);
+    border-radius: 9999px;
+    color: var(--color-primary-600);
+    background-color: color-mix(in oklab, var(--color-primary-500) 14%, transparent);
+}
+
+.dark .sp-locked__badge {
+    color: var(--color-primary-400);
+    background-color: color-mix(in oklab, var(--color-primary-500) 22%, transparent);
+}
+
+.sp-locked__icon {
+    width: calc(var(--spacing) * 6);
+    height: calc(var(--spacing) * 6);
+}
+
+.sp-locked__title {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    line-height: 1.5rem;
+    color: var(--color-gray-950);
+}
+
+.dark .sp-locked__title {
+    color: var(--color-white);
+}
+
+.sp-locked__description {
+    font-size: var(--text-sm);
+    line-height: 1.25rem;
+    color: var(--color-gray-500);
+}
+
+.dark .sp-locked__description {
+    color: var(--color-gray-400);
+}
+
+.sp-locked__actions {
+    margin-top: calc(var(--spacing) * 1);
+}

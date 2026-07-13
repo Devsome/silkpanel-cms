@@ -184,4 +184,14 @@ return [
     'actions' => [
         'save' => 'Save all settings',
     ],
+
+    'locked' => [
+        'title' => 'Feature locked',
+        'description' => 'This feature is not available right now.',
+        'license_required' => 'A valid SilkPanel license is required to configure and use fake players. The settings below are shown as a preview.',
+        'license_required_map' => 'A valid SilkPanel license is required to configure and use the World Map. The settings below are shown as a preview.',
+        'license_required_referral' => 'A valid SilkPanel license is required to configure and use the Referral System. The settings below are shown as a preview.',
+        'license_required_custom_procedures' => 'A valid SilkPanel license is required to configure and use Custom Procedures. The settings below are shown as a preview.',
+        'license_required_discord_notifications' => 'A valid SilkPanel license is required to configure and use Discord Notifications. The list below is shown as a preview.',
+    ],
 ];
