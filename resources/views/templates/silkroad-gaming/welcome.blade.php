@@ -264,8 +264,7 @@
                     {{-- Event Timers --}}
                     <livewire:event-timers-list />
 
-                    {{-- Discord Widget --}}
-                    @discordWidget
+                    @globalsWidget(5)
 
                     {{-- Server Info --}}
                     <div class="rounded-2xl border border-gray-800 bg-gray-900/50 backdrop-blur p-5">
@@ -315,6 +314,9 @@
                             </div>
                         </div>
                     @endif
+
+                    {{-- Discord Widget --}}
+                    @discordWidget
                 </aside>
             </div>
         </div>

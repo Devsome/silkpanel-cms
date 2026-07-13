@@ -27,6 +27,9 @@ return [
     'filter_wts' => 'WTS (Want to Sell)',
     'filter_wtb' => 'WTB (Want to Buy)',
 
+    'widget_title' => 'Latest Globals',
+    'widget_empty' => 'No global messages yet.',
+
     'col_message' => 'Message',
     'col_character' => 'Character',
     'col_date' => 'Date',

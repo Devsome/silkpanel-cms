@@ -1,6 +1,29 @@
 {
-    "current": "3.1.5",
+    "current": "3.1.6",
     "changelog": {
+        "3.1.6": {
+            "title": "Globals Widget Directive",
+            "description": "New @globalsWidget Blade directive that renders the latest global (yell) chat messages as a responsive card, usable in the sidebar or main area of any template (and the root views). iSRO only.",
+            "released_at": "2026-07-14",
+            "features": [
+                {
+                    "title": "@globalsWidget Directive",
+                    "description": "Drop the latest globals into any template with @globalsWidget or @globalsWidget(5); also available as <x-globals-widget :limit=\"8\" />."
+                },
+                {
+                    "title": "Character Links",
+                    "description": "Each sender links to its ranking profile at /ranking/characters/{name}."
+                },
+                {
+                    "title": "Template Styling",
+                    "description": "Ships styled versions for the base views and every bundled template; override components/globals-widget.blade.php to customise."
+                },
+                {
+                    "title": "iSRO Only",
+                    "description": "Renders nothing on vSRO; a configurable custom source is planned for later."
+                }
+            ]
+        },
         "3.1.5": {
             "title": "Page Settings Cluster",
             "description": "Page Settings moved from one overloaded tabbed page into a cluster — every section (General, Silkroad Online, Fake Players, Design, ...) is now its own sub-page with a dedicated sidebar entry. License-only pages stay visible as a blurred, read-only preview instead of being hidden.",

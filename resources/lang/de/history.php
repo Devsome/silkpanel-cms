@@ -27,6 +27,9 @@ return [
     'filter_wts' => 'WTS (Verkauft)',
     'filter_wtb' => 'WTB (Kauft)',
 
+    'widget_title' => 'Neueste Globals',
+    'widget_empty' => 'Noch keine globalen Nachrichten.',
+
     'col_message' => 'Nachricht',
     'col_character' => 'Charakter',
     'col_date' => 'Datum',
