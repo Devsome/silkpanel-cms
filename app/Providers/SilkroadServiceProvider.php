@@ -39,5 +39,9 @@ class SilkroadServiceProvider extends ServiceProvider
 
             return "<?php echo app(\\App\\View\\Components\\GlobalsWidget::class, [{$args}])->render()->render(); ?>";
         });
+
+        // Panel with the global (yell) messages sent by a single character. iSRO only.
+        // Usage: <x-character-globals :name="$character->CharName16" />
+        Blade::component('character-globals', \App\View\Components\CharacterGlobals::class);
     }
 }

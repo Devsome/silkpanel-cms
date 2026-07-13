@@ -30,4 +30,8 @@ return [
     'character' => 'Karakter',
     'section_label' => 'Sıralamalar',
     'guild' => 'Lonca',
+
+    // Character detail — global messages panel
+    'character_globals' => 'Global Mesajlar',
+    'character_globals_empty' => 'Bu karakter henüz hiç global mesaj göndermedi.',
 ];

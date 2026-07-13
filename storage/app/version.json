@@ -1,6 +1,29 @@
 {
-    "current": "3.1.6",
+    "current": "3.1.7",
     "changelog": {
+        "3.1.7": {
+            "title": "Character Globals Panel",
+            "description": "The character ranking profile now shows a panel with the global (yell) messages that character has sent, with a friendly notice when there are none. Translated into all languages. iSRO only.",
+            "released_at": "2026-07-14",
+            "features": [
+                {
+                    "title": "Globals on Character Profile",
+                    "description": "New <x-character-globals> panel on /ranking/characters/{name} listing that character's latest global messages with timestamps."
+                },
+                {
+                    "title": "Empty-State Notice",
+                    "description": "When a character has never sent a global, a clear hint is shown instead of an empty box."
+                },
+                {
+                    "title": "Full Translations",
+                    "description": "Panel title and notice translated in all 8 languages (ar, de, en, es, fr, it, pt, tr)."
+                },
+                {
+                    "title": "Template Styling",
+                    "description": "Styled for the base views and every bundled template; override components/character-globals.blade.php to customise. iSRO only for now."
+                }
+            ]
+        },
         "3.1.6": {
             "title": "Globals Widget Directive",
             "description": "New @globalsWidget Blade directive that renders the latest global (yell) chat messages as a responsive card, usable in the sidebar or main area of any template (and the root views). iSRO only.",

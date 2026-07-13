@@ -30,4 +30,8 @@ return [
     'character' => 'Character',
     'section_label' => 'Leaderboards',
     'guild' => 'Guild',
+
+    // Character detail — global messages panel
+    'character_globals' => 'Global Messages',
+    'character_globals_empty' => "This character hasn't sent any global messages yet.",
 ];

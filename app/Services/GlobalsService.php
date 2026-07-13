@@ -34,6 +34,39 @@ class GlobalsService
     }
 
     /**
+     * The latest global (yell) messages sent by a single character.
+     *
+     * iSRO only (see {@see self::latest()} for the rationale and the future
+     * custom-source extension point).
+     *
+     * @return Collection<int, object>
+     */
+    public function forCharacter(string $charName, int $limit = 10): Collection
+    {
+        $charName = trim($charName);
+        $limit = max(1, min($limit, 50));
+
+        if ($charName === '' || config('silkpanel.version') !== 'isro') {
+            return collect();
+        }
+
+        try {
+            return Cache::remember('globals_char_' . md5($charName) . "_{$limit}", self::CACHE_TTL, function () use ($charName, $limit) {
+                return DB::connection(DatabaseNameEnums::SRO_LOG->value)
+                    ->table('dbo._LogChatMessage')
+                    ->select(['CharName', 'EventTime', 'Comment'])
+                    ->where('TargetName', '[YELL]')
+                    ->where('CharName', $charName)
+                    ->orderByDesc('EventTime')
+                    ->limit($limit)
+                    ->get();
+            });
+        } catch (\Throwable) {
+            return collect();
+        }
+    }
+
+    /**
      * iSRO: read the latest yell messages from `_LogChatMessage`.
      *
      * @return Collection<int, object>

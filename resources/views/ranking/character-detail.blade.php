@@ -74,6 +74,8 @@
                             </div>
                         </dl>
                     </div>
+
+                    <x-character-globals :name="$character->CharName16" />
                 </div>
 
                 <div class="lg:col-span-3" x-data="{ tab: 'equipment' }">
