@@ -5217,11 +5217,11 @@
         },
         {
             "name": "silkpanel/discord",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "dist": {
                 "type": "zip",
-                "url": "https://composer.devso.me/dist/silkpanel/discord/silkpanel-discord-b4bf49bd2701a19506910b0f5962b72c54faea3c-path.zip",
-                "shasum": "6548450ad6389c3d9589d8ddd3dcbfa50e505563"
+                "url": "https://composer.devso.me/dist/silkpanel/discord/silkpanel-discord-4ba4b0ca63a09bda2ce22d21b132e2d9b7f63a96-path.zip",
+                "shasum": "e6558e29ac6c500cfd3e946ce3adecec4ed57540"
             },
             "require": {
                 "filament/filament": "^5.0",
