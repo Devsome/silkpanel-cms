@@ -2,6 +2,7 @@
 
 namespace App\Http\Services\Payment;
 
+use App\Enums\DonationStatusEnum;
 use App\Models\Donation;
 use App\Models\DonationPackage;
 use Illuminate\Support\Facades\Auth;
@@ -68,15 +69,13 @@ class HipoPayPaymentService implements PaymentServiceInterface
         $data = $response->json();
 
         $donation->update([
-            'transaction_id' => $data['token'] ?? $data['transaction_id'] ?? null,
             'payment_data' => $data,
         ]);
 
-        $redirectUrl =
-            $data['url']
-            ?? $data['redirect_url']
+        $redirectUrl = $data['data']['payment_url']
             ?? $data['payment_url']
-            ?? $data['data']['payment_url']
+            ?? $data['url']
+            ?? $data['redirect_url']
             ?? null;
 
         if (!$redirectUrl) {
@@ -98,6 +97,34 @@ class HipoPayPaymentService implements PaymentServiceInterface
         }
 
         return $payload['transaction_id'] ?? null;
+    }
+
+    public function resolveDonation(string $transactionId, array $payload): ?Donation
+    {
+        $donation = Donation::where('transaction_id', $transactionId)
+            ->where('payment_provider_slug', 'hipopay')
+            ->first();
+
+        if ($donation) {
+            return $donation;
+        }
+
+        $userId = $payload['user_id'] ?? null;
+        if (!$userId) {
+            return null;
+        }
+
+        $donation = Donation::where('user_id', $userId)
+            ->where('payment_provider_slug', 'hipopay')
+            ->where('status', DonationStatusEnum::PENDING)
+            ->latest()
+            ->first();
+
+        if ($donation) {
+            $donation->update(['transaction_id' => $transactionId]);
+        }
+
+        return $donation;
     }
 
     public function verifyWebhook(string $rawBody, array $headers): bool

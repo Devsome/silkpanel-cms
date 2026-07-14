@@ -53,9 +53,13 @@ class WebhookController extends Controller
             return response('OK', 200);
         }
 
-        $donation = Donation::where('transaction_id', $transactionId)
-            ->where('payment_provider_slug', $provider)
-            ->first();
+        if (method_exists($service, 'resolveDonation')) {
+            $donation = $service->resolveDonation($transactionId, $payload);
+        } else {
+            $donation = Donation::where('transaction_id', $transactionId)
+                ->where('payment_provider_slug', $provider)
+                ->first();
+        }
 
         if (!$donation) {
             Log::warning("Webhook: Donation not found for transaction {$transactionId} ({$provider})");
