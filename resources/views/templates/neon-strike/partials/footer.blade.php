@@ -128,7 +128,8 @@
                     STRIKE</span>
             </p>
             <p class="text-xs font-mono text-zinc-700">
-                Powered by <span class="text-violet-500/60">SilkPanel</span>
+                Powered by <span class="text-violet-500/60"><a href="https://devso.me" target="_blank"
+                        rel="noopener noreferrer">SilkPanel</a></span>
             </p>
         </div>
         @if (!$licenseValid)
