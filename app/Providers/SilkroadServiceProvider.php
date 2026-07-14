@@ -43,5 +43,13 @@ class SilkroadServiceProvider extends ServiceProvider
         // Panel with the global (yell) messages sent by a single character. iSRO only.
         // Usage: <x-character-globals :name="$character->CharName16" />
         Blade::component('character-globals', \App\View\Components\CharacterGlobals::class);
+
+        // Live-ticking current server time (server timezone). Template-agnostic.
+        // Usage: <x-server-time class="..." />  or  @serverTime
+        Blade::component('server-time', \App\View\Components\ServerTime::class);
+
+        Blade::directive('serverTime', function () {
+            return "<?php echo \\App\\View\\Components\\ServerTime::getData(); ?>";
+        });
     }
 }
