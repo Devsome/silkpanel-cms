@@ -1,6 +1,17 @@
 {
-    "current": "3.1.7",
+    "current": "3.1.8",
     "changelog": {
+        "3.1.8": {
+            "title": "Voting Package Update",
+            "description": "Updated the Voting package to version 1.0.4",
+            "released_at": "2026-07-15",
+            "features": [
+                {
+                    "title": "Postback Handling Improvements",
+                    "description": "Enhanced the postback controller to resolve user IDs more reliably and log warnings for missing users."
+                }
+            ]
+        },
         "3.1.7": {
             "title": "Character Globals Panel",
             "description": "The character ranking profile now shows a panel with the global (yell) messages that character has sent, with a friendly notice when there are none. Translated into all languages. iSRO only.",
