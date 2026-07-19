@@ -90,6 +90,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'reflink',
         'referrer_id',
         'register_ip',
+
+        'banned',
+        'banned_reason',
     ];
 
     /**
@@ -112,7 +115,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'banned' => 'boolean',
         ];
+    }
+
+    /**
+     * Determine if the user is banned from the web (cannot log into the panel/frontend).
+     *
+     * @return bool
+     */
+    public function isBanned(): bool
+    {
+        return (bool) $this->banned;
     }
 
     /**

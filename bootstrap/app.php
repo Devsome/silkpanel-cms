@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\EnsureUserIsNotBanned;
 use App\Http\Middleware\InstallerGate;
 use App\Http\Middleware\SetFrontendLocale;
 use Illuminate\Foundation\Application;
@@ -26,6 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'silkpanel.api' => VerifySilkPanelApiKey::class,
             'installer.gate' => InstallerGate::class,
+            'banned' => EnsureUserIsNotBanned::class,
         ]);
 
         $middleware->trustProxies(at: '*');

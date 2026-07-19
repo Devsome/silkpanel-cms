@@ -1,6 +1,25 @@
 {
-    "current": "3.1.8",
+    "current": "3.1.9",
     "changelog": {
+        "3.1.9": {
+            "title": "Web Account Ban",
+            "description": "Admins can now ban a user from the website independently of the in-game block. Banned users can no longer log in on the frontend, and the status is manageable and filterable in the admin user list.",
+            "released_at": "2026-07-19",
+            "features": [
+                {
+                    "title": "Web Ban Toggle",
+                    "description": "New 'Banned from Web' toggle (with optional reason) on the admin user edit page, separate from the in-game block."
+                },
+                {
+                    "title": "Login Enforcement",
+                    "description": "A new 'banned' middleware plus a login-time check prevent banned users from signing in and log out any user banned mid-session, with a translated message in all 8 frontend languages."
+                },
+                {
+                    "title": "Table Filter & Column",
+                    "description": "The admin user list now has a Web Ban status column and a ternary filter (All / Banned only / Not banned)."
+                }
+            ]
+        },
         "3.1.8": {
             "title": "Voting Package Update",
             "description": "Updated the Voting package to version 1.0.4",
