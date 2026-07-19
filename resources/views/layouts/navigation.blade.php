@@ -111,8 +111,8 @@
                 </div>
 
                 @php
-                    $historyUniqueEnabled = config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_unique_enabled', true);
-                    $historyGlobalEnabled = config('silkpanel.version') === 'isro' && (bool) \App\Models\Setting::get('history_global_enabled', true);
+                    $historyUniqueEnabled = \App\Services\UniqueHistoryService::isAvailable();
+                    $historyGlobalEnabled = \App\Services\GlobalsService::isAvailable();
                 @endphp
                 @if ($historyUniqueEnabled || $historyGlobalEnabled)
                     <div class="relative border-b-2 border-transparent hover:border-primary-300" x-data="{ historyDrop: false }"

@@ -40,9 +40,11 @@
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             {{ __('history.col_killer') }}
                         </th>
+                        @if ($showArea ?? true)
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             {{ __('history.col_area') }}
                         </th>
+                        @endif
                         <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                             {{ __('history.col_status') }}
                         </th>
@@ -72,7 +74,7 @@
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                 @if ($isKill && filled($row->CharName16))
-                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => $row->CharID]) }}"
+                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => \Illuminate\Support\Str::slug($row->CharID)]) }}"
                                         class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
                                         <img src="{{ \App\Enums\CharacterAvatarMapEnum::getAvatarUrl((int) $row->RefObjID, (string) config('silkpanel.version')) }}"
                                             onerror="this.style.display='none'"
@@ -83,9 +85,11 @@
                                     <span class="text-gray-400 dark:text-gray-600">—</span>
                                 @endif
                             </td>
+                            @if ($showArea ?? true)
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-300">
                                 {{ filled($row->AreaName) ? $row->AreaName : '—' }}
                             </td>
+                            @endif
                             <td class="px-4 py-3 whitespace-nowrap text-sm">
                                 @if ($isKill)
                                     <span class="inline-flex items-center rounded-full bg-rose-100 px-2.5 py-0.5 text-xs font-medium text-rose-700 dark:bg-rose-900/30 dark:text-rose-400">

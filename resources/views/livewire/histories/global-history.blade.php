@@ -51,7 +51,7 @@
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
                                 @if (filled($row->CharName) && $row->CharID)
-                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => $row->CharID]) }}"
+                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => \Illuminate\Support\Str::slug($row->CharID)]) }}"
                                         class="inline-flex items-center gap-2 text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
                                         <img src="{{ \App\Enums\CharacterAvatarMapEnum::getAvatarUrl((int) $row->RefObjID, (string) config('silkpanel.version')) }}"
                                             onerror="this.style.display='none'"

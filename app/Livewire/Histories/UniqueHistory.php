@@ -3,6 +3,7 @@
 namespace App\Livewire\Histories;
 
 use App\Enums\DatabaseNameEnums;
+use App\Services\UniqueHistoryService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -26,22 +27,34 @@ class UniqueHistory extends Component
 
     public function render()
     {
-        // The unique tracker relies on iSRO's _LogInstanceWorldInfo log table.
-        if (config('silkpanel.version') !== 'isro') {
+        if (! UniqueHistoryService::isAvailable()) {
             return $this->unavailable();
         }
 
+        // The unique display names come from config on iSRO; on vSRO the source
+        // may already store readable names (the view falls back to the raw value).
         $uniques = collect(config('silkpanel.uniques', []))
             ->filter(fn ($cfg, $code) => is_array($cfg) && is_string($code) && $code !== '')
             ->all();
 
-        if ($uniques === []) {
-            return $this->unavailable();
-        }
-
         try {
             // simplePaginate avoids an expensive COUNT(*) over the (very large) log table.
-            $rows = $this->buildQuery(array_keys($uniques))->simplePaginate($this->perPage);
+            if (config('silkpanel.version') === 'isro') {
+                if ($uniques === []) {
+                    return $this->unavailable();
+                }
+
+                $rows = $this->buildQuery(array_keys($uniques))->simplePaginate($this->perPage);
+            } else {
+                // vSRO / custom: the admin-configured source (Filament: Unique History VSRO).
+                $query = app(UniqueHistoryService::class)->customQuery($this->showSpawns);
+
+                if ($query === null) {
+                    return $this->unavailable();
+                }
+
+                $rows = $query->simplePaginate($this->perPage);
+            }
         } catch (\Throwable) {
             return $this->unavailable();
         }
@@ -50,6 +63,7 @@ class UniqueHistory extends Component
             'uniques' => $uniques,
             'rows' => $rows,
             'available' => true,
+            'showArea' => UniqueHistoryService::areaAvailable(),
         ]);
     }
 
@@ -59,6 +73,7 @@ class UniqueHistory extends Component
             'uniques' => [],
             'rows' => collect(),
             'available' => false,
+            'showArea' => true,
         ]);
     }
 

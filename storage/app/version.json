@@ -1,6 +1,37 @@
 {
-    "current": "3.1.9",
+    "current": "3.2.0",
     "changelog": {
+        "3.2.0": {
+            "title": "VSRO History Sources",
+            "description": "The public Global History (yell chat) and Unique History (kills/spawns) pages can now be powered on VSRO through configurable sources: pick a database and table, map its columns onto the fields the frontend expects, optionally left-join another table (e.g. _Char) to resolve names and avatars, and preview the result with a live test output — no frontend changes required. iSRO keeps using the standard log tables.",
+            "released_at": "2026-07-20",
+            "features": [
+                {
+                    "title": "Configurable Global History Source",
+                    "description": "New 'Global History (VSRO)' page under Settings to choose a connection and table, load its columns and map them onto Comment, EventTime, CharName, CharID and RefObjID."
+                },
+                {
+                    "title": "Configurable Unique History Source",
+                    "description": "New 'Unique History (VSRO)' page mapping your unique-log columns onto Value, EventTime, killer (CharName16/CharID/RefObjID) and AreaName, so /history/uniques works on VSRO."
+                },
+                {
+                    "title": "Kill / Spawn Handling",
+                    "description": "Map an event-type column plus a 'kill value' to drive the Killed/Spawned badge; leave it unmapped to treat every logged row as a kill."
+                },
+                {
+                    "title": "Optional Left Join",
+                    "description": "Join a second table (e.g. _Char) — including across databases on the same SQL Server instance — to resolve names, IDs and avatars from an id stored in your source table."
+                },
+                {
+                    "title": "Live Test Output",
+                    "description": "Preview the first rows of the mapped query against the current (unsaved) settings before enabling it, with clear guidance when the source or a required mapping is missing."
+                },
+                {
+                    "title": "Frontend Unchanged",
+                    "description": "A shared query builder returns the same fields the views already use, so the History pages, globals widget and character panel work on VSRO without any template changes."
+                }
+            ]
+        },
         "3.1.9": {
             "title": "Web Account Ban",
             "description": "Admins can now ban a user from the website independently of the in-game block. Banned users can no longer log in on the frontend, and the status is manageable and filterable in the admin user list.",

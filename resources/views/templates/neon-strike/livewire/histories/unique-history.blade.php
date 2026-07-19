@@ -30,7 +30,9 @@
                         <th class="px-4 py-3 text-left text-xs font-mono uppercase tracking-wider text-zinc-500">{{ __('history.col_unique') }}</th>
                         <th class="px-4 py-3 text-left text-xs font-mono uppercase tracking-wider text-zinc-500">{{ __('history.col_time') }}</th>
                         <th class="px-4 py-3 text-left text-xs font-mono uppercase tracking-wider text-zinc-500">{{ __('history.col_killer') }}</th>
+                        @if ($showArea ?? true)
                         <th class="px-4 py-3 text-left text-xs font-mono uppercase tracking-wider text-zinc-500">{{ __('history.col_area') }}</th>
+                        @endif
                         <th class="px-4 py-3 text-left text-xs font-mono uppercase tracking-wider text-zinc-500">{{ __('history.col_status') }}</th>
                     </tr>
                 </thead>
@@ -58,7 +60,7 @@
                             </td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm">
                                 @if ($isKill && filled($row->CharName16))
-                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => $row->CharID]) }}"
+                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => \Illuminate\Support\Str::slug($row->CharID)]) }}"
                                         class="inline-flex items-center gap-2 font-bold font-mono text-xs uppercase tracking-wide text-violet-400 hover:text-violet-300 transition">
                                         <img src="{{ \App\Enums\CharacterAvatarMapEnum::getAvatarUrl((int) $row->RefObjID, (string) config('silkpanel.version')) }}"
                                             onerror="this.style.display='none'"
@@ -69,9 +71,11 @@
                                     <span class="text-zinc-600">—</span>
                                 @endif
                             </td>
+                            @if ($showArea ?? true)
                             <td class="px-4 py-3 whitespace-nowrap text-xs font-mono text-zinc-400">
                                 {{ filled($row->AreaName) ? $row->AreaName : '—' }}
                             </td>
+                            @endif
                             <td class="px-4 py-3 whitespace-nowrap text-sm">
                                 @if ($isKill)
                                     <span class="inline-flex items-center bg-rose-500/15 px-2.5 py-0.5 text-xs font-mono font-bold uppercase tracking-wider text-rose-400">

@@ -21,10 +21,9 @@ class CharacterGlobals extends Component
 
     public function render(): View|Closure|string
     {
-        // Only iSRO exposes a standard global message log; the panel is hidden
-        // entirely on other versions (see GlobalsService for the future
-        // custom-source extension point).
-        $available = config('silkpanel.version') === 'isro';
+        // iSRO reads the standard message log; vSRO uses the admin-configured
+        // source (Filament: Global History VSRO). Otherwise the panel is hidden.
+        $available = GlobalsService::isAvailable();
 
         $globals = $available
             ? app(GlobalsService::class)->forCharacter($this->name, $this->limit)

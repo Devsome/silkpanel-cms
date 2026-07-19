@@ -23,7 +23,9 @@
                         <th>{{ __('history.col_unique') }}</th>
                         <th>{{ __('history.col_time') }}</th>
                         <th>{{ __('history.col_killer') }}</th>
+                        @if ($showArea ?? true)
                         <th>{{ __('history.col_area') }}</th>
+                        @endif
                         <th>{{ __('history.col_status') }}</th>
                     </tr>
                 </thead>
@@ -51,7 +53,7 @@
                             </td>
                             <td>
                                 @if ($isKill && filled($row->CharName16))
-                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => $row->CharID]) }}"
+                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => \Illuminate\Support\Str::slug($row->CharID)]) }}"
                                         class="inline-flex items-center gap-2 ag-text-primary hover:underline">
                                         <img src="{{ \App\Enums\CharacterAvatarMapEnum::getAvatarUrl((int) $row->RefObjID, (string) config('silkpanel.version')) }}"
                                             onerror="this.style.display='none'"
@@ -62,9 +64,11 @@
                                     <span class="ag-text-muted">—</span>
                                 @endif
                             </td>
+                            @if ($showArea ?? true)
                             <td>
                                 <span class="ag-text-muted">{{ filled($row->AreaName) ? $row->AreaName : '—' }}</span>
                             </td>
+                            @endif
                             <td>
                                 @if ($isKill)
                                     <span class="ag-badge" style="color: var(--ag-error); background: rgba(248, 113, 113, 0.12);">

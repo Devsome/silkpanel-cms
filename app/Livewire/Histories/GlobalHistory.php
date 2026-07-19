@@ -3,6 +3,7 @@
 namespace App\Livewire\Histories;
 
 use App\Enums\DatabaseNameEnums;
+use App\Services\GlobalsService;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -30,14 +31,24 @@ class GlobalHistory extends Component
 
     public function render()
     {
-        // The global tracker relies on iSRO's _LogChatMessage log table.
-        if (config('silkpanel.version') !== 'isro') {
+        if (! GlobalsService::isAvailable()) {
             return $this->unavailable();
         }
 
         try {
             // simplePaginate avoids an expensive COUNT(*) over the (very large) log table.
-            $rows = $this->buildQuery()->simplePaginate($this->perPage);
+            if (config('silkpanel.version') === 'isro') {
+                $rows = $this->buildQuery()->simplePaginate($this->perPage);
+            } else {
+                // vSRO / custom: the admin-configured source (Filament: Global History VSRO).
+                $query = app(GlobalsService::class)->customQuery($this->tradeFilter ?: null);
+
+                if ($query === null) {
+                    return $this->unavailable();
+                }
+
+                $rows = $query->simplePaginate($this->perPage);
+            }
         } catch (\Throwable) {
             return $this->unavailable();
         }

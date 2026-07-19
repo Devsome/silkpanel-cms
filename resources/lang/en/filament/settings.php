@@ -193,5 +193,7 @@ return [
         'license_required_referral' => 'A valid SilkPanel license is required to configure and use the Referral System. The settings below are shown as a preview.',
         'license_required_custom_procedures' => 'A valid SilkPanel license is required to configure and use Custom Procedures. The settings below are shown as a preview.',
         'license_required_discord_notifications' => 'A valid SilkPanel license is required to configure and use Discord Notifications. The list below is shown as a preview.',
+        'license_required_global_history' => 'A valid SilkPanel license is required to configure and use the VSRO Global History source. The settings below are shown as a preview.',
+        'license_required_unique_history' => 'A valid SilkPanel license is required to configure and use the VSRO Unique History source. The settings below are shown as a preview.',
     ],
 ];

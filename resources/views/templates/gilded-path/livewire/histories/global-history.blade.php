@@ -36,7 +36,7 @@
                             <td class="px-4 py-3 text-sm gp-text-on-surface break-words max-w-xl">{{ $row->Comment }}</td>
                             <td class="px-4 py-3 whitespace-nowrap text-sm gp-text-on-surface">
                                 @if (filled($row->CharName) && $row->CharID)
-                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => $row->CharID]) }}"
+                                    <a href="{{ route('ranking.characters.show', ['idOrSlug' => \Illuminate\Support\Str::slug($row->CharID)]) }}"
                                         class="inline-flex items-center gap-2 gp-text-primary hover:text-yellow-400 transition">
                                         <img src="{{ \App\Enums\CharacterAvatarMapEnum::getAvatarUrl((int) $row->RefObjID, (string) config('silkpanel.version')) }}"
                                             onerror="this.style.display='none'"
