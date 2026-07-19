@@ -229,7 +229,7 @@
     {{-- Mobile menu --}}
     <div x-show="open" x-transition class="lg:hidden absolute top-20 left-0 right-0 border-t ag-divider"
         style="display:none; background: rgba(6,8,15,0.97); backdrop-filter: blur(16px);">
-        <div class="px-4 py-4 space-y-1">
+        <div class="px-4 py-4 space-y-1 max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain">
             <a href="{{ route('index') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('index') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.index') }}</a>
             <a href="{{ route('news.index') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('news.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.news') }}</a>
             <a href="{{ route('ranking.characters') }}" class="block px-4 py-3 ag-font-display text-xs font-semibold tracking-widest uppercase {{ request()->routeIs('ranking.*') ? 'ag-text-primary' : 'ag-text-muted' }}">{{ __('navigation.rankings') }}</a>

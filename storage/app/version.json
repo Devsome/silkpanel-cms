@@ -1,6 +1,11 @@
 {
-    "current": "3.2.0",
+    "current": "3.2.1",
     "changelog": {
+        "3.2.1": {
+            "title": "Templates mobile menu scrollable",
+            "description": "The mobile menu on all templates is now scrollable when the content exceeds the viewport height, preventing it from being cut off on smaller screens.",
+            "released_at": "2026-07-20"
+        },
         "3.2.0": {
             "title": "VSRO History Sources",
             "description": "The public Global History (yell chat) and Unique History (kills/spawns) pages can now be powered on VSRO through configurable sources: pick a database and table, map its columns onto the fields the frontend expects, optionally left-join another table (e.g. _Char) to resolve names and avatars, and preview the result with a live test output — no frontend changes required. iSRO keeps using the standard log tables.",

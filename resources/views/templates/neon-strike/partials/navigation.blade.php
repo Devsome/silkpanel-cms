@@ -267,7 +267,7 @@
     {{-- Mobile Menu --}}
     <div x-show="open" x-cloak x-transition
         class="lg:hidden border-t border-violet-500/20 bg-zinc-950/95 backdrop-blur">
-        <div class="px-4 py-3 space-y-1">
+        <div class="px-4 py-3 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
             <a href="{{ route('index') }}"
                 class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('index') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.index') }}</a>
             <a href="{{ route('news.index') }}"

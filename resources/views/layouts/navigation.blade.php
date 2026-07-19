@@ -283,7 +283,7 @@
     </div>
 
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+        <div class="pt-2 pb-3 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
             <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
                 {{ __('navigation.index') }}
             </x-responsive-nav-link>

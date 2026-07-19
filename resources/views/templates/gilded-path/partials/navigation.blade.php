@@ -242,9 +242,9 @@
     </div>
 
     {{-- Mobile Menu --}}
-    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden"
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden absolute top-20 left-0 right-0"
         style="border-top: 1px solid rgba(120,90,0,0.3); background: rgba(10,10,10,0.95);">
-        <div class="space-y-1 px-4 py-3">
+        <div class="space-y-1 px-4 py-3 max-h-[calc(100dvh-5rem)] overflow-y-auto overscroll-contain">
             <a href="{{ route('index') }}"
                 class="block px-3 py-2 text-sm font-headline uppercase tracking-widest {{ request()->routeIs('index') ? 'text-yellow-400 bg-yellow-900/20 border-l-4 border-yellow-500' : 'text-neutral-400 hover:text-yellow-200 hover:bg-white/5' }} transition">
                 {{ __('navigation.index') }}

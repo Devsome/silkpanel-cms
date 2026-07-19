@@ -250,7 +250,7 @@
 
     {{-- Mobile Menu --}}
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden border-t border-gray-800">
-        <div class="space-y-1 px-4 py-3">
+        <div class="space-y-1 px-4 py-3 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
             <a href="{{ route('index') }}"
                 class="block rounded-lg px-3 py-2 text-sm font-medium {{ request()->routeIs('index') ? 'bg-emerald-500/10 text-emerald-400' : 'text-gray-400 hover:text-white hover:bg-white/5' }} transition">
                 {{ __('navigation.index') }}
