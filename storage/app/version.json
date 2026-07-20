@@ -1,6 +1,11 @@
 {
-    "current": "3.2.2",
+    "current": "3.2.2a",
     "changelog": {
+        "3.2.2a": {
+            "title": "Missing Item Images (Selectfield)",
+            "description": "Using selectfield instead of text input for item selection on the Missing Item Images page, to avoid confusion with the Item Name Translation feature.",
+            "released_at": "2026-07-20"
+        },
         "3.2.2": {
             "title": "Missing Item Images",
             "description": "Upload replacement images for items that are missing from the default icon set. Private servers with custom items can add their own item icons here.",

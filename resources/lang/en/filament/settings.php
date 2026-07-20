@@ -151,14 +151,16 @@ return [
         ],
 
         'missing_item_images' => [
+            'item' => 'Item',
             'codename' => 'Codename',
-            'codename_description' => 'Full path (e.g. item/china/weapon/bow_08) or just the filename (e.g. clothes_10_ha). Basename-only entries match any item with that filename.',
             'image' => 'Image',
             'image_description' => 'Upload a PNG image (max 2 MB)',
             'upload' => 'Upload Image',
             'upload_heading' => 'Upload Custom Item Image',
             'upload_description' => 'Upload replacement images for items that are missing from the default icon set. Private servers with custom items can add their own item icons here.',
             'uploaded' => 'Item image uploaded successfully.',
+            'already_exists' => 'A custom image for this item already exists.',
+            'no_icon_path' => 'This item has no icon path assigned.',
             'preview' => 'Preview',
             'created_at' => 'Uploaded',
             'empty' => 'No custom item images',

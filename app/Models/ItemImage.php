@@ -14,10 +14,8 @@ class ItemImage extends Model
 
     private const CACHE_KEY = 'item_images.map';
 
-    private const CACHE_BASENAME_KEY = 'item_images.basename_map';
-
     /**
-     * Full codename => storage image path.
+     * Codename => storage image path.
      */
     public static function getImageMap(): array
     {
@@ -28,25 +26,9 @@ class ItemImage extends Model
         });
     }
 
-    /**
-     * Basename-only codename => storage image path.
-     */
-    public static function getBasenameMap(): array
-    {
-        return Cache::rememberForever(self::CACHE_BASENAME_KEY, function () {
-            return static::query()
-                ->get(['codename', 'image'])
-                ->mapWithKeys(fn ($item) => [
-                    basename($item->codename) => $item->image,
-                ])
-                ->toArray();
-        });
-    }
-
     public static function clearCache(): void
     {
         Cache::forget(self::CACHE_KEY);
-        Cache::forget(self::CACHE_BASENAME_KEY);
     }
 
     protected static function booted(): void

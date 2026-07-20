@@ -21,8 +21,13 @@ class WebmallItemIconHelper
     }
 
     /**
-     * Resolves an AssocFileIcon128 string to a relative icon path under public/images/silkroad/.
-     * Falls back to custom uploaded images (full codename match, then basename-only match).
+     * Resolves an AssocFileIcon128 string to an icon URL.
+     * Checks: 1) bundled file in public/images/silkroad/
+     *         2) user-uploaded custom image in storage
+     *         3) fallback icon_default.png
+     *
+     * The returned path is always relative to public/images/silkroad/ so callers
+     * can keep using asset('images/silkroad/' . $result).
      */
     public static function resolveIcon(?string $assocFile): string
     {
@@ -43,13 +48,6 @@ class WebmallItemIconHelper
 
         if (isset($customImages[$codename])) {
             return '../../storage/' . $customImages[$codename];
-        }
-
-        $basename = basename($codename);
-        $basenameMap = ItemImage::getBasenameMap();
-
-        if (isset($basenameMap[$basename])) {
-            return '../../storage/' . $basenameMap[$basename];
         }
 
         return 'icon_default.png';
