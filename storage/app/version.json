@@ -1,7 +1,7 @@
 {
-    "current": "3.2.2a",
+    "current": "3.2.3",
     "changelog": {
-        "3.2.2a": {
+        "3.2.3": {
             "title": "Missing Item Images (Selectfield)",
             "description": "Using selectfield instead of text input for item selection on the Missing Item Images page, to avoid confusion with the Item Name Translation feature.",
             "released_at": "2026-07-20"
