@@ -1,6 +1,21 @@
 {
-    "current": "3.2.1",
+    "current": "3.2.2",
     "changelog": {
+        "3.2.2": {
+            "title": "Missing Item Images",
+            "description": "Upload replacement images for items that are missing from the default icon set. Private servers with custom items can add their own item icons here.",
+            "released_at": "2026-07-20",
+            "features": [
+                {
+                    "title": "Missing Item Images Page",
+                    "description": "New admin page under Settings to upload replacement images for items that are missing from the default icon set."
+                },
+                {
+                    "title": "Custom Item Icons",
+                    "description": "Private servers with custom items can add their own item icons here, ensuring that all items display correctly in the frontend."
+                }
+            ]
+        },
         "3.2.1": {
             "title": "Templates mobile menu scrollable",
             "description": "The mobile menu on all templates is now scrollable when the content exceeds the viewport height, preventing it from being cut off on smaller screens.",

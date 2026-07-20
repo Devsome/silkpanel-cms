@@ -23,6 +23,7 @@ return [
             'contact' => 'Contact',
             'social_media' => 'Social Media',
             'ticket_system' => 'Ticket System',
+            'missing_item_images' => 'Missing Item Images',
         ],
 
         'page_info' => [
@@ -147,6 +148,21 @@ return [
         'ticket_system' => [
             'enabled' => 'Enable Ticket System',
             'enabled_description' => 'Allow users to submit support tickets',
+        ],
+
+        'missing_item_images' => [
+            'codename' => 'Codename',
+            'codename_description' => 'Full path (e.g. item/china/weapon/bow_08) or just the filename (e.g. clothes_10_ha). Basename-only entries match any item with that filename.',
+            'image' => 'Image',
+            'image_description' => 'Upload a PNG image (max 2 MB)',
+            'upload' => 'Upload Image',
+            'upload_heading' => 'Upload Custom Item Image',
+            'upload_description' => 'Upload replacement images for items that are missing from the default icon set. Private servers with custom items can add their own item icons here.',
+            'uploaded' => 'Item image uploaded successfully.',
+            'preview' => 'Preview',
+            'created_at' => 'Uploaded',
+            'empty' => 'No custom item images',
+            'empty_description' => 'Upload custom images for missing items using the form above.',
         ],
 
         'field_types' => [

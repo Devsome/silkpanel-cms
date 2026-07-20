@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Models\ItemImage;
 use SilkPanel\SilkroadModels\Models\Shard\RefObjCommon;
 
 class WebmallItemIconHelper
@@ -21,6 +22,7 @@ class WebmallItemIconHelper
 
     /**
      * Resolves an AssocFileIcon128 string to a relative icon path under public/images/silkroad/.
+     * Falls back to custom uploaded images (full codename match, then basename-only match).
      */
     public static function resolveIcon(?string $assocFile): string
     {
@@ -32,11 +34,25 @@ class WebmallItemIconHelper
         $icon = preg_replace('/\.ddj$/i', '', $icon);
         $icon = strtolower($icon . '.png');
 
-        if (!file_exists(public_path('images/silkroad/' . $icon))) {
-            return 'icon_default.png';
+        if (file_exists(public_path('images/silkroad/' . $icon))) {
+            return $icon;
         }
 
-        return $icon;
+        $codename = preg_replace('/\.png$/i', '', $icon);
+        $customImages = ItemImage::getImageMap();
+
+        if (isset($customImages[$codename])) {
+            return '../../storage/' . $customImages[$codename];
+        }
+
+        $basename = basename($codename);
+        $basenameMap = ItemImage::getBasenameMap();
+
+        if (isset($basenameMap[$basename])) {
+            return '../../storage/' . $basenameMap[$basename];
+        }
+
+        return 'icon_default.png';
     }
 
     /**
