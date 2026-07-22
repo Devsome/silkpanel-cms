@@ -27,8 +27,9 @@ class WebmallPurchaseAction implements ProcedurableAction
             ['laravel_key' => 'player_id', 'procedure_param' => '@PlayerID', 'position' => 1],
             ['laravel_key' => 'character_id', 'procedure_param' => '@CharacterID', 'position' => 2],
             ['laravel_key' => 'item_id', 'procedure_param' => '@ItemID', 'position' => 3],
-            ['laravel_key' => 'price_type', 'procedure_param' => '@PriceType', 'position' => 4],
-            ['laravel_key' => 'price_amount', 'procedure_param' => '@PriceAmount', 'position' => 5],
+            ['laravel_key' => 'amount', 'procedure_param' => '@Amount', 'position' => 4],
+            ['laravel_key' => 'price_type', 'procedure_param' => '@PriceType', 'position' => 5],
+            ['laravel_key' => 'price_amount', 'procedure_param' => '@PriceAmount', 'position' => 6],
         ];
     }
 }

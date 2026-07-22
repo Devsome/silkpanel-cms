@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $item_name
  * @property string $price_type
  * @property int $price_value
+ * @property int $amount
  * @property string $status
  * @property int|null $procedure_mapping_id
  * @property int|null $procedure_log_id
@@ -39,6 +40,7 @@ class WebmallPurchase extends Model
         'item_name',
         'price_type',
         'price_value',
+        'amount',
         'status',
         'procedure_mapping_id',
         'procedure_log_id',
@@ -48,6 +50,7 @@ class WebmallPurchase extends Model
 
     protected $casts = [
         'price_value' => 'integer',
+        'amount' => 'integer',
         'item_type' => WebmallItemTypeEnum::class,
         'procedure_mapping_id' => 'integer',
         'procedure_log_id' => 'integer',

@@ -48,6 +48,7 @@ class WebmallPurchaseService
                 'player_id' => config('silkpanel.version') === 'isro' ? (int) $user->pjid : (int) $user->jid,
                 'character_id' => $characterId,
                 'item_id' => $item->ref_item_id,
+                'amount' => max(1, (int) $item->amount),
                 'price_type' => $priceType,
                 'price_amount' => $item->price_value,
             ],
@@ -87,9 +88,10 @@ class WebmallPurchaseService
 
                 // 2. Deliver item
                 $isIsro = config('silkpanel.version') === 'isro';
+                $deliveryAmount = max(1, (int) $item->amount);
                 $deliveryResult = $isIsro
-                    ? $this->itemService->addItemIsro(charName: null, charId: $characterId, codeName: null, refItemId: $item->ref_item_id)
-                    : $this->itemService->addItemVsro(charName: null, charId: $characterId, codeName: null, refItemId: $item->ref_item_id);
+                    ? $this->itemService->addItemIsro(charName: null, charId: $characterId, codeName: null, refItemId: $item->ref_item_id, data: $deliveryAmount)
+                    : $this->itemService->addItemVsro(charName: null, charId: $characterId, codeName: null, refItemId: $item->ref_item_id, data: $deliveryAmount);
 
                 if (!$deliveryResult['success']) {
                     throw new \RuntimeException('item_delivery_failed:' . $deliveryResult['return_code']);
@@ -152,7 +154,7 @@ class WebmallPurchaseService
             });
 
             $isIsro = config('silkpanel.version') === 'isro';
-            $amount = (string) $item->price_value;
+            $amount = (string) max(1, (int) $item->amount);
             $codename = (string) ($item->item_name_snapshot ?? ('Custom Item #' . $item->id));
 
             $procedureParameters = $this->procedureManager->listProcedureParameters($databaseConnection, $procedureName);
@@ -287,6 +289,7 @@ class WebmallPurchaseService
             'item_name' => $item->item_name_snapshot ?? $item->ref_item_id,
             'price_type' => $item->price_type,
             'price_value' => $item->price_value,
+            'amount' => max(1, (int) $item->amount),
             'status' => $status,
             'procedure_mapping_id' => $procedureMapping?->id,
             'procedure_name_snapshot' => $procedureMapping?->procedure_name,

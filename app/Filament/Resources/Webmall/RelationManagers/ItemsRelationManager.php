@@ -54,6 +54,49 @@ class ItemsRelationManager extends RelationManager
         return $this->cachedRefObjs;
     }
 
+    /**
+     * Load the read-only reference info for an item into the form's hidden fields.
+     */
+    private function loadItemInfo(int $refItemId, callable $set, bool $updateName): void
+    {
+        if ($refItemId <= 0) {
+            return;
+        }
+
+        $item = RefObjCommon::select([
+            'ID',
+            'CodeName128',
+            'NameStrID128',
+            'CanTrade',
+            'CanSell',
+            'CanBuy',
+            'Price',
+            'CostRepair',
+            'SellPrice',
+            'ReqLevel1',
+            'Link',
+        ])->with('getRefObjItem:ID,MaxStack')->find($refItemId);
+
+        if (! $item) {
+            return;
+        }
+
+        if ($updateName) {
+            $names = resolve(AbstractItemNameDesc::class)->getItemNames([$item->NameStrID128]);
+            $readableName = $names[$item->NameStrID128] ?? null;
+            $set('item_name_snapshot', $readableName ?? $item->CodeName128);
+        }
+
+        $set('_info_req_level', $item->ReqLevel1);
+        $set('_info_price', $item->Price);
+        $set('_info_sell_price', $item->SellPrice);
+        $set('_info_cost_repair', $item->CostRepair);
+        $set('_info_can_trade', $item->CanTrade);
+        $set('_info_can_sell', $item->CanSell);
+        $set('_info_can_buy', $item->CanBuy);
+        $set('_info_max_stack', $item->getRefObjItem?->MaxStack ?? 1);
+    }
+
     protected static ?string $title = null;
 
     public static function getTitle(\Illuminate\Database\Eloquent\Model $ownerRecord, string $pageClass): string
@@ -130,6 +173,10 @@ class ItemsRelationManager extends RelationManager
                     ->label(__('filament/webmall.col_price'))
                     ->numeric()
                     ->sortable(),
+                TextColumn::make('amount')
+                    ->label(__('filament/webmall.col_amount'))
+                    ->formatStateUsing(fn($state): string => '×' . (int) ($state ?? 1))
+                    ->toggleable(),
                 IconColumn::make('is_hot')
                     ->label(__('filament/webmall.col_hot'))
                     ->boolean(),
@@ -235,6 +282,13 @@ class ItemsRelationManager extends RelationManager
 
                     return $readableName ? "{$readableName} ({$item->CodeName128})" : $item->CodeName128;
                 })
+                ->afterStateHydrated(function ($state, $set): void {
+                    // Repopulate the read-only info fields (incl. max stack, which drives
+                    // the Amount field's visibility) when editing an existing record.
+                    if ($state) {
+                        $this->loadItemInfo((int) $state, $set, updateName: false);
+                    }
+                })
                 ->afterStateUpdated(function ($state, $set): void {
                     if (! $state) {
                         $set('item_name_snapshot', null);
@@ -250,36 +304,7 @@ class ItemsRelationManager extends RelationManager
                         return;
                     }
 
-                    $item = RefObjCommon::select([
-                        'ID',
-                        'CodeName128',
-                        'NameStrID128',
-                        'CanTrade',
-                        'CanSell',
-                        'CanBuy',
-                        'Price',
-                        'CostRepair',
-                        'SellPrice',
-                        'ReqLevel1',
-                        'Link',
-                    ])->with('getRefObjItem:ID,MaxStack')->find((int) $state);
-
-                    if (! $item) {
-                        return;
-                    }
-
-                    $names = resolve(AbstractItemNameDesc::class)->getItemNames([$item->NameStrID128]);
-                    $readableName = $names[$item->NameStrID128] ?? null;
-
-                    $set('item_name_snapshot', $readableName ?? $item->CodeName128);
-                    $set('_info_req_level', $item->ReqLevel1);
-                    $set('_info_price', $item->Price);
-                    $set('_info_sell_price', $item->SellPrice);
-                    $set('_info_cost_repair', $item->CostRepair);
-                    $set('_info_can_trade', $item->CanTrade);
-                    $set('_info_can_sell', $item->CanSell);
-                    $set('_info_can_buy', $item->CanBuy);
-                    $set('_info_max_stack', $item->getRefObjItem?->MaxStack ?? 1);
+                    $this->loadItemInfo((int) $state, $set, updateName: true);
                 }),
 
             Hidden::make('_info_req_level'),
@@ -437,6 +462,20 @@ class ItemsRelationManager extends RelationManager
                         ->minValue(1)
                         ->nullable()
                         ->helperText(__('filament/webmall.field_stock_limit_helper')),
+
+                    TextInput::make('amount')
+                        ->label(__('filament/webmall.field_amount'))
+                        ->numeric()
+                        ->default(1)
+                        ->minValue(1)
+                        ->maxValue(fn(Get $get): ?int => $get('item_type') === WebmallItemTypeEnum::CUSTOM_ITEM->value
+                            ? null
+                            : ((int) ($get('_info_max_stack') ?? 1)))
+                        ->required(fn(Get $get): bool => $get('item_type') === WebmallItemTypeEnum::CUSTOM_ITEM->value
+                            || (int) ($get('_info_max_stack') ?? 1) > 1)
+                        ->helperText(__('filament/webmall.field_amount_helper'))
+                        ->visible(fn(Get $get): bool => $get('item_type') === WebmallItemTypeEnum::CUSTOM_ITEM->value
+                            || (int) ($get('_info_max_stack') ?? 1) > 1),
 
                     DateTimePicker::make('available_from')
                         ->label(__('filament/webmall.field_available_from'))

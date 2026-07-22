@@ -101,6 +101,7 @@
 
                             <p class="text-sm font-medium text-zinc-200 leading-tight">
                                 {{ $item->item_name_snapshot ?? 'Item #' . $item->ref_item_id }}
+                                @if ((int) $item->amount > 1)<span class="ml-1 text-xs font-bold opacity-80">×{{ $item->amount }}</span>@endif
                             </p>
 
                             <p
@@ -133,7 +134,7 @@
                                     @if (!$refObj->CanTrade)
                                         <span class="text-red-400">{{ __('webmall.ui.non_trade') }}</span>
                                     @endif
-                                    @if ((int) $refObj->TypeID2 === 1 && !in_array((int) $refObj->TypeID3, [4, 6], true) && !is_null($refObj->ReqGender))
+                                    @if ((int) $refObj->TypeID2 === 1 && !in_array((int) $refObj->TypeID3, [4, 5, 6], true) && !is_null($refObj->ReqGender))
                                         @if ((int) $refObj->ReqGender === 0)
                                             <span class="text-pink-400">{{ __('webmall.ui.female') }}</span>
                                         @else
@@ -177,6 +178,7 @@
 
     {{-- Confirmation Modal --}}
     @if ($showConfirmModal && $confirmItem)
+        @teleport('body')
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" x-data
             x-on:keydown.escape.window="$wire.cancelConfirm()">
             <div
@@ -210,6 +212,12 @@
                 <div class="h-px bg-linear-to-r from-violet-500/40 to-transparent"></div>
 
                 <dl class="text-sm space-y-2 font-mono">
+                    @if ((int) $confirmItem->amount > 1)
+                        <div class="flex justify-between">
+                            <dt class="text-zinc-500 uppercase tracking-wider text-xs">{{ __('webmall.ui.modal_amount') }}</dt>
+                            <dd class="font-bold text-zinc-300">×{{ $confirmItem->amount }}</dd>
+                        </div>
+                    @endif
                     <div class="flex justify-between">
                         <dt class="text-zinc-500 uppercase tracking-wider text-xs">{{ __('webmall.ui.modal_price') }}
                         </dt>
@@ -273,5 +281,6 @@
                 </div>
             </div>
         </div>
+        @endteleport
     @endif
 </div>

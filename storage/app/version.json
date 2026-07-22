@@ -1,6 +1,11 @@
 {
-    "current": "3.2.3",
+    "current": "3.2.4",
     "changelog": {
+        "3.2.4": {
+            "title": "Web Mall Amount & Accessory Gender",
+            "description": "You can now set an Amount for stackable Web Mall items (e.g. HP/MP potions) so players receive multiple per purchase, shown on the item card and in the confirm dialog. Accessories no longer display a gender in the frontend.",
+            "released_at": "2026-07-22"
+        },
         "3.2.3": {
             "title": "Missing Item Images (Selectfield)",
             "description": "Using selectfield instead of text input for item selection on the Missing Item Images page, to avoid confusion with the Item Name Translation feature.",
