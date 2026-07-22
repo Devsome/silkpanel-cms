@@ -116,6 +116,40 @@
                         </a>
                     </div>
                 </div>
+
+                @php
+                    $historyUniqueEnabled = \App\Services\UniqueHistoryService::isAvailable();
+                    $historyGlobalEnabled = \App\Services\GlobalsService::isAvailable();
+                @endphp
+                @if ($historyUniqueEnabled || $historyGlobalEnabled)
+                    <div class="relative" x-data="{ historyDrop: false }" @click.outside="historyDrop = false">
+                        <button @click="historyDrop = !historyDrop"
+                            class="{{ $navLink(request()->routeIs('history.*')) }} inline-flex items-center gap-1">
+                            {{ __('navigation.history') }}
+                            <svg class="w-3 h-3 transition-transform" :class="historyDrop ? 'rotate-180' : ''"
+                                fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div x-show="historyDrop" x-transition style="display:none"
+                            class="absolute left-0 mt-2 w-48 bg-zinc-950 border border-violet-500/25 shadow-[0_0_30px_rgba(139,92,246,0.15)] py-1">
+                            @if ($historyUniqueEnabled)
+                                <a href="{{ route('history.uniques') }}"
+                                    class="block px-4 py-2 text-xs text-zinc-400 hover:text-violet-400 hover:bg-violet-500/10 transition font-mono uppercase tracking-wider">
+                                    {{ __('history.nav_unique') }}
+                                </a>
+                            @endif
+                            @if ($historyGlobalEnabled)
+                                <a href="{{ route('history.globals') }}"
+                                    class="block px-4 py-2 text-xs text-zinc-400 hover:text-violet-400 hover:bg-violet-500/10 transition font-mono uppercase tracking-wider">
+                                    {{ __('history.nav_globals') }}
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -233,7 +267,7 @@
     {{-- Mobile Menu --}}
     <div x-show="open" x-cloak x-transition
         class="lg:hidden border-t border-violet-500/20 bg-zinc-950/95 backdrop-blur">
-        <div class="px-4 py-3 space-y-1">
+        <div class="px-4 py-3 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
             <a href="{{ route('index') }}"
                 class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('index') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.index') }}</a>
             <a href="{{ route('news.index') }}"
@@ -242,6 +276,14 @@
                 class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('downloads.*') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.downloads') }}</a>
             <a href="{{ route('ranking.characters') }}"
                 class="block px-3 py-2 text-xs font-mono uppercase tracking-wider text-zinc-400 hover:text-white transition">{{ __('navigation.rankings') }}</a>
+            @if ($historyUniqueEnabled)
+                <a href="{{ route('history.uniques') }}"
+                    class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('history.uniques') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.history') }} · {{ __('history.nav_unique') }}</a>
+            @endif
+            @if ($historyGlobalEnabled)
+                <a href="{{ route('history.globals') }}"
+                    class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('history.globals') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.history') }} · {{ __('history.nav_globals') }}</a>
+            @endif
             @auth
                 <a href="{{ route('dashboard') }}"
                     class="block px-3 py-2 text-xs font-mono uppercase tracking-wider {{ request()->routeIs('dashboard') ? 'text-violet-400' : 'text-zinc-400 hover:text-white' }} transition">{{ __('navigation.dashboard') }}</a>

@@ -103,6 +103,7 @@
 
                             <p class="text-sm font-medium text-gray-100 leading-tight pr-6">
                                 {{ $item->item_name_snapshot ?? 'Item #' . $item->ref_item_id }}
+                                @if ((int) $item->amount > 1)<span class="ml-1 text-xs font-bold opacity-80">×{{ $item->amount }}</span>@endif
                             </p>
 
                             <p
@@ -135,7 +136,7 @@
                                     @if (!$refObj->CanTrade)
                                         <span class="text-red-400">{{ __('webmall.ui.non_trade') }}</span>
                                     @endif
-                                    @if ((int) $refObj->TypeID2 === 1 && !in_array((int) $refObj->TypeID3, [4, 6], true) && !is_null($refObj->ReqGender))
+                                    @if ((int) $refObj->TypeID2 === 1 && !in_array((int) $refObj->TypeID3, [4, 5, 6], true) && !is_null($refObj->ReqGender))
                                         @if ((int) $refObj->ReqGender === 0)
                                             <span class="text-pink-400">{{ __('webmall.ui.female') }}</span>
                                         @else
@@ -179,6 +180,7 @@
 
     {{-- Confirmation Modal --}}
     @if ($showConfirmModal && $confirmItem)
+        @teleport('body')
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm" x-data
             x-on:keydown.escape.window="$wire.cancelConfirm()">
             <div class="rounded-2xl border border-gray-700 bg-gray-900 shadow-2xl w-full max-w-md mx-4 p-6 space-y-4">
@@ -216,6 +218,12 @@
                         <dd class="font-medium text-gray-100">
                             {{ $confirmItem->item_name_snapshot ?? 'Item #' . $confirmItem->ref_item_id }}</dd>
                     </div>
+                    @if ((int) $confirmItem->amount > 1)
+                        <div class="flex justify-between">
+                            <dt class="text-gray-400">{{ __('webmall.ui.modal_amount') }}</dt>
+                            <dd class="font-medium text-gray-100">×{{ $confirmItem->amount }}</dd>
+                        </div>
+                    @endif
                     <div class="flex justify-between">
                         <dt class="text-gray-400">{{ __('webmall.ui.modal_price') }}</dt>
                         <dd class="font-bold text-emerald-400">{{ number_format($confirmItem->price_value) }}
@@ -275,5 +283,6 @@
                 </div>
             </div>
         </div>
+        @endteleport
     @endif
 </div>

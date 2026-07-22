@@ -32,6 +32,7 @@ return [
         'sold_out_button'       => 'Sold Out',
         'modal_title'           => 'Confirm Purchase',
         'modal_item'            => 'Item',
+        'modal_amount'          => 'Amount',
         'modal_price'           => 'Price',
         'modal_character'       => 'Character',
         'modal_cancel'          => 'Cancel',

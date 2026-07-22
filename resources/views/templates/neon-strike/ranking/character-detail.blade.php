@@ -131,4 +131,11 @@
             </div>
         </div>
     </section>
+
+    {{-- Global Messages --}}
+    <section class="pb-10">
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <x-character-globals :name="$character->CharName16" />
+        </div>
+    </section>
 @endsection

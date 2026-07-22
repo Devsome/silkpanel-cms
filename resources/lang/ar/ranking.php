@@ -30,4 +30,8 @@ return [
     'character' => 'الشخصية',
     'section_label' => 'قوائم المتصدرين',
     'guild' => 'نقابة',
+
+    // Character detail — global messages panel
+    'character_globals' => 'الرسائل العامة',
+    'character_globals_empty' => 'لم ترسل هذه الشخصية أي رسائل عامة بعد.',
 ];

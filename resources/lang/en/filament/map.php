@@ -27,7 +27,7 @@ return [
     'error_lib'           => 'Map library failed to load.',
     'error_load'          => 'Failed to load character positions',
 
-    // Settings tab labels (used in ManageSettings.php)
+    // Settings labels (used by the Map settings cluster page)
     'settings' => [
         'tab'                               => 'World Map',
         'section'                           => 'World Map Settings',

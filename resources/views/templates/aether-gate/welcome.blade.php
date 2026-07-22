@@ -517,6 +517,8 @@
                     </div>
                 </div>
 
+                @globalsWidget(5)
+
                 {{-- Discord widget --}}
                 <x-discord-widget />
             </aside>

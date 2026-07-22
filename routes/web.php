@@ -4,6 +4,7 @@ use App\Helpers\SettingHelper;
 use App\Http\Controllers\Admin\SessionModalPreviewController;
 use App\Http\Controllers\Api\SessionModalController;
 use App\Http\Controllers\DownloadController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\DashboardController;
@@ -61,15 +62,28 @@ Route::prefix('ranking')->name('ranking.')->group(function () {
     ]))->name('custom');
 });
 
+// History (iSRO only)
+Route::prefix('history')->name('history.')->group(function () {
+    Route::get('/', function () {
+        if ((bool) Setting::get('history_unique_enabled', true)) {
+            return redirect()->route('history.uniques');
+        }
+
+        return redirect()->route('history.globals');
+    })->name('index');
+    Route::get('/uniques', [HistoryController::class, 'uniques'])->name('uniques');
+    Route::get('/globals', [HistoryController::class, 'globals'])->name('globals');
+});
+
 // Authenticated routes
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/dashboard/silk-history', [DashboardController::class, 'silkHistory'])->middleware(['auth', 'verified'])->name('dashboard.silk-history');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified', 'banned'])->name('dashboard');
+Route::get('/dashboard/silk-history', [DashboardController::class, 'silkHistory'])->middleware(['auth', 'verified', 'banned'])->name('dashboard.silk-history');
 Route::get('/dashboard/map', function () {
     abort_unless((bool) Setting::get('map_frontend_enabled', false), 404);
     return view('template::dashboard.map');
-})->middleware(['auth', 'verified'])->name('dashboard.map');
+})->middleware(['auth', 'verified', 'banned'])->name('dashboard.map');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified', 'banned'])->group(function () {
     Route::get('/dashboard/voting', [VotingController::class, 'index'])->name('voting.index');
     Route::get('/dashboard/webmall', function () {
         abort_unless((bool) Setting::get('webmall_enabled', false), 404);
@@ -86,7 +100,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::post('/session-modals/dismiss', [SessionModalController::class, 'dismiss'])
     ->name('session-modals.dismiss');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'banned'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 

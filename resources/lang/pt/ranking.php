@@ -30,4 +30,8 @@ return [
     'character' => 'Personagem',
     'section_label' => 'Classificações',
     'guild' => 'Guilda',
+
+    // Character detail — global messages panel
+    'character_globals' => 'Mensagens globais',
+    'character_globals_empty' => 'Este personagem ainda não enviou nenhuma mensagem global.',
 ];

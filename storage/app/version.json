@@ -1,6 +1,239 @@
 {
-    "current": "3.0.9",
+    "current": "3.2.4",
     "changelog": {
+        "3.2.4": {
+            "title": "Web Mall Amount & Accessory Gender",
+            "description": "You can now set an Amount for stackable Web Mall items (e.g. HP/MP potions) so players receive multiple per purchase, shown on the item card and in the confirm dialog. Accessories no longer display a gender in the frontend.",
+            "released_at": "2026-07-22"
+        },
+        "3.2.3": {
+            "title": "Missing Item Images (Selectfield)",
+            "description": "Using selectfield instead of text input for item selection on the Missing Item Images page, to avoid confusion with the Item Name Translation feature.",
+            "released_at": "2026-07-20"
+        },
+        "3.2.2": {
+            "title": "Missing Item Images",
+            "description": "Upload replacement images for items that are missing from the default icon set. Private servers with custom items can add their own item icons here.",
+            "released_at": "2026-07-20",
+            "features": [
+                {
+                    "title": "Missing Item Images Page",
+                    "description": "New admin page under Settings to upload replacement images for items that are missing from the default icon set."
+                },
+                {
+                    "title": "Custom Item Icons",
+                    "description": "Private servers with custom items can add their own item icons here, ensuring that all items display correctly in the frontend."
+                }
+            ]
+        },
+        "3.2.1": {
+            "title": "Templates mobile menu scrollable",
+            "description": "The mobile menu on all templates is now scrollable when the content exceeds the viewport height, preventing it from being cut off on smaller screens.",
+            "released_at": "2026-07-20"
+        },
+        "3.2.0": {
+            "title": "VSRO History Sources",
+            "description": "The public Global History (yell chat) and Unique History (kills/spawns) pages can now be powered on VSRO through configurable sources: pick a database and table, map its columns onto the fields the frontend expects, optionally left-join another table (e.g. _Char) to resolve names and avatars, and preview the result with a live test output — no frontend changes required. iSRO keeps using the standard log tables.",
+            "released_at": "2026-07-20",
+            "features": [
+                {
+                    "title": "Configurable Global History Source",
+                    "description": "New 'Global History (VSRO)' page under Settings to choose a connection and table, load its columns and map them onto Comment, EventTime, CharName, CharID and RefObjID."
+                },
+                {
+                    "title": "Configurable Unique History Source",
+                    "description": "New 'Unique History (VSRO)' page mapping your unique-log columns onto Value, EventTime, killer (CharName16/CharID/RefObjID) and AreaName, so /history/uniques works on VSRO."
+                },
+                {
+                    "title": "Kill / Spawn Handling",
+                    "description": "Map an event-type column plus a 'kill value' to drive the Killed/Spawned badge; leave it unmapped to treat every logged row as a kill."
+                },
+                {
+                    "title": "Optional Left Join",
+                    "description": "Join a second table (e.g. _Char) — including across databases on the same SQL Server instance — to resolve names, IDs and avatars from an id stored in your source table."
+                },
+                {
+                    "title": "Live Test Output",
+                    "description": "Preview the first rows of the mapped query against the current (unsaved) settings before enabling it, with clear guidance when the source or a required mapping is missing."
+                },
+                {
+                    "title": "Frontend Unchanged",
+                    "description": "A shared query builder returns the same fields the views already use, so the History pages, globals widget and character panel work on VSRO without any template changes."
+                }
+            ]
+        },
+        "3.1.9": {
+            "title": "Web Account Ban",
+            "description": "Admins can now ban a user from the website independently of the in-game block. Banned users can no longer log in on the frontend, and the status is manageable and filterable in the admin user list.",
+            "released_at": "2026-07-19",
+            "features": [
+                {
+                    "title": "Web Ban Toggle",
+                    "description": "New 'Banned from Web' toggle (with optional reason) on the admin user edit page, separate from the in-game block."
+                },
+                {
+                    "title": "Login Enforcement",
+                    "description": "A new 'banned' middleware plus a login-time check prevent banned users from signing in and log out any user banned mid-session, with a translated message in all 8 frontend languages."
+                },
+                {
+                    "title": "Table Filter & Column",
+                    "description": "The admin user list now has a Web Ban status column and a ternary filter (All / Banned only / Not banned)."
+                }
+            ]
+        },
+        "3.1.8": {
+            "title": "Voting Package Update",
+            "description": "Updated the Voting package to version 1.0.4",
+            "released_at": "2026-07-15",
+            "features": [
+                {
+                    "title": "Postback Handling Improvements",
+                    "description": "Enhanced the postback controller to resolve user IDs more reliably and log warnings for missing users."
+                }
+            ]
+        },
+        "3.1.7": {
+            "title": "Character Globals Panel",
+            "description": "The character ranking profile now shows a panel with the global (yell) messages that character has sent, with a friendly notice when there are none. Translated into all languages. iSRO only.",
+            "released_at": "2026-07-14",
+            "features": [
+                {
+                    "title": "Globals on Character Profile",
+                    "description": "New <x-character-globals> panel on /ranking/characters/{name} listing that character's latest global messages with timestamps."
+                },
+                {
+                    "title": "Empty-State Notice",
+                    "description": "When a character has never sent a global, a clear hint is shown instead of an empty box."
+                },
+                {
+                    "title": "Full Translations",
+                    "description": "Panel title and notice translated in all 8 languages (ar, de, en, es, fr, it, pt, tr)."
+                },
+                {
+                    "title": "Template Styling",
+                    "description": "Styled for the base views and every bundled template; override components/character-globals.blade.php to customise. iSRO only for now."
+                }
+            ]
+        },
+        "3.1.6": {
+            "title": "Globals Widget Directive",
+            "description": "New @globalsWidget Blade directive that renders the latest global (yell) chat messages as a responsive card, usable in the sidebar or main area of any template (and the root views). iSRO only.",
+            "released_at": "2026-07-14",
+            "features": [
+                {
+                    "title": "@globalsWidget Directive",
+                    "description": "Drop the latest globals into any template with @globalsWidget or @globalsWidget(5); also available as <x-globals-widget :limit=\"8\" />."
+                },
+                {
+                    "title": "Character Links",
+                    "description": "Each sender links to its ranking profile at /ranking/characters/{name}."
+                },
+                {
+                    "title": "Template Styling",
+                    "description": "Ships styled versions for the base views and every bundled template; override components/globals-widget.blade.php to customise."
+                },
+                {
+                    "title": "iSRO Only",
+                    "description": "Renders nothing on vSRO; a configurable custom source is planned for later."
+                }
+            ]
+        },
+        "3.1.5": {
+            "title": "Page Settings Cluster",
+            "description": "Page Settings moved from one overloaded tabbed page into a cluster — every section (General, Silkroad Online, Fake Players, Design, ...) is now its own sub-page with a dedicated sidebar entry. License-only pages stay visible as a blurred, read-only preview instead of being hidden.",
+            "released_at": "2026-07-13"
+        },
+        "3.1.4": {
+            "title": "Global History",
+            "description": "New public History page showing the latest global (yell) chat messages. iSRO only, toggleable in Page Settings and themed for every template. The History menu is now a dropdown with Unique and Globals sub-pages.",
+            "released_at": "2026-07-13",
+            "features": [
+                {
+                    "title": "Global History Page",
+                    "description": "New /history/globals page listing recent global chat messages with sender and date, paginated."
+                },
+                {
+                    "title": "History Sub-Menu",
+                    "description": "The History navigation entry is now a dropdown with Unique and Globals, matching the Rankings menu."
+                },
+                {
+                    "title": "Page Settings Toggle",
+                    "description": "Enable or disable the Global History from the Features tab in Page Settings (iSRO only, on by default)."
+                },
+                {
+                    "title": "Template Support",
+                    "description": "Custom styled views for neon-strike, silkroad-gaming, gilded-path and aether-gate, plus the base template."
+                }
+            ]
+        },
+        "3.1.3": {
+            "title": "Gold Stats & Adding / Removing Update",
+            "description": "In the Dashboard widget, the average gold stat now shows the maximum gold value as well. Also, the Add/Remove Gold buttons on the character view page now update the displayed gold amount immediately after submission.",
+            "released_at": "2026-07-12",
+            "features": [
+                {
+                    "title": "Average Gold Stat",
+                    "description": "The average character gold stat in the Dashboard widget now shows the maximum gold value as well."
+                },
+                {
+                    "title": "Add/Remove Gold Update",
+                    "description": "The Add/Remove Gold buttons on the character view page now update the displayed gold amount immediately after submission."
+                }
+            ]
+        },
+        "3.1.2": {
+            "title": "Unique Tracker",
+            "description": "New public History page showing the latest unique monster kills and spawns. iSRO only, toggleable in Page Settings and themed for every template.",
+            "released_at": "2026-07-12",
+            "features": [
+                {
+                    "title": "Unique History Page",
+                    "description": "New /history/uniques page listing recent unique kills and spawns with killer, area and status, paginated and cached."
+                },
+                {
+                    "title": "Kill/Spawn Filter",
+                    "description": "Live toggle to switch between kills only and kills plus spawns."
+                },
+                {
+                    "title": "Page Settings Toggle",
+                    "description": "Enable or disable the Unique Tracker from the Features tab in Page Settings (iSRO only, on by default)."
+                },
+                {
+                    "title": "Template Support",
+                    "description": "Custom styled views for neon-strike, silkroad-gaming, gilded-path and aether-gate, plus the base template."
+                }
+            ]
+        },
+        "3.1.1": {
+            "title": "Fake Player Count",
+            "description": "Licensed users can add a stable, randomised offset to the public online player count via new range rules in Page Settings.",
+            "released_at": "2026-07-11",
+            "features": [
+                {
+                    "title": "Fake Player Settings",
+                    "description": "New license-gated tab in Page Settings to define real-to-fake player count range rules with a global toggle."
+                },
+                {
+                    "title": "Stable Offset",
+                    "description": "The fake offset stays consistent within a configurable time window (default 10 minutes) and never changes the real server count."
+                }
+            ]
+        },
+        "3.1.0": {
+            "title": "trustProxies & CVE",
+            "description": "Changed trustProxies to wildcard and fixed some CVEs",
+            "released_at": "2026-07-11",
+            "features": [
+                {
+                    "title": "Cloudflare",
+                    "description": "Closed Ticket #27"
+                },
+                {
+                    "title": "CVE Fixes",
+                    "description": "CVE-2026-48505, CVE-2026-45075, CVE-2026-45067 and more"
+                }
+            ]
+        },
         "3.0.9": {
             "title": "HipoPayPayment Service",
             "description": "Update webhook status check to 'success'",

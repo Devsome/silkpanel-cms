@@ -204,7 +204,7 @@ class SettingHelper
             ],
             [
                 'key' => 'sro_fortress_war',
-                'value' => ['bandit', 'hotan', 'jangan'],
+                'value' => ['bandit', 'hotan', 'jangan', 'constantinople'],
                 'type' => 'json',
                 'label' => 'Fortress War',
                 'description' => 'Enabled fortress wars',

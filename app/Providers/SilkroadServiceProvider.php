@@ -28,5 +28,28 @@ class SilkroadServiceProvider extends ServiceProvider
         Blade::directive('onlineCounter', function () {
             return "<?php echo \\App\\View\\Components\\OnlineCounter::getData(); ?>";
         });
+
+        // Latest global (yell) chat messages. iSRO only (renders nothing otherwise).
+        // Usage: @globalsWidget  or  @globalsWidget(5)  or  <x-globals-widget :limit="5" />
+        Blade::component('globals-widget', \App\View\Components\GlobalsWidget::class);
+
+        Blade::directive('globalsWidget', function ($expression) {
+            $expression = trim((string) $expression);
+            $args = $expression === '' ? '' : "'limit' => (int) ({$expression})";
+
+            return "<?php echo app(\\App\\View\\Components\\GlobalsWidget::class, [{$args}])->render()->render(); ?>";
+        });
+
+        // Panel with the global (yell) messages sent by a single character. iSRO only.
+        // Usage: <x-character-globals :name="$character->CharName16" />
+        Blade::component('character-globals', \App\View\Components\CharacterGlobals::class);
+
+        // Live-ticking current server time (server timezone). Template-agnostic.
+        // Usage: <x-server-time class="..." />  or  @serverTime
+        Blade::component('server-time', \App\View\Components\ServerTime::class);
+
+        Blade::directive('serverTime', function () {
+            return "<?php echo \\App\\View\\Components\\ServerTime::getData(); ?>";
+        });
     }
 }

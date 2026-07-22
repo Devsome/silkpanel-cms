@@ -24,6 +24,7 @@ use SilkPanel\SilkroadModels\Models\Shard\RefObjCommon;
  * @property int|null $procedure_mapping_id
  * @property string $price_type
  * @property int $price_value
+ * @property int $amount
  * @property bool $is_hot
  * @property \Illuminate\Support\Carbon|null $available_from
  * @property \Illuminate\Support\Carbon|null $available_until
@@ -62,6 +63,7 @@ class WebmallCategoryItem extends Model
         'procedure_mapping_id',
         'price_type',
         'price_value',
+        'amount',
         'is_hot',
         'available_from',
         'available_until',
@@ -79,6 +81,7 @@ class WebmallCategoryItem extends Model
         'stock' => 'integer',
         'sold' => 'integer',
         'price_value' => 'integer',
+        'amount' => 'integer',
         'order' => 'integer',
         'item_type' => WebmallItemTypeEnum::class,
         'procedure_mapping_id' => 'integer',

@@ -63,6 +63,8 @@
                             </div>
                         </dl>
                     </div>
+
+                    <x-character-globals :name="$character->CharName16" />
                 </div>
 
                 {{-- Right: Equipment & Avatar --}}

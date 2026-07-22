@@ -352,6 +352,8 @@
                         </div>
                     </div>
                 </div>
+
+                <x-character-globals :name="$character->CharName16" />
             </div>
 
             {{-- ── RIGHT COLUMN: Equipment / Avatar ── --}}

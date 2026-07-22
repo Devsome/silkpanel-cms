@@ -308,6 +308,8 @@
 
             <livewire:event-timers-list />
 
+            @globalsWidget(5)
+
             @discordWidget
 
         </aside>

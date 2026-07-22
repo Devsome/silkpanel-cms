@@ -23,6 +23,9 @@ return [
         'roles' => 'Web Account Roles',
         'generate_reflink' => 'Generate a new referral link.',
         'blocked' => 'Blocked',
+        'banned' => 'Banned from Web',
+        'banned_helper' => 'When enabled, the user can no longer log into the website (frontend). This is independent of the in-game block.',
+        'banned_reason' => 'Web Ban Reason',
         'blocked_reason' => 'Blocked Reason',
         'blocked_description' => 'Blocked Description',
         'blocked_start' => 'Starting from',
@@ -83,6 +86,11 @@ return [
         'roles' => 'Web Account Roles',
         'email_verified_at' => 'Email verified at',
         'filter_blocked' => 'Blocked Accounts',
+        'banned' => 'Web Ban',
+        'filter_banned' => 'Web Ban',
+        'filter_banned_all' => 'All users',
+        'filter_banned_only' => 'Banned only',
+        'filter_banned_not' => 'Not banned',
     ],
 
     'edit' => [

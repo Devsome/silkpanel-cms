@@ -409,7 +409,7 @@
      ═══════════════════════════════════════════════════════════ --}}
     <section class="py-16 bg-black border-t border-violet-500/10">
         <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {{-- Event Timers --}}
                 <div class="bg-zinc-900 border border-violet-500/20 p-6">
@@ -424,6 +424,8 @@
                         {{ __('index.discord.title') }}</p>
                     @discordWidget
                 </div>
+
+                @globalsWidget(5)
             </div>
         </div>
     </section>

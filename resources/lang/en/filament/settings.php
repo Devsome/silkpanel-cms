@@ -14,6 +14,7 @@ return [
         'tabs' => [
             'general' => 'General',
             'silkroad_online' => 'Silkroad Online',
+            'fake_players' => 'Fake Players',
             'page_info' => 'Page Info',
             'design' => 'Design',
             'features' => 'Features',
@@ -22,6 +23,7 @@ return [
             'contact' => 'Contact',
             'social_media' => 'Social Media',
             'ticket_system' => 'Ticket System',
+            'missing_item_images' => 'Missing Item Images',
         ],
 
         'page_info' => [
@@ -58,6 +60,28 @@ return [
             'fortress_war' => 'Fortress War',
         ],
 
+        'fake_players' => [
+            'enabled' => 'Enable fake player count',
+            'enabled_description' => 'Adds a stable, randomised offset on top of the real online player count shown publicly. The real count stored on the server is never changed.',
+            'interval' => 'Refresh interval',
+            'interval_description' => 'How long a generated fake value stays stable before a new one is picked.',
+            'interval_suffix' => 'minutes',
+            'rules' => 'Range rules',
+            'rules_description' => 'Map real player count ranges to a fake offset range. Rules are evaluated top to bottom and the first matching range is used. Real ranges must not overlap.',
+            'real_min' => 'Real min',
+            'real_max' => 'Real max',
+            'fake_min' => 'Fake min',
+            'fake_max' => 'Fake max',
+            'rule_label' => 'Real :min–:max',
+            'validation' => [
+                'title' => 'Invalid fake player rules',
+                'invalid_number' => 'Row :row: all values must be positive whole numbers.',
+                'real_order' => 'Row :row: the real minimum must be less than or equal to the real maximum.',
+                'fake_order' => 'Row :row: the fake minimum must be less than or equal to the fake maximum.',
+                'overlap' => 'Row :row: the real range overlaps with row :other. Ranges must not overlap.',
+            ],
+        ],
+
         'design' => [
             'logo' => 'Logo',
             'favicon' => 'Favicon',
@@ -82,6 +106,10 @@ return [
             'webmall_enabled_description' => 'Enable the Webmall where players can purchase items with Silk or Gold.',
             'webmall_require_logout' => 'Require Characters to be Logged Out',
             'webmall_require_logout_description' => 'If enabled, characters must be offline before they can purchase items from the Webmall. This prevents potential issues when items are delivered to online characters.',
+            'history_unique_enabled' => 'Enable Unique Tracker',
+            'history_unique_enabled_description' => 'Show the public Unique Tracker history page (/history/uniques) with the latest unique monster kills and spawns. Only available on iSRO.',
+            'history_global_enabled' => 'Enable Global History',
+            'history_global_enabled_description' => 'Show the public Global History page (/history/globals) with the latest global (yell) chat messages. Only available on iSRO.',
         ],
 
         'partners' => [
@@ -122,6 +150,23 @@ return [
             'enabled_description' => 'Allow users to submit support tickets',
         ],
 
+        'missing_item_images' => [
+            'item' => 'Item',
+            'codename' => 'Codename',
+            'image' => 'Image',
+            'image_description' => 'Upload a PNG image (max 2 MB)',
+            'upload' => 'Upload Image',
+            'upload_heading' => 'Upload Custom Item Image',
+            'upload_description' => 'Upload replacement images for items that are missing from the default icon set. Private servers with custom items can add their own item icons here.',
+            'uploaded' => 'Item image uploaded successfully.',
+            'already_exists' => 'A custom image for this item already exists.',
+            'no_icon_path' => 'This item has no icon path assigned.',
+            'preview' => 'Preview',
+            'created_at' => 'Uploaded',
+            'empty' => 'No custom item images',
+            'empty_description' => 'Upload custom images for missing items using the form above.',
+        ],
+
         'field_types' => [
             'text' => 'Text',
             'textarea' => 'Textarea',
@@ -156,5 +201,17 @@ return [
 
     'actions' => [
         'save' => 'Save all settings',
+    ],
+
+    'locked' => [
+        'title' => 'Feature locked',
+        'description' => 'This feature is not available right now.',
+        'license_required' => 'A valid SilkPanel license is required to configure and use fake players. The settings below are shown as a preview.',
+        'license_required_map' => 'A valid SilkPanel license is required to configure and use the World Map. The settings below are shown as a preview.',
+        'license_required_referral' => 'A valid SilkPanel license is required to configure and use the Referral System. The settings below are shown as a preview.',
+        'license_required_custom_procedures' => 'A valid SilkPanel license is required to configure and use Custom Procedures. The settings below are shown as a preview.',
+        'license_required_discord_notifications' => 'A valid SilkPanel license is required to configure and use Discord Notifications. The list below is shown as a preview.',
+        'license_required_global_history' => 'A valid SilkPanel license is required to configure and use the VSRO Global History source. The settings below are shown as a preview.',
+        'license_required_unique_history' => 'A valid SilkPanel license is required to configure and use the VSRO Unique History source. The settings below are shown as a preview.',
     ],
 ];

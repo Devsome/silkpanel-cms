@@ -81,6 +81,16 @@ class LoginRequest extends FormRequest
             ]);
         }
 
+        // The account is banned from the web: refuse the login even though the
+        // credentials are valid, and never leave a session behind.
+        if (Auth::user()?->isBanned()) {
+            Auth::guard('web')->logout();
+
+            throw ValidationException::withMessages([
+                'email' => trans('auth.banned'),
+            ]);
+        }
+
         RateLimiter::clear($this->throttleKey());
     }
 

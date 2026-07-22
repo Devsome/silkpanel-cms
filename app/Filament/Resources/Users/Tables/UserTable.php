@@ -5,10 +5,12 @@ namespace App\Filament\Resources\Users\Tables;
 use App\Enums\UsergroupRoleEnums;
 use Filament\Actions\ActionGroup;
 use Filament\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use SilkPanel\SilkroadModels\Models\Account\BlockedUser;
@@ -63,6 +65,15 @@ class UserTable
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                IconColumn::make('banned')
+                    ->label(__('filament/users.table.banned'))
+                    ->boolean()
+                    ->trueIcon('heroicon-o-no-symbol')
+                    ->falseIcon('heroicon-o-check-circle')
+                    ->trueColor('danger')
+                    ->falseColor('gray')
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: false),
             ])
             ->filters([
                 SelectFilter::make('roles')
@@ -82,6 +93,11 @@ class UserTable
                         return $query->whereIn('jid', $blockedJids);
                     })
                     ->toggle(),
+                TernaryFilter::make('banned')
+                    ->label(__('filament/users.table.filter_banned'))
+                    ->placeholder(__('filament/users.table.filter_banned_all'))
+                    ->trueLabel(__('filament/users.table.filter_banned_only'))
+                    ->falseLabel(__('filament/users.table.filter_banned_not')),
             ])
             ->recordActions([
                 ActionGroup::make([

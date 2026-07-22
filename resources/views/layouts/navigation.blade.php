@@ -109,6 +109,48 @@
                         </a>
                     </div>
                 </div>
+
+                @php
+                    $historyUniqueEnabled = \App\Services\UniqueHistoryService::isAvailable();
+                    $historyGlobalEnabled = \App\Services\GlobalsService::isAvailable();
+                @endphp
+                @if ($historyUniqueEnabled || $historyGlobalEnabled)
+                    <div class="relative border-b-2 border-transparent hover:border-primary-300" x-data="{ historyDrop: false }"
+                        @click.outside="historyDrop = false">
+                        <button @click="historyDrop = !historyDrop"
+                            class="inline-flex items-center gap-1 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none
+                                {{ request()->routeIs('history.*') ? 'text-gray-900 dark:text-white border-b-2 border-indigo-500' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300' }}">
+                            {{ __('navigation.history') }}
+                            <svg class="w-4 h-4 transition-transform duration-200" :class="historyDrop ? 'rotate-180' : ''"
+                                fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.22 8.22a.75.75 0 011.06 0L10 11.94l3.72-3.72a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.22 9.28a.75.75 0 010-1.06z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div x-show="historyDrop" x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 -translate-y-1"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 -translate-y-1"
+                            class="absolute left-0 mt-2 w-52 rounded-lg border border-gray-200 bg-white p-1.5 shadow-lg dark:border-gray-700 dark:bg-gray-800 z-50"
+                            style="display: none;">
+                            @if ($historyUniqueEnabled)
+                                <a href="{{ route('history.uniques') }}"
+                                    class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition">
+                                    {{ __('history.nav_unique') }}
+                                </a>
+                            @endif
+                            @if ($historyGlobalEnabled)
+                                <a href="{{ route('history.globals') }}"
+                                    class="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white transition">
+                                    {{ __('history.nav_globals') }}
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -241,7 +283,7 @@
     </div>
 
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+        <div class="pt-2 pb-3 space-y-1 max-h-[calc(100dvh-4rem)] overflow-y-auto overscroll-contain">
             <x-responsive-nav-link :href="route('index')" :active="request()->routeIs('index')">
                 {{ __('navigation.index') }}
             </x-responsive-nav-link>
@@ -275,6 +317,22 @@
             <x-responsive-nav-link :href="route('ranking.uniques')" :active="request()->routeIs('ranking.uniques')">
                 {{ __('navigation.ranking_uniques') }}
             </x-responsive-nav-link>
+
+            @if ($historyUniqueEnabled || $historyGlobalEnabled)
+                <div class="px-4 py-2 text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">
+                    {{ __('navigation.history') }}
+                </div>
+                @if ($historyUniqueEnabled)
+                    <x-responsive-nav-link :href="route('history.uniques')" :active="request()->routeIs('history.uniques')">
+                        {{ __('history.nav_unique') }}
+                    </x-responsive-nav-link>
+                @endif
+                @if ($historyGlobalEnabled)
+                    <x-responsive-nav-link :href="route('history.globals')" :active="request()->routeIs('history.globals')">
+                        {{ __('history.nav_globals') }}
+                    </x-responsive-nav-link>
+                @endif
+            @endif
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-700">

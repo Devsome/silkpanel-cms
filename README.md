@@ -29,6 +29,20 @@ Redistribution, commercial use, or offering the software as a service is prohibi
 
 Commercial modules are available via API key licensing.
 
+### Features requiring a valid license
+
+The following features are visible in the admin panel without a license, but their
+settings are shown as a locked, read-only preview and the feature stays inactive
+until a valid SilkPanel license (API key) is configured.
+
+| Feature | Description | Location |
+| --- | --- | --- |
+| Fake Players | Adds a stable, randomised offset on top of the real online player count shown publicly. The real count stored on the server is never changed. | `Settings → Fake Players` |
+| World Map | Live world map on the frontend showing current character positions. | `Settings → World Map` |
+| Referral System | Lets players invite others and earn Silk rewards once the referred player reaches the required character level. | `Settings → Referral` |
+| Custom Procedures | Maps CMS actions to custom MSSQL stored procedures, including a parameter mapper and test runner. | `Configuration → Custom Procedures` |
+| Discord Notifications | Sends configurable Discord webhook notifications for events such as registrations, donations and Webmall sales. | `Integrations → Discord Notifications` |
+
 Breaking the License Terms may result in legal action. Please review the license terms carefully before using or distributing this software.
 
 ## For local deployment

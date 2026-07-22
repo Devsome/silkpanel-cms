@@ -8,6 +8,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\IconEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Notifications\Notification;
@@ -57,6 +58,15 @@ class UserForm
                                     ->relationship(name: 'roles', titleAttribute: 'name')
                                     ->preload()
                                     ->searchable(),
+                                Toggle::make('banned')
+                                    ->label(__('filament/users.form.banned'))
+                                    ->helperText(__('filament/users.form.banned_helper'))
+                                    ->live()
+                                    ->inline(false),
+                                TextInput::make('banned_reason')
+                                    ->label(__('filament/users.form.banned_reason'))
+                                    ->maxLength(255)
+                                    ->visible(fn(callable $get) => (bool) $get('banned')),
                             ])
                             ->columns(1)
                             ->columnSpan(['lg' => 2]),

@@ -19,6 +19,7 @@ return [
     'ranking_guilds' => 'Gilden',
     'ranking_uniques' => 'Uniques',
     'ranking_custom' => 'Custom',
+    'history' => 'Verlauf',
     'voting' => 'Abstimmen',
     'donate' => 'Spenden',
     'webmall' => 'Webmall',
