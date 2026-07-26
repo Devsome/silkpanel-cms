@@ -1,6 +1,41 @@
 {
-    "current": "3.2.4",
+    "current": "3.2.5",
     "changelog": {
+        "3.2.5": {
+            "title": "Player Web Market, Laravel Upgrade & Security",
+            "description": "Players can now trade game items through a web-based marketplace — transfer items to web storage, list them for sale, and browse or buy from other players. Includes a Laravel framework upgrade and strengthened security measures.",
+            "released_at": "2026-07-26",
+            "features": [
+                {
+                    "title": "Web Storage",
+                    "description": "Players can transfer items to and from a personal web storage, viewable with item origin tracking."
+                },
+                {
+                    "title": "Marketplace Listings",
+                    "description": "List stored items for sale with configurable pricing, fees, and listing durations — other players can browse and purchase directly."
+                },
+                {
+                    "title": "Admin Web Market Settings",
+                    "description": "Four-tab settings page (General, Pricing & Fees, Durations, Limits) to control storage capacity, listing counts, fee percentages, and character-offline requirements."
+                },
+                {
+                    "title": "Transactions & Listing Management",
+                    "description": "Full transaction history with item, price, and fee details. Active listings overview with expiration handling and a bulk process-expired-listings action."
+                },
+                {
+                    "title": "Template Support",
+                    "description": "Styled marketplace views for all bundled templates: Aether Gate, Gilded Path, Neon Strike, and Silkroad Gaming."
+                },
+                {
+                    "title": "Laravel Framework Upgrade",
+                    "description": "Upgraded to the latest Laravel version with updated dependencies."
+                },
+                {
+                    "title": "Security Improvements",
+                    "description": "Strengthened security posture with updated packages and hardened configurations."
+                }
+            ]
+        },
         "3.2.4": {
             "title": "Web Mall Amount & Accessory Gender",
             "description": "You can now set an Amount for stackable Web Mall items (e.g. HP/MP potions) so players receive multiple per purchase, shown on the item card and in the confirm dialog. Accessories no longer display a gender in the frontend.",

@@ -5,6 +5,8 @@ namespace App\Filament\Pages;
 use App\Enums\MarketFeeTypeEnum;
 use App\Enums\SilkTypeEnum;
 use App\Enums\SilkTypeIsroEnum;
+use App\Filament\Concerns\InteractsWithLockedState;
+use App\Helpers\LicenseHelper;
 use App\Models\Setting;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -26,6 +28,7 @@ use Filament\Support\Icons\Heroicon;
  */
 class ManageWebMarketSettings extends Page
 {
+    use InteractsWithLockedState;
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingBag;
 
     protected string $view = 'filament.pages.manage-web-market-settings';
@@ -36,6 +39,16 @@ class ManageWebMarketSettings extends Page
 
     /** @var array<string, mixed>|null */
     public ?array $data = [];
+
+    public function isLocked(): bool
+    {
+        return ! LicenseHelper::isValid();
+    }
+
+    public function getLockedDescription(): string
+    {
+        return __('filament/settings.locked.license_required');
+    }
 
     public static function getNavigationLabel(): string
     {
@@ -49,6 +62,8 @@ class ManageWebMarketSettings extends Page
 
     public function form(Schema $schema): Schema
     {
+        $locked = $this->isLocked();
+
         return $schema
             ->components([
                 Form::make([
@@ -184,8 +199,9 @@ class ManageWebMarketSettings extends Page
 
                         ]),
                 ])
-                    ->livewireSubmitHandler('save')
-                    ->footer([
+                    ->disabled($locked)
+                    ->livewireSubmitHandler($locked ? null : 'save')
+                    ->footer($locked ? [] : [
                         ActionsComponent::make([
                             Action::make('save')
                                 ->label('Save Settings')
@@ -199,6 +215,10 @@ class ManageWebMarketSettings extends Page
 
     public function save(): void
     {
+        if ($this->isLocked()) {
+            return;
+        }
+
         $data = $this->form->getState();
 
         $keys = [

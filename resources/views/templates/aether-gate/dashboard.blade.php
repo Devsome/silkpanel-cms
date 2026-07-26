@@ -136,6 +136,21 @@
                                     class="text-sm font-medium ag-text-surface group-hover:ag-text-primary transition-colors">{{ __('dashboard.webmall') }}</span>
                             </a>
                         @endif
+                        @if ($webMarketEnabled)
+                            <a href="{{ route('web-market.index') }}"
+                                class="flex items-center gap-3 p-3 ag-card-low hover:border-cyan-400/20 transition-all group">
+                                <div class="w-7 h-7 flex items-center justify-center shrink-0"
+                                    style="background: rgba(34,211,238,0.1);">
+                                    <svg class="w-4 h-4 ag-text-primary" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M13.5 21v-7.5a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 .75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349M3.75 21V9.349m0 0a3.001 3.001 0 0 0 3.75-.615A2.993 2.993 0 0 0 9.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 0 0 2.25 1.016c.896 0 1.7-.393 2.25-1.015a3.001 3.001 0 0 0 3.75.614m-16.5 0a3.004 3.004 0 0 1-.621-4.72l1.189-1.19A1.5 1.5 0 0 1 5.378 3h13.243a1.5 1.5 0 0 1 1.06.44l1.19 1.189a3 3 0 0 1-.621 4.72M6.75 18h3.75a.75.75 0 0 0 .75-.75V13.5a.75.75 0 0 0-.75-.75H6.75a.75.75 0 0 0-.75.75v3.75c0 .414.336.75.75.75Z" />
+                                    </svg>
+                                </div>
+                                <span
+                                    class="text-sm font-medium ag-text-surface group-hover:ag-text-primary transition-colors">{{ __('dashboard.web_market') }}</span>
+                            </a>
+                        @endif
                         <a href="{{ route('dashboard.silk-history') }}"
                             class="flex items-center gap-3 p-3 ag-card-low hover:border-cyan-400/20 transition-all group">
                             <div class="w-7 h-7 flex items-center justify-center shrink-0"
@@ -167,6 +182,56 @@
                     </div>
                 </div>
             </div>
+
+            {{-- Referral --}}
+            @if ($referralEnabled && $referralData)
+                <div class="ag-card ag-accent-line p-6">
+                    <p class="ag-section-eyebrow mb-5">{{ __('dashboard.referral_title') }}</p>
+
+                    <div class="grid grid-cols-3 gap-4 mb-6">
+                        @foreach ([['label' => __('dashboard.referral_valid'), 'value' => $referralData['valid_count']], ['label' => __('dashboard.referral_pending'), 'value' => $referralData['pending_count']], ['label' => __('dashboard.referral_silk_earned'), 'value' => number_format($referralData['total_silk_earned'])]] as $item)
+                            <div class="text-center p-4 ag-card-low">
+                                <p class="ag-stat-amber text-2xl">{{ $item['value'] }}</p>
+                                <p class="text-xs ag-text-muted mt-1.5">{{ $item['label'] }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-xs font-semibold uppercase tracking-wider ag-text-muted mb-2">
+                            {{ __('dashboard.referral_your_link') }}
+                        </p>
+                        <div class="flex items-center gap-2">
+                            <input type="text" readonly
+                                value="{{ route('register') . '?ref=' . $referralData['reflink'] }}"
+                                class="flex-1 text-sm ag-card-low border rounded px-3 py-2 ag-text-surface truncate focus:outline-none"
+                                style="border-color: rgba(34,211,238,0.2);" />
+                            <button type="button"
+                                onclick="navigator.clipboard.writeText('{{ route('register') . '?ref=' . $referralData['reflink'] }}').then(() => this.textContent = '{{ __('dashboard.referral_copied') }}')"
+                                class="shrink-0 text-xs font-semibold uppercase tracking-wider px-4 py-2 ag-btn-primary transition">
+                                {{ __('dashboard.referral_copy') }}
+                            </button>
+                        </div>
+                    </div>
+
+                    @if ($referralData['referrals']->isNotEmpty())
+                        <div class="mt-4 divide-y" style="border-color: rgba(34,211,238,0.1);">
+                            @foreach ($referralData['referrals'] as $referral)
+                                <div class="flex items-center justify-between py-2">
+                                    <span class="text-sm font-medium ag-text-surface">
+                                        {{ $referral->character_name ?? __('dashboard.referral_no_character') }}
+                                    </span>
+                                    <span
+                                        class="inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full
+                                        {{ $referral->status === 'valid' ? 'bg-emerald-900/30 text-emerald-400' : 'bg-yellow-900/30 text-yellow-400' }}">
+                                        {{ $referral->status === 'valid' ? __('dashboard.referral_status_valid') : __('dashboard.referral_status_pending') }}
+                                    </span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            @endif
 
             {{-- Characters --}}
             @if (isset($characters) && $characters->isNotEmpty())

@@ -71,6 +71,7 @@ return [
 
     // Webmall
     'webmall' => 'Webmall',
+    'web_market' => 'Web Market',
     'support' => 'Support',
     'characters' => 'Characters',
     'map'               => 'World Map',

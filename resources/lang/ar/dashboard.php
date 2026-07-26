@@ -62,6 +62,7 @@ return [
 
     // Webmall
     'webmall' => 'المتجر الإلكتروني',
+    'web_market' => 'السوق',
     'support' => 'الدعم',
     'characters' => 'الشخصيات',
     'map'               => 'خريطة العالم',

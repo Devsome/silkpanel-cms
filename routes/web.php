@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\LicenseHelper;
 use App\Helpers\SettingHelper;
 use App\Http\Controllers\Admin\SessionModalPreviewController;
 use App\Http\Controllers\Api\SessionModalController;
@@ -91,6 +92,7 @@ Route::middleware(['auth', 'verified', 'banned'])->group(function () {
     })->name('webmall.index');
 
     Route::get('/dashboard/web-market', function () {
+        abort_unless(LicenseHelper::isValid(), 404);
         abort_unless((bool) Setting::get('web_market_enabled', false), 404);
         return view('template::web-market.index');
     })->name('web-market.index');

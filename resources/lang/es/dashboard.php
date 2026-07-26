@@ -62,6 +62,7 @@ return [
 
     // Webmall
     'webmall' => 'Tienda Web',
+    'web_market' => 'Mercado Web',
     'support' => 'Soporte',
     'characters' => 'Personajes',
     'map'               => 'Mapa del Mundo',

@@ -22,6 +22,7 @@ class DashboardController extends Controller
         $worldMapEnabled = (bool) Setting::get('map_frontend_enabled', false);
         $ticketSystemEnabled = (bool) Setting::get('is_ticket_system_enabled', false);
         $webmallEnabled = (bool) Setting::get('webmall_enabled', false);
+        $webMarketEnabled = (bool) Setting::get('web_market_enabled', false);
 
         return view('template::dashboard', compact(
             'silkData',
@@ -32,7 +33,8 @@ class DashboardController extends Controller
             'referralData',
             'worldMapEnabled',
             'ticketSystemEnabled',
-            'webmallEnabled'
+            'webmallEnabled',
+            'webMarketEnabled'
         ));
     }
 

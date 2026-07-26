@@ -62,6 +62,7 @@ return [
 
     // Webmall
     'webmall' => 'Webmall',
+    'web_market' => 'Web Pazar',
     'support' => 'Destek',
     'characters' => 'Karakterler',
     'map'               => 'Dünya Haritası',

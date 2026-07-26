@@ -102,7 +102,7 @@
                     @endphp
                     <div class="wm-card"
                         x-data="{ tip: false, right: true }"
-                        @mouseenter="let r=$event.currentTarget.getBoundingClientRect(); right=r.right+390<window.innerWidth; $el.style.setProperty('--tip-x',(right?r.right+10:window.innerWidth-r.left+10)+'px'); $el.style.setProperty('--tip-y',Math.max(10,Math.min(r.top,window.innerHeight-420))+'px'); tip=true"
+                        @mouseenter="let r=$event.currentTarget.getBoundingClientRect(); right=r.right+390<window.innerWidth; $el.style.setProperty('--tip-x',(right?r.right+10:window.innerWidth-r.left+10)+'px'); $el.style.setProperty('--tip-y',Math.max(10,Math.min(r.top,window.innerHeight-520))+'px'); tip=true"
                         @mouseleave="tip=false">
 
                         {{-- Full item stat tooltip --}}
