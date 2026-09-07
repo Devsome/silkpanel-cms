@@ -41,3 +41,5 @@ resources/views/templates/*
 !resources/views/templates/neon-strike/**
 !resources/views/templates/aether-gate/
 !resources/views/templates/aether-gate/**
+# !resources/views/templates/desert-storm/
+# !resources/views/templates/desert-storm/**

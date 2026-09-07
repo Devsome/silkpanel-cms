@@ -1,6 +1,33 @@
 {
-    "current": "3.2.6",
+    "current": "3.2.7",
     "changelog": {
+        "3.2.7": {
+            "title": "Custom Online Player Source",
+            "description": "The public online player count can now be read from any database, table and column instead of the standard _ShardCurrentUser table. Enable the override in Page Settings, pick connection, table and column, and choose how the column is aggregated — single value ordered by a date column, count, distinct count, sum or max. _ShardCurrentUser stays the fallback whenever the override is off or the custom query fails.",
+            "released_at": "2026-09-08",
+            "features": [
+                {
+                    "title": "Online Players Source Page",
+                    "description": "New license-gated 'Online Players Source' page under Settings with a checkbox to override the default count and selects for connection, table and column, loaded live from the database schema."
+                },
+                {
+                    "title": "Aggregate Modes",
+                    "description": "Read the value of a single row (ordered by a date column, like _ShardCurrentUser), or aggregate the selected column with COUNT(*), COUNT(column), COUNT(DISTINCT column), SUM or MAX."
+                },
+                {
+                    "title": "Optional Row Filter",
+                    "description": "Restrict the query to rows where a column matches a value, e.g. a single shard ID in a shared log table."
+                },
+                {
+                    "title": "Safe Fallback",
+                    "description": "_ShardCurrentUser remains the fallback: it is used when the override is disabled, the license is invalid, the configuration is incomplete, or the custom query fails — the frontend never breaks."
+                },
+                {
+                    "title": "Test Source Button",
+                    "description": "Run the current, unsaved configuration and see the resolved count next to the _ShardCurrentUser fallback before enabling it."
+                }
+            ]
+        },
         "3.2.6": {
             "title": "packages upgrade",
             "description": "Upgraded composer packages to latest versions and fixed some CVEs",

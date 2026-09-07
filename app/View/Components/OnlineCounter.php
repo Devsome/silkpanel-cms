@@ -3,10 +3,10 @@
 namespace App\View\Components;
 
 use App\Services\FakePlayerService;
+use App\Services\OnlinePlayerCountService;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use SilkPanel\SilkroadModels\Models\Account\ShardCurrentUser;
 
 class OnlineCounter extends Component
 {
@@ -61,16 +61,12 @@ class OnlineCounter extends Component
         return $count;
     }
 
+    /**
+     * The real count, from the configured custom source when the backend
+     * override is active, otherwise from `_ShardCurrentUser`.
+     */
     protected function fetchOnlineCount(): int
     {
-        if (! class_exists(ShardCurrentUser::class)) {
-            return 0;
-        }
-        $curentUser = ShardCurrentUser::getOnlineCount();
-        if ($curentUser !== null) {
-            return $curentUser;
-        }
-
-        return 0;
+        return app(OnlinePlayerCountService::class)->count();
     }
 }
