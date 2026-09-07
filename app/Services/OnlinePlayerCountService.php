@@ -151,9 +151,12 @@ class OnlinePlayerCountService
 
         $query = DB::connection($connection)->table($table);
 
+        // A filter column without a value would silently match nothing
+        // (`WHERE col = ''`), so both parts are required for it to apply.
         $filterColumn = $config[self::FILTER_COLUMN_KEY];
-        if ($filterColumn !== '') {
-            $query->where($filterColumn, $config[self::FILTER_VALUE_KEY]);
+        $filterValue = $config[self::FILTER_VALUE_KEY];
+        if ($filterColumn !== '' && $filterValue !== '') {
+            $query->where($filterColumn, $filterValue);
         }
 
         $result = match ($aggregate) {

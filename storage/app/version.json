@@ -1,6 +1,11 @@
 {
-    "current": "3.2.7",
+    "current": "3.2.8",
     "changelog": {
+        "3.2.8": {
+            "title": "Bug Custom Online Player Source (Fixes & Performance)",
+            "description": "Quick fixes for the new Custom Online Player Source feature: improved performance, fixed a bug.",
+            "released_at": "2026-09-08"
+        },
         "3.2.7": {
             "title": "Custom Online Player Source",
             "description": "The public online player count can now be read from any database, table and column instead of the standard _ShardCurrentUser table. Enable the override in Page Settings, pick connection, table and column, and choose how the column is aggregated — single value ordered by a date column, count, distinct count, sum or max. _ShardCurrentUser stays the fallback whenever the override is off or the custom query fails.",

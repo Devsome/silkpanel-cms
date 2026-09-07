@@ -145,7 +145,10 @@ class OnlinePlayersSource extends AbstractSettingsPage
                         ->options(fn(Get $get): array => $this->getColumnOptions($get))
                         ->searchable()
                         ->preload()
-                        ->placeholder('—'),
+                        ->placeholder('—')
+                        // Persist the cleared value: the shared save loop skips nulls,
+                        // which would leave a stale column behind.
+                        ->dehydrateStateUsing(fn($state): string => (string) $state),
 
                     Select::make(OnlinePlayerCountService::ORDER_DIRECTION_KEY)
                         ->label(__('filament/online-players.fields.order_direction'))
@@ -169,11 +172,17 @@ class OnlinePlayersSource extends AbstractSettingsPage
                         ->options(fn(Get $get): array => $this->getColumnOptions($get))
                         ->searchable()
                         ->preload()
-                        ->placeholder('—'),
+                        ->placeholder('—')
+                        ->live()
+                        ->dehydrateStateUsing(fn($state): string => (string) $state),
 
                     TextInput::make(OnlinePlayerCountService::FILTER_VALUE_KEY)
                         ->label(__('filament/online-players.fields.filter_value'))
-                        ->helperText(__('filament/online-players.fields.filter_value_description')),
+                        ->helperText(__('filament/online-players.fields.filter_value_description'))
+                        // Without a value the filter would match nothing, so it is
+                        // mandatory as soon as a filter column is picked.
+                        ->required(fn(Get $get): bool => filled($get(OnlinePlayerCountService::FILTER_COLUMN_KEY)))
+                        ->dehydrateStateUsing(fn($state): string => (string) $state),
                 ])
                 ->columns(2)
                 ->visible($enabled),

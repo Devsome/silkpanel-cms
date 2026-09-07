@@ -32,7 +32,7 @@ return [
         'filter_column' => 'Filter column',
         'filter_column_description' => 'Leave empty to query the whole table.',
         'filter_value' => 'Filter value',
-        'filter_value_description' => 'The value the filter column has to match.',
+        'filter_value_description' => 'The value the filter column has to match. Required once a filter column is picked — a filter without a value would match no rows at all.',
     ],
 
     'aggregates' => [
