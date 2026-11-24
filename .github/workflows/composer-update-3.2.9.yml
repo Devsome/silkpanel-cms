@@ -19,13 +19,54 @@ jobs:
           extensions: mbstring, intl, dom, xml, curl, zip, bcmath, pdo_sqlite, sqlsrv, pdo_sqlsrv
           tools: composer:v2
           coverage: none
-      - name: Resolve latest compatible dependencies
+      - name: Preserve manifest and locked SilkPanel packages
         run: |
+          composer validate --no-check-publish
+          cp composer.json "$RUNNER_TEMP/original-composer.json"
+          cp composer.lock "$RUNNER_TEMP/original-composer.lock"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('composer.json')
+          manifest = json.loads(p.read_text())
+          lock = json.loads(Path('composer.lock').read_text())
+          private = [pkg for group in ('packages', 'packages-dev') for pkg in lock[group] if pkg['name'].startswith('silkpanel/')]
+          assert len(private) == 7
+          assert all(pkg.get('dist', {}).get('url', '').startswith('https://composer.devso.me/') for pkg in private)
+          # The registry returned HTTP 403. Resolve public updates against the already-locked private metadata, without fetching private distributions or changing their URLs.
+          manifest['repositories'] = [{'type': 'package', 'package': private}]
+          p.write_text(json.dumps(manifest, indent=4) + '\n')
+          PY
+      - name: Resolve and audit public packages
+        run: |
+          unset COMPOSER_NO_AUDIT
           composer update --with-all-dependencies --no-install --no-interaction --no-scripts --no-plugins --prefer-dist
-          composer validate --no-check-publish --strict
           composer audit --locked --no-interaction
-      - name: Verify installation
-        run: composer install --no-interaction --no-scripts --no-plugins --prefer-dist
+      - name: Restore original manifest and verify private package records
+        run: |
+          python3 - <<'PY'
+          import json, os, shutil
+          from pathlib import Path
+          temp = Path(os.environ['RUNNER_TEMP'])
+          original = json.loads((temp / 'original-composer.lock').read_text())
+          p = Path('composer.lock')
+          updated = json.loads(p.read_text())
+          for group in ('packages', 'packages-dev'):
+              private = {pkg['name']: pkg for pkg in original[group] if pkg['name'].startswith('silkpanel/')}
+              resolved = {pkg['name']: pkg for pkg in updated[group] if pkg['name'].startswith('silkpanel/')}
+              assert private.keys() == resolved.keys()
+              for name, pkg in private.items():
+                  for key in ('version', 'dist', 'source', 'require', 'conflict', 'replace', 'provide'):
+                      assert pkg.get(key, {}) == resolved[name].get(key, {}), (name, key)
+              updated[group] = [private.get(pkg['name'], pkg) for pkg in updated[group]]
+          # Original manifest is restored byte-for-byte, so its original validated hash is still correct.
+          updated['content-hash'] = original['content-hash']
+          p.write_text(json.dumps(updated, indent=4, ensure_ascii=False) + '\n')
+          shutil.copyfile(temp / 'original-composer.json', 'composer.json')
+          PY
+          composer validate --no-check-publish --strict
+          composer check-platform-reqs --lock
+          composer install --dry-run --no-interaction --no-scripts --no-plugins
       - name: Bump CMS version and add changelog
         run: |
           python3 - <<'PY'
@@ -37,7 +78,7 @@ jobs:
           data['current'] = '3.2.9'
           data['changelog'] = {'3.2.9': {
               'title': 'Composer Dependency Updates',
-              'description': 'Updated Composer dependencies to the latest compatible versions and refreshed the dependency lock file. Checked the locked dependencies for known security advisories.',
+              'description': 'Updated public Composer dependencies to the latest compatible versions and checked them for known security advisories. Existing SilkPanel package versions remain unchanged because the package registry was unavailable.',
               'released_at': '2026-11-24'
           }, **data['changelog']}
           p.write_text(json.dumps(data, indent=4, ensure_ascii=False) + '\n')
@@ -47,5 +88,5 @@ jobs:
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add composer.lock storage/app/version.json
-          git commit -m "chore: update Composer dependencies and bump CMS to 3.2.9"
+          git commit -m "chore: update public Composer dependencies and bump CMS to 3.2.9"
           git push origin HEAD:refs/heads/chore/composer-update-3.2.9
