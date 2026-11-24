@@ -1,6 +1,11 @@
 {
-    "current": "3.2.8",
+    "current": "3.2.9",
     "changelog": {
+        "3.2.9": {
+            "title": "Composer Dependency Updates",
+            "description": "Updated public Composer dependencies to the latest compatible versions and checked them for known security advisories. Existing SilkPanel package versions remain unchanged because the package registry was unavailable.",
+            "released_at": "2026-11-24"
+        },
         "3.2.8": {
             "title": "Bug Custom Online Player Source (Fixes & Performance)",
             "description": "Quick fixes for the new Custom Online Player Source feature: improved performance, fixed a bug.",
