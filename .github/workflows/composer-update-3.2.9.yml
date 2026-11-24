@@ -1,0 +1,51 @@
+name: Refresh Composer lock for 3.2.9
+
+on:
+  push:
+    branches: [chore/composer-update-3.2.9]
+    paths: ['.github/workflows/composer-update-3.2.9.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, intl, dom, xml, curl, zip, bcmath, pdo_sqlite, sqlsrv, pdo_sqlsrv
+          tools: composer:v2
+          coverage: none
+      - name: Resolve latest compatible dependencies
+        run: |
+          composer update --with-all-dependencies --no-install --no-interaction --no-scripts --no-plugins --prefer-dist
+          composer validate --no-check-publish --strict
+          composer audit --locked --no-interaction
+      - name: Verify installation
+        run: composer install --no-interaction --no-scripts --no-plugins --prefer-dist
+      - name: Bump CMS version and add changelog
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path('storage/app/version.json')
+          data = json.loads(p.read_text())
+          assert data['current'] == '3.2.8' and '3.2.9' not in data['changelog']
+          data['current'] = '3.2.9'
+          data['changelog'] = {'3.2.9': {
+              'title': 'Composer Dependency Updates',
+              'description': 'Updated Composer dependencies to the latest compatible versions and refreshed the dependency lock file. Checked the locked dependencies for known security advisories.',
+              'released_at': '2026-11-24'
+          }, **data['changelog']}
+          p.write_text(json.dumps(data, indent=4, ensure_ascii=False) + '\n')
+          PY
+      - name: Commit generated files to the update branch
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add composer.lock storage/app/version.json
+          git commit -m "chore: update Composer dependencies and bump CMS to 3.2.9"
+          git push origin HEAD:refs/heads/chore/composer-update-3.2.9
