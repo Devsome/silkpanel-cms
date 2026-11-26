@@ -1,6 +1,11 @@
 {
-    "current": "3.2.9",
+    "current": "3.2.10",
     "changelog": {
+        "3.2.10": {
+            "title": "Security Hotfix",
+            "description": "Updated Laravel to 13.44.1 to address a denial-of-service vulnerability in numeric validation (GHSA-c25c-x5r7-2v5m). Updating is strongly recommended for all installations.",
+            "released_at": "2026-11-26"
+        },
         "3.2.9": {
             "title": "Composer Dependency Updates",
             "description": "Updated public Composer dependencies to the latest compatible versions and checked them for known security advisories. Existing SilkPanel package versions remain unchanged because the package registry was unavailable.",
