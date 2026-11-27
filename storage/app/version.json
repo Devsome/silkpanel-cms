@@ -1,6 +1,11 @@
 {
-    "current": "3.2.10",
+    "current": "3.2.11",
     "changelog": {
+        "3.2.11": {
+            "title": "Symfony Security Hotfix",
+            "description": "Updated Symfony HTML Sanitizer, HTTP Foundation, HTTP Kernel, Mailer and Routing to 7.4.24 to address the security vulnerabilities disclosed on November 25, 2026 (CVE-2026-133743, CVE-2026-133746, CVE-2026-133748, CVE-2026-133751, CVE-2026-133754, CVE-2026-133755 and CVE-2026-133756). Updating is strongly recommended for all installations.",
+            "released_at": "2026-11-27"
+        },
         "3.2.10": {
             "title": "Security Hotfix",
             "description": "Updated Laravel to 13.44.1 to address a denial-of-service vulnerability in numeric validation (GHSA-c25c-x5r7-2v5m). Updating is strongly recommended for all installations.",
